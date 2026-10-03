@@ -1,0 +1,33 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Large or licensed downloads (filled by scripts/fetch-*)
+models/weights/*
+!models/weights/.gitkeep
+resources/datasets/raw/*
+!resources/datasets/raw/.gitkeep
+
+# Source drop folder (files are filed into research/sources/brief)
+_inbox/
+
+# The brief is marked "Official Use Only"; keep it local, see research/sources/brief/README.md
+research/sources/brief/HackNation_Debrief_04.pdf
+
+# Recordings of real people never go in the repo
+*.real.wav
+*.real.m4a
+
+# Node / Expo
+node_modules/
+.expo/
+dist/
+web-build/
+*.tsbuildinfo
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+__pycache__/

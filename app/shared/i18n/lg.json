@@ -1,0 +1,9 @@
+{
+  "_note": "Luganda strings. Every value must be written or checked by a native Luganda speaker. Do not machine-translate. Empty means not written yet; the app falls back to English.",
+  "intake.card.label": "",
+  "safety.askPerson": "",
+  "safety.tellNurse": "",
+  "consent.prompt": "",
+  "sync.saved": "",
+  "sync.sent": ""
+}

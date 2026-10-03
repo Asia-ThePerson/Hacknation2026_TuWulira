@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "[PRODUCT NAME]",
+    "slug": "product-name",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "platforms": ["android"],
+    "android": { "package": "org.hacknation.productname" }
+  }
+}

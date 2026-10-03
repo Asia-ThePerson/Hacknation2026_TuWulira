@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Downloads raw datasets into resources/datasets/raw/ (gitignored).
+# Add a line to DATASETS only after the dataset's card exists and its license is verified
+# (resources/datasets/README.md). Format: "<folder name> <url>"
+set -euo pipefail
+cd "$(dirname "$0")/.."
+DEST=resources/datasets/raw
+
+DATASETS=(
+  # "fleurs-lg https://..."   TODO: add once the FLEURS card and license are verified (RQ3.1)
+)
+
+if [ ${#DATASETS[@]} -eq 0 ]; then
+  echo "Nothing to fetch yet. Add verified datasets to DATASETS in scripts/fetch-data."
+  exit 0
+fi
+for entry in "${DATASETS[@]}"; do
+  read -r name url <<<"$entry"
+  mkdir -p "$DEST/$name"
+  echo "Fetching $name"
+  curl -fL --retry 3 -o "$DEST/$name/$(basename "$url")" "$url"
+done

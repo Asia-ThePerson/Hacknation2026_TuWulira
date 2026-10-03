@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+"""Repo checks any teammate can run: `scripts/check` from the repo root.
+
+Prints PASS or FAIL per check, with the CHECKLIST.md item it maps to.
+It never ticks boxes; a person does that once the evidence exists.
+Python 3 standard library only.
+"""
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+os.chdir(ROOT)
+
+SECRET_PATTERNS = [
+    r"AKIA[0-9A-Z]{16}",                       # AWS access key
+    r"-----BEGIN [A-Z ]*PRIVATE KEY-----",
+    r"\bsk-(?:ant-|proj-)?[A-Za-z0-9_-]{20,}",  # OpenAI / Anthropic style keys
+    r"\bghp_[A-Za-z0-9]{36}\b",                 # GitHub token
+    r"\bgithub_pat_[A-Za-z0-9_]{40,}",
+    r"\bhf_[A-Za-z0-9]{30,}\b",                 # Hugging Face token (the fake in .env.example is shorter)
+    r"\bxox[abpr]-[A-Za-z0-9-]{10,}",           # Slack token
+    r"\bAIza[0-9A-Za-z_-]{35}\b",               # Google API key
+]
+LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
+
+
+def git(*args):
+    return subprocess.run(["git", *args], capture_output=True, text=True).stdout
+
+
+def tracked():
+    return [p for p in git("ls-files").splitlines() if Path(p).is_file()]
+
+
+def check_secrets():
+    problems = [f"tracked env file: {p}" for p in tracked() if re.search(r"(^|/)\.env(\.|$)", p) and not p.endswith(".env.example")]
+    pattern = re.compile("|".join(SECRET_PATTERNS))
+    for p in tracked():
+        try:
+            text = Path(p).read_text(errors="ignore")
+        except OSError:
+            continue
+        for m in pattern.finditer(text):
+            problems.append(f"{p}: looks like a secret ({m.group(0)[:12]}...)")
+    # History: any added line in any commit that matches a pattern.
+    history = git("log", "--all", "-p", "--no-color", "-U0")
+    for line in history.splitlines():
+        if line.startswith("+") and pattern.search(line):
+            problems.append(f"git history: {line[:60]}...")
+    return problems
+
+
+def links_in(md_files):
+    problems = []
+    for md in md_files:
+        text = Path(md).read_text(errors="ignore")
+        text = re.sub(r"```.*?```", "", text, flags=re.S)  # ignore code blocks
+        for target in LINK_RE.findall(text):
+            if re.match(r"^[a-z]+:", target) or target.startswith("#"):
+                continue  # external links and in-page anchors are checked by hand (G.4)
+            path = target.split("#")[0]
+            if path and not (Path(md).parent / path).exists():
+                problems.append(f"{md}: broken link -> {target}")
+    return problems
+
+
+def check_pointed_files():
+    return links_in(["README.md", "CHECKLIST.md"])
+
+
+def check_doc_links():
+    docs = [str(p) for p in Path("docs").rglob("*.md")]
+    others = [p for p in tracked() if p.endswith(".md") and not p.startswith((".claude/", "docs/"))]
+    return links_in(docs + others)
+
+
+def dataset_cards():
+    return [p for p in Path("resources/datasets/cards").glob("*.md") if p.name not in ("_template.md", "README.md")]
+
+
+def check_cards_cover():
+    return [f"{p}: missing a 'What this does not cover' section" for p in dataset_cards()
+            if not re.search(r"^#+\s*What this does not cover", p.read_text(), re.M | re.I)]
+
+
+def check_licenses():
+    files = [Path("resources/datasets/README.md"), *dataset_cards()]
+    return [f"{p}:{i}: license still 'to verify'" for p in files
+            for i, line in enumerate(p.read_text().splitlines(), 1)
+            if "to verify" in line.lower() and re.match(r"\s*(\||-\s*\*\*License)", line)]
+
+
+def check_skills():
+    problems = []
+    for d in sorted(Path(".claude/skills").iterdir()):
+        if not d.is_dir():
+            continue
+        f = d / "SKILL.md"
+        if not f.is_file():
+            problems.append(f"{d.name}: no SKILL.md")
+            continue
+        m = re.match(r"---\n(.*?)\n---", f.read_text(errors="ignore"), re.S)
+        if not m:
+            problems.append(f"{d.name}: no frontmatter between --- markers")
+            continue
+        name = re.search(r"^name:\s*[\"']?([^\"'\n]+?)[\"']?\s*$", m.group(1), re.M)
+        if not name or name.group(1) != d.name:
+            problems.append(f"{d.name}: frontmatter name is {name.group(1) if name else 'missing'}")
+    return problems
+
+
+def check_synthetic():
+    problems = []
+    for folder in ("resources/datasets/synthetic", "eval/test-sets"):
+        for p in Path(folder).rglob("*"):
+            if not p.is_file() or p.name in ("README.md", ".gitkeep") or p.name.startswith("synthetic_"):
+                continue
+            head = p.read_text(errors="ignore")[:500] if p.suffix in (".csv", ".txt", ".json", ".md", ".jsonl", ".tsv") else ""
+            if "synthetic" not in head.lower():
+                problems.append(f"{p}: not labelled synthetic (name it synthetic_* or put SYNTHETIC in its first lines)")
+    return problems
+
+
+CHECKS = [
+    ("secrets (working tree and git history)", "G.3", check_secrets),
+    ("files README.md and CHECKLIST.md point to exist", "G.4", check_pointed_files),
+    ("every dataset card has 'What this does not cover'", "E.1", check_cards_cover),
+    ("no dataset license left 'to verify'", "E.2", check_licenses),
+    ("every skill has a valid SKILL.md", "G.5", check_skills),
+    ("synthetic data labelled", "E.3", check_synthetic),
+    ("relative links in docs resolve", "G.4", check_doc_links),
+]
+
+
+def main():
+    failed = 0
+    for label, item, fn in CHECKS:
+        problems = fn()
+        print(f"{'PASS' if not problems else 'FAIL'}  [{item}] {label}")
+        for p in problems[:15]:
+            print(f"        {p}")
+        if len(problems) > 15:
+            print(f"        ... and {len(problems) - 15} more")
+        failed += bool(problems)
+    print(f"\n{len(CHECKS) - failed} of {len(CHECKS)} checks passed. This script never ticks CHECKLIST.md; do that by hand with evidence.")
+    sys.exit(1 if failed else 0)
+
+
+if __name__ == "__main__":
+    main()

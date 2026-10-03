@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Downloads model weights into models/weights/ (gitignored), ready to side-load onto the clinic device.
+# Add a line to MODELS only after the model has a card in models/cards/ with its license.
+# Format: "<file name> <url>". Uses HF_TOKEN from .env if set (gated models only).
+set -euo pipefail
+cd "$(dirname "$0")/.."
+DEST=models/weights
+[ -f .env ] && set -a && . ./.env && set +a
+
+MODELS=(
+  # "asr-luganda.onnx https://..."   TODO: add once the speech model is chosen (models/README.md)
+)
+
+if [ ${#MODELS[@]} -eq 0 ]; then
+  echo "Nothing to fetch yet. Add the chosen model to MODELS in scripts/fetch-models."
+  exit 0
+fi
+mkdir -p "$DEST"
+for entry in "${MODELS[@]}"; do
+  read -r file url <<<"$entry"
+  echo "Fetching $file"
+  curl -fL --retry 3 ${HF_TOKEN:+-H "Authorization: Bearer $HF_TOKEN"} -o "$DEST/$file" "$url"
+done
+du -h "$DEST"/* | tee /dev/stderr >/dev/null

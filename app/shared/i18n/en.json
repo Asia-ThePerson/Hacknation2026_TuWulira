@@ -1,0 +1,8 @@
+{
+  "intake.card.label": "Patient reported",
+  "safety.askPerson": "Not sure. Please ask a person.",
+  "safety.tellNurse": "Tell the nurse now.",
+  "consent.prompt": "May we record your answers? Please say yes or no.",
+  "sync.saved": "Saved on this device",
+  "sync.sent": "Sent"
+}

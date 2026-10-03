@@ -1,0 +1,5 @@
+# SYNTHETIC: written by the team for testing. Not from any real patient or clinic.
+clip_id,language,reference_transcript,expected_fields,expected_safety
+synthetic_silence_01,none,,{},ask_person
+synthetic_dictation_en_01,en,"new patient female age 34 temperature 38.5 weight 61",{"sex":"female","age_years":34,"attendance":"new","temperature_c":38.5,"weight_kg":61},ok
+synthetic_danger_en_01,en,"the child has had convulsions since morning",{},danger

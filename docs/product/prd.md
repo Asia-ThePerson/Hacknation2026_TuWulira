@@ -37,18 +37,18 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 
 | ID | Requirement | Based on | Checklist |
 |---|---|---|---|
-| PR1 | The core flow (intake, scribe, save) works with airplane mode on. | Brief 06; R3, R4 | C2, F |
-| PR2 | All models together are small enough to side-load; size, RAM and latency are measured on the cheapest Android we have. | Brief 06; RQ6.1; R3 | C3 |
-| PR3 | Intake runs as a short spoken Luganda conversation with recorded prompts. | Brief 06; RQ3.1, RQ3.2 | C4, F |
+| PR1 | The core flow (intake, scribe, save) works with airplane mode on. | Brief 06; R3, R4 | C.2, F |
+| PR2 | All models together are small enough to side-load; size, RAM and latency are measured on the cheapest Android we have. | Brief 06; RQ6.1; R3 | C.3 |
+| PR3 | Intake runs as a short spoken Luganda conversation with recorded prompts. | Brief 06; RQ3.1, RQ3.2 | C.4, F |
 | PR4 | The intake output is a card labelled "patient reported", never "findings", and appears beside, not instead of, the clinician's own questions. | RQ2.4; R2 | F |
-| PR5 | The scribe fills only fields defined in [register-field-map.md](register-field-map.md), using only values from fixed lists or validated ranges. | Brief glossary "fixed list of answers"; RQ4.3 | D5 |
+| PR5 | The scribe fills only fields defined in [register-field-map.md](register-field-map.md), using only values from fixed lists or validated ranges. | Brief glossary "fixed list of answers"; RQ4.3 | D.5 |
 | PR6 | Any field below the confidence threshold is flagged and cannot be saved until the clinician confirms or edits it. | Brief 06 guardrail; RQ4.2 | F |
-| PR7 | Fields that imply a diagnosis or prescription are clinician-entered, or dictated and confirmed word for word. The AI never suggests them. | RQ4.3; team rule | D6 |
-| PR8 | When the tool understands nothing (silence, crying child, unintelligible audio) or confidence is too low, it says "Not sure. Please ask a person." and hands over. | Brief 09 fail-safe; RQ4.4 | D2 |
-| PR9 | A phrase matching a sourced danger sign triggers "Tell the nurse now", whatever the confidence. Danger signs come only from WHO IMCI, Uganda Clinical Guidelines and WHO maternal danger signs. | RQ4.1, RQ4.2 | D3, D4 |
-| PR10 | Recording starts only after a recorded spoken yes. | RQ5.1 | D8 |
+| PR7 | Fields that imply a diagnosis or prescription are clinician-entered, or dictated and confirmed word for word. The AI never suggests them. | RQ4.3; team rule | D.6 |
+| PR8 | When the tool understands nothing (silence, crying child, unintelligible audio) or confidence is too low, it says "Not sure. Please ask a person." and hands over. | Brief 09 fail-safe; RQ4.4 | D.2 |
+| PR9 | A phrase matching a sourced danger sign triggers "Tell the nurse now", whatever the confidence. Danger signs come only from WHO IMCI, Uganda Clinical Guidelines and WHO maternal danger signs. | RQ4.1, RQ4.2 | D.3, D.4 |
+| PR10 | Recording starts only after a recorded spoken yes. | RQ5.1 | D.8 |
 | PR11 | Records queue on the device and sync when a signal appears, with no duplicates and no lost records. | Brief glossary "store-and-forward"; RQ6.2; R5 | F |
-| PR12 | Any SMS to a patient contains only a date and the clinic's name. | RQ5.2 | D9 |
+| PR12 | Any SMS to a patient contains only a date and the clinic's name. | RQ5.2 | D.9 |
 | PR13 | Synced records map to DHIS2 fields. | R5; RQ1.2 | F |
 | PR14 | Every screen meets the inclusivity rules in [design-system.md](../design/design-system.md) (older users, low literacy, privacy in a crowded room). | RQ2.1, RQ2.3 | F |
 | PR15 | A quiet or private mode exists for sensitive symptoms. | RQ2.1 | F |

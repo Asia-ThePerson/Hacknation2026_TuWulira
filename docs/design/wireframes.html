@@ -1,0 +1,959 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TuWulira Wireframes</title>
+<style>
+body { margin: 0; }
+/* Layout: three fixed columns like a demo console. Flows on the left, the device on a grey stage in the middle, step walkthrough on the right. Greyscale low-fi; state is shown with borders, fills and labels, never colour. */
+:root {
+  --stage: #f1f1f1;
+  --panel: #ffffff;
+  --ink: #111111;
+  --muted: #6b6b6b;
+  --line: #d6d6d6;
+  --wire: #bdbdbd;
+  --fill: #f4f4f4;
+  --inverse-ink: #ffffff;
+  --font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --stage: #1a1a1a; --panel: #0e0e0e; --ink: #efefef; --muted: #9a9a9a;
+    --line: #333333; --wire: #4a4a4a; --fill: #1f1f1f; --inverse-ink: #0e0e0e; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --stage: #1a1a1a; --panel: #0e0e0e; --ink: #efefef; --muted: #9a9a9a;
+  --line: #333333; --wire: #4a4a4a; --fill: #1f1f1f; --inverse-ink: #0e0e0e; color-scheme: dark;
+}
+html, body { height: 100%; }
+body { background: var(--panel); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.4; }
+* { box-sizing: border-box; }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+.app { display: grid; grid-template-columns: 250px minmax(0, 1fr) 330px; height: 100%; }
+
+/* Left: flow navigation */
+.nav { border-right: 1px solid var(--line); overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 10px; }
+.nav h1 { margin: 0; font-size: 28px; letter-spacing: -0.02em; line-height: 1.1; }
+.nav .sub { color: var(--muted); margin: 2px 0 0; font-size: 13px; }
+.nav .intro { color: var(--muted); font-size: 13px; margin: 6px 0 4px; }
+.group { font-size: 13px; font-weight: 600; color: var(--muted); margin: 10px 0 0; }
+.flow { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; text-align: left; width: 100%;
+  padding: 11px 12px; border: 1.5px solid var(--ink); border-radius: 8px; background: var(--panel); }
+.flow .n { font-size: 12px; white-space: nowrap; padding-top: 2px; }
+.flow[aria-current="true"] { background: var(--ink); color: var(--inverse-ink); }
+
+/* Middle: stage */
+.stage { background: var(--stage); overflow: auto; display: flex; flex-direction: column; align-items: center; padding: 28px 16px 40px; gap: 12px; }
+.device-label { font-size: 13px; font-weight: 600; }
+.device { background: var(--panel); border: 2px solid var(--ink); border-radius: 38px; width: 360px; max-width: 100%; height: 720px;
+  padding: 14px 16px 18px; display: flex; flex-direction: column; overflow: hidden; }
+.device.tablet { width: 900px; height: 600px; border-radius: 22px; }
+.device.feature { width: 280px; height: 640px; border-radius: 34px; padding: 18px 16px; }
+.device.feature .screen { flex: none; height: 330px; border: 2px solid var(--ink); border-radius: 6px; padding: 8px; font-size: 13px; gap: 8px; }
+.keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 14px; }
+.keypad button { height: 38px; border: 1.5px solid var(--wire); border-radius: 12px; background: var(--panel); font-weight: 600; font-size: 15px; }
+.keypad button small { display: block; font-size: 9px; font-weight: 400; color: var(--muted); line-height: 1; }
+.keypad button.hot { border: 2px solid var(--ink); background: var(--fill); }
+.keypad .fn { font-size: 12px; }
+.call { display: flex; flex-direction: column; gap: 8px; }
+.call .who { display: flex; justify-content: space-between; font-size: 12px; border-bottom: 1px solid var(--line); padding-bottom: 6px; font-variant-numeric: tabular-nums; }
+.hear { border: 1.5px solid var(--ink); border-radius: 8px; padding: 8px; display: flex; flex-direction: column; gap: 4px; line-height: 1.35; }
+.opts { font-size: 12px; font-weight: 600; border: 1.5px dashed var(--wire); border-radius: 8px; padding: 6px 8px; }
+.rec { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.rec i { width: 12px; height: 12px; border-radius: 50%; background: var(--ink); flex: none; }
+.rec .ph { flex: 1; height: 26px; }
+.bigcode { font-size: 30px; font-weight: 700; letter-spacing: .25em; text-align: center; font-variant-numeric: tabular-nums; border: 2px solid var(--ink); border-radius: 8px; padding: 6px; }
+.thread { display: flex; flex-direction: column; gap: 6px; }
+.bubble { max-width: 88%; padding: 6px 8px; font-size: 12px; line-height: 1.35; }
+.bubble.in { align-self: flex-start; border: 1.5px solid var(--ink); border-radius: 10px 10px 10px 2px; }
+.bubble.out { align-self: flex-end; background: var(--ink); color: var(--inverse-ink); border-radius: 10px 10px 2px 10px; }
+.compose { margin-top: auto; border: 1.5px solid var(--wire); border-radius: 6px; padding: 6px 8px; font-size: 12px; color: var(--muted); }
+.dial { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; text-align: center; }
+.dial b { font-size: 20px; }
+.status { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); padding: 2px 8px 10px; font-variant-numeric: tabular-nums; }
+.screen { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+
+/* Right: steps */
+.panel { border-left: 1px solid var(--line); overflow-y: auto; padding: 22px 18px; display: flex; flex-direction: column; gap: 14px; }
+.eyebrow { font-size: 13px; color: var(--muted); }
+.panel h2 { margin: 0; font-size: 23px; letter-spacing: -0.01em; text-wrap: balance; }
+.panel .desc { color: var(--muted); margin: 0; }
+.stepcard { border: 1.5px solid var(--ink); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.stepcard h3 { margin: 0; font-size: 19px; }
+.stepcard p { margin: 0; }
+.refs { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+.pn { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+.steps { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2px; counter-reset: s; }
+.steps button { width: 100%; text-align: left; background: none; border: 0; padding: 5px 8px; border-radius: 4px; display: flex; gap: 10px; }
+.steps button::before { counter-increment: s; content: counter(s) "."; min-width: 22px; text-align: right; font-variant-numeric: tabular-nums; }
+.steps button[aria-current="true"] { background: var(--ink); color: var(--inverse-ink); }
+label.jump { font-size: 13px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
+label.jump select { padding: 8px; border: 1.5px solid var(--ink); border-radius: 6px; background: var(--panel); }
+
+/* Wireframe kit */
+.b { border: 1.5px solid var(--ink); background: var(--panel); border-radius: 999px; padding: 12px 14px; font-weight: 600; min-height: 48px; width: 100%; }
+.b.primary { background: var(--ink); color: var(--inverse-ink); }
+.b.ghost { border-color: var(--wire); color: var(--muted); font-weight: 500; }
+.b.sq { border-radius: 10px; }
+.b:disabled { opacity: .4; cursor: not-allowed; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.section-tag { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.prompt { font-size: 22px; font-weight: 700; line-height: 1.25; margin: 0; text-wrap: balance; }
+.play { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+.play span.pill { border: 1.5px solid var(--ink); border-radius: 999px; padding: 4px 10px; color: var(--ink); font-weight: 600; }
+.ph { border: 1.5px solid var(--wire); border-radius: 10px; background:
+  linear-gradient(to top right, transparent calc(50% - .6px), var(--wire) 50%, transparent calc(50% + .6px)),
+  linear-gradient(to bottom right, transparent calc(50% - .6px), var(--wire) 50%, transparent calc(50% + .6px)), var(--fill);
+  display: grid; place-items: center; color: var(--muted); font-size: 12px; text-align: center; padding: 8px; }
+.ph span { background: var(--fill); padding: 2px 6px; }
+.mic { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 10px 0; }
+.micbtn { width: 112px; height: 112px; border-radius: 50%; border: 2px solid var(--ink); background: var(--panel); font-weight: 700; font-size: 13px; }
+.micbtn.on { background: var(--ink); color: var(--inverse-ink); box-shadow: 0 0 0 8px var(--fill), 0 0 0 10px var(--wire); }
+.hint { font-size: 12px; color: var(--muted); text-align: center; margin: 0; }
+.box { border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.box.strong { border-color: var(--ink); }
+.box h4 { margin: 0; font-size: 13px; }
+.kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 13px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; min-width: 0; }
+.urgent { border: 3px solid var(--ink); border-radius: 10px; padding: 10px 12px; font-weight: 700; display: flex; gap: 10px; align-items: center; }
+.urgent .tag, .tag.inv { background: var(--ink); color: var(--inverse-ink); border-radius: 4px; padding: 2px 6px; font-size: 11px; letter-spacing: .06em; }
+.tag { border: 1.5px solid var(--ink); border-radius: 4px; padding: 1px 6px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.tag.dash, .check { border-style: dashed; }
+.check { border: 1.5px dashed var(--ink); background: var(--fill); }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.field .in { border: 1.5px solid var(--wire); border-radius: 8px; padding: 9px 10px; min-height: 40px; background: var(--panel); }
+.field .in.check { border-color: var(--ink); }
+.row { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.chip { border: 1.5px solid var(--ink); border-radius: 999px; padding: 6px 12px; font-size: 13px; background: var(--panel); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--inverse-ink); }
+.list { display: flex; flex-direction: column; gap: 6px; }
+.qitem { display: flex; justify-content: space-between; align-items: center; gap: 8px; border: 1.5px solid var(--line); border-radius: 8px; padding: 9px 10px; font-size: 13px; text-align: left; background: var(--panel); width: 100%; }
+.qitem.is-urgent { border: 3px solid var(--ink); }
+.qitem small { color: var(--muted); display: block; }
+.topbar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--line); padding-bottom: 8px; font-size: 13px; }
+.topbar b { font-size: 15px; }
+.pin { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.pin button { height: 56px; border: 1.5px solid var(--ink); border-radius: 12px; background: var(--panel); font-size: 20px; }
+.dots { display: flex; gap: 12px; justify-content: center; }
+.dots i { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--ink); }
+.dots i.f { background: var(--ink); }
+.check-row { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.check-row input { width: 18px; height: 18px; accent-color: var(--ink); flex: none; margin-top: 1px; }
+.check-row code { font-family: var(--mono); font-size: 11px; color: var(--muted); min-width: 42px; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; min-height: 0; }
+.tbl-wrap { overflow-x: auto; border: 1.5px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; font-size: 12px; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { border: 1px solid var(--line); padding: 6px 7px; text-align: left; vertical-align: top; white-space: nowrap; }
+th { background: var(--fill); font-weight: 600; }
+td.src-p { border-left: 3px solid var(--ink); }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.legend span { display: inline-flex; gap: 6px; align-items: center; }
+.sw { width: 14px; height: 14px; border: 1px solid var(--line); display: inline-block; }
+.sw.p { border-left: 3px solid var(--ink); }
+pre.code { margin: 0; font-family: var(--mono); font-size: 12px; background: var(--fill); border: 1.5px solid var(--line); border-radius: 8px; padding: 10px; overflow-x: auto; }
+.sample { font-size: 11px; color: var(--muted); text-align: center; }
+.big-msg { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 14px; text-align: center; }
+.big-msg .prompt { font-size: 28px; }
+.big-msg.inv { background: var(--ink); color: var(--inverse-ink); border-radius: 18px; padding: 20px; }
+.big-msg.inv .b { border-color: var(--inverse-ink); background: transparent; color: var(--inverse-ink); }
+.sync { display: flex; align-items: center; gap: 10px; border: 1.5px dashed var(--ink); border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+
+/* ---------- staff-side refinement ---------- */
+:root { --ease-out: cubic-bezier(0.23, 1, 0.32, 1); }
+::selection { background: var(--ink); color: var(--inverse-ink); }
+.ic { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ic path[d^="M8 5.5"] { fill: currentColor; }
+.b, .qrow, .frow, .tabs button, .segrow button, .pin button, .linkb, .micb, .flow, .steps button, .keypad button { transition: transform 160ms var(--ease-out), background-color 160ms ease; }
+.b:active:not(:disabled), .qrow:active, .frow:active, .tabs button:active, .segrow button:active, .pin button:active, .micb:active, .keypad button:active { transform: scale(0.97); }
+.b.iconb, .b.primary { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.screen.enter { animation: enter 140ms var(--ease-out); }
+@keyframes enter { from { opacity: .55; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .screen.enter { animation: none; } .b:active, .qrow:active, .frow:active { transform: none; } }
+
+.topbar { border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+.topbar .role { font-weight: 700; font-size: 14px; }
+.lockt { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted); }
+.lockt .ic { width: 13px; height: 13px; }
+.sh { margin: 4px 0 0; font-size: 17px; line-height: 1.25; }
+
+.pstrip { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; padding: 8px 10px; background: var(--fill); border-radius: 10px; }
+.pstrip.is-urgent { border: 2px solid var(--ink); }
+.pmain { display: flex; flex-direction: column; min-width: 0; }
+.pmain b { font-size: 15px; }
+.pmain span, .pside .meta { font-size: 12px; color: var(--muted); }
+.pside { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; }
+.pside .meta { display: inline-flex; gap: 4px; align-items: center; }
+.pside .meta .ic { width: 13px; height: 13px; }
+.tag { display: inline-flex; align-items: center; gap: 3px; }
+.tag .ic { width: 12px; height: 12px; }
+.tagrow { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.pcard { display: flex; flex-direction: column; }
+.pchead { display: flex; flex-direction: column; gap: 1px; padding-bottom: 8px; }
+.pchead b { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+.pchead span { font-size: 12px; color: var(--muted); }
+.pcs { border-top: 1px solid var(--line); padding: 10px 0; display: flex; flex-direction: column; gap: 6px; }
+.pcs h4 { margin: 0; font-size: 12px; color: var(--muted); font-weight: 600; }
+.mainp { margin: 0; font-size: 22px; font-weight: 700; line-height: 1.2; }
+.subp { margin: 0; font-size: 14px; }
+.unclear, .reported { margin: 0; display: flex; gap: 6px; align-items: center; font-size: 13px; padding: 6px 8px; border: 1.5px dashed var(--ink); border-radius: 8px; background: var(--fill); }
+.reported { border-style: solid; border-color: var(--line); }
+details summary { cursor: pointer; font-size: 13px; font-weight: 600; padding: 4px 0; }
+details.pcs summary { font-size: 12px; color: var(--muted); }
+.ans { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 6px 10px; margin: 0; font-size: 14px; }
+.ans dt { color: var(--muted); }
+.ans dd { margin: 0; }
+.urgent { gap: 8px; font-weight: 400; }
+.urgent .ic { width: 18px; height: 18px; }
+
+.actionbar { position: sticky; bottom: 0; margin-top: auto; background: var(--panel); border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 6px; z-index: 1; }
+.barhint { margin: 0; font-size: 12px; color: var(--muted); text-align: center; }
+.barrow { display: flex; gap: 8px; }
+.barrow .b { flex: 1; }
+.barrow .b:not(.primary) { flex: 0 1 auto; }
+
+.chiprow { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+.segrow button { border: 1.5px solid var(--wire); background: var(--panel); border-radius: 999px; padding: 6px 12px; font-size: 13px; min-height: 36px; white-space: nowrap; }
+.segrow button[aria-pressed="true"] { background: var(--ink); color: var(--inverse-ink); border-color: var(--ink); }
+.seg { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.seg legend { font-size: 13px; font-weight: 600; padding: 0; margin-bottom: 6px; }
+.seg .segrow { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 0; border: 1.5px solid var(--ink); border-radius: 10px; overflow: hidden; }
+.seg .segrow button { border: 0; border-radius: 0; min-height: 48px; border-left: 1px solid var(--line); }
+.seg .segrow button:first-child { border-left: 0; }
+.req { font-weight: 400; font-size: 11px; color: var(--muted); border: 1px solid var(--wire); border-radius: 4px; padding: 0 4px; }
+
+.qlist { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.qrow { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto 16px; gap: 8px; align-items: center; min-height: 60px; padding: 8px 10px; border: 0; border-top: 1px solid var(--line); background: var(--panel); text-align: left; width: 100%; }
+.qlist .qrow:first-child { border-top: 0; }
+.qrow.is-urgent { background: var(--fill); box-shadow: inset 0 0 0 2px var(--ink); }
+.screen > .qrow { border: 1.5px solid var(--ink); border-radius: 10px; }
+.qmark { display: grid; place-items: center; }
+.qtext { display: flex; flex-direction: column; min-width: 0; font-size: 14px; }
+.qtext small { color: var(--muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.syncline { margin: 0; display: flex; gap: 6px; align-items: center; font-size: 12px; color: var(--muted); }
+
+.nf { display: flex; flex-direction: column; gap: 4px; font-size: 13px; min-width: 0; }
+.nfl { font-weight: 600; }
+.nfin { display: flex; align-items: center; border: 1.5px solid var(--wire); border-radius: 8px; background: var(--panel); min-height: 48px; }
+.nfin:focus-within { border-color: var(--ink); box-shadow: 0 0 0 2px var(--fill); }
+.nfin input { flex: 1; min-width: 0; border: 0; background: transparent; padding: 10px; font-size: 17px; font-variant-numeric: tabular-nums; outline: none; }
+.nfin .unit { padding-right: 10px; color: var(--muted); font-size: 13px; }
+.nfh { font-size: 11px; color: var(--muted); }
+.nf select, .nf textarea { border: 1.5px solid var(--wire); border-radius: 8px; padding: 10px; background: var(--panel); min-height: 48px; resize: vertical; }
+.nf textarea:focus, .nf select:focus { border-color: var(--ink); outline: none; }
+.nfgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.nfgrid.three { grid-template-columns: repeat(3, 1fr); }
+.linkb { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; background: none; border: 0; padding: 6px 0; font-weight: 600; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+.heard { display: flex; gap: 10px; align-items: center; font-size: 13px; }
+.heard .b { width: auto; min-height: 40px; padding: 8px 12px; }
+
+.tabs { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); }
+.tabs button { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; border-bottom: 2.5px solid transparent; padding: 8px 6px; font-size: 13px; color: var(--muted); white-space: nowrap; min-height: 40px; }
+.tabs button.done { color: var(--ink); }
+.tabs button .ic { width: 13px; height: 13px; }
+.tabs button[aria-current="true"] { color: var(--ink); font-weight: 700; border-bottom-color: var(--ink); }
+
+.mini { display: flex; flex-direction: column; gap: 6px; padding: 10px; background: var(--fill); border-radius: 10px; }
+.minih { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+
+.search { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); border-radius: 999px; padding: 0 12px; min-height: 44px; }
+.search input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; font-size: 14px; }
+.count { margin: 0; font-size: 13px; font-variant-numeric: tabular-nums; }
+.dxlist h5 { margin: 10px 0 2px; font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+.check-row.big { font-size: 15px; padding: 10px 0; align-items: center; }
+.check-row.big input { width: 22px; height: 22px; }
+.check-row small { display: block; color: var(--muted); font-size: 12px; }
+.radios { border: 0; padding: 0; margin: 0; }
+.radios legend { font-size: 13px; font-weight: 600; padding: 0; }
+
+.done { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 18px 0 6px; }
+.donei { width: 56px; height: 56px; border-radius: 50%; border: 2px solid var(--ink); display: grid; place-items: center; }
+.donei .ic { width: 26px; height: 26px; }
+ul.status { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+ul.status li { display: flex; gap: 8px; align-items: center; }
+ul.status li.no { color: var(--muted); }
+
+.pinwrap { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
+.pintitle { margin: 0; text-align: center; font-size: 20px; font-weight: 700; }
+.pin button { display: grid; place-items: center; }
+
+.scope { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.scope > div { padding: 10px; background: var(--fill); border-radius: 10px; }
+.scope h5 { margin: 0 0 4px; display: flex; gap: 4px; align-items: center; font-size: 12px; }
+.scope p { margin: 0; font-size: 12px; color: var(--muted); }
+.micwrap { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 0; }
+.micb { width: 128px; height: 128px; border-radius: 50%; border: 2px solid var(--ink); background: var(--panel); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; }
+.micb .ic { width: 30px; height: 30px; }
+.micb.on { background: var(--ink); color: var(--inverse-ink); box-shadow: 0 0 0 8px var(--fill); }
+.transcript { padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
+.transcript h5 { margin: 0 0 4px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.transcript p { margin: 0; font-size: 14px; line-height: 1.6; }
+mark { background: none; color: inherit; border-bottom: 2px solid var(--ink); padding-bottom: 1px; }
+mark::after { content: attr(data-n); font-size: 9px; vertical-align: super; margin-left: 1px; font-weight: 700; }
+mark.low { border-bottom-style: dashed; background: var(--fill); }
+.frows { display: flex; flex-direction: column; gap: 6px; }
+.frow { display: flex; flex-direction: column; gap: 2px; text-align: left; width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.frow.check { border: 1.5px dashed var(--ink); background: var(--fill); cursor: pointer; }
+.frow.open { border: 2px solid var(--ink); gap: 8px; }
+.frtop { display: flex; align-items: center; gap: 6px; }
+.frtop sup { font-size: 10px; font-weight: 700; }
+.frl { flex: 1; font-size: 12px; color: var(--muted); }
+.frv { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.regbar { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+.regbar .tabs { border-bottom: 0; }
+.regtitle { display: flex; flex-direction: column; padding-bottom: 6px; }
+.regtitle b { font-size: 18px; }
+.regtitle span { display: inline-flex; gap: 4px; align-items: center; font-size: 12px; color: var(--muted); }
+.regtitle .ic { width: 12px; height: 12px; }
+.regtools { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.regtools .search { min-width: 220px; }
+.sw.p { border-left: 1px solid var(--line); background: var(--fill); }
+table.reg td.p { background: var(--fill); }
+table.reg thead th, table.tally thead th { position: sticky; top: 0; z-index: 1; }
+table.reg tr.cont td { border-top-style: dashed; }
+.contl { color: var(--muted); }
+.contl .ic { width: 13px; height: 13px; vertical-align: -2px; margin-right: 4px; }
+table.tally td.n, table.tally th.mf, table.tally th.band { text-align: center; }
+table.tally td.f { border-right-width: 2px; }
+table.tally td.z { color: var(--muted); }
+table.tally .tot { font-weight: 700; background: var(--fill); }
+table.tally tbody tr:hover td { background: var(--fill); }
+code { font-family: var(--mono); font-size: 11.5px; }
+ul.timeline { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+ul.timeline li { display: flex; gap: 10px; align-items: flex-start; }
+ul.timeline li .ic { width: 20px; height: 20px; border: 1.5px solid var(--ink); border-radius: 50%; padding: 2px; }
+ul.timeline small { display: block; color: var(--muted); font-size: 12px; }
+
+.device { position: relative; }
+.toast { position: absolute; left: 16px; right: 16px; bottom: 28px; z-index: 5; background: var(--ink); color: var(--inverse-ink); border-radius: 10px; padding: 10px 12px; font-size: 13px; }
+.qrow[hidden], .qempty[hidden] { display: none !important; }
+div.qrow { cursor: default; }
+.qempty { text-align: center; color: var(--muted); font-size: 13px; padding: 14px 0; margin: 0; }
+.nfe { font-size: 12px; font-weight: 600; margin: 0; }
+.nfin.invalid { border-color: var(--ink); border-style: dashed; background: var(--fill); }
+.frow.ok, .frow.conf { gap: 0; }
+.frhead { display: flex; flex-direction: column; gap: 2px; width: 100%; text-align: left; background: none; border: 0; padding: 0; min-height: 44px; justify-content: center; }
+.fredit { display: flex; gap: 8px; margin-top: 8px; }
+.fredit .nfin { flex: 1; }
+.fredit .nfin input { padding: 8px; font-size: 15px; }
+.fredit .b { width: auto; min-height: 44px; }
+details.sens { border-top: 1px solid var(--line); padding-top: 6px; }
+.linkb { min-height: 44px; }
+.check-row { min-height: 44px; align-items: center; }
+.dxrow { padding: 8px 0; }
+table.tally td.na { color: var(--muted); background: var(--fill); }
+.dots i { transition: background-color 120ms ease; }
+
+.screen > * { flex-shrink: 0; }
+.screen { scroll-padding-bottom: 96px; }
+[hidden] { display: none !important; }
+.barrow { flex-wrap: wrap; }
+.barrow .b { width: auto; min-width: 0; flex: 1 1 auto; padding-inline: 14px; }
+.barrow .b.primary { flex: 2 1 150px; }
+@media (max-width: 1080px) {
+  .app { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .nav, .panel { border: 0; overflow: visible; }
+  .nav { border-bottom: 1px solid var(--line); }
+  .navlist { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr)); gap: 8px; }
+  .stage { overflow: visible; }
+  .device { height: 680px; }
+  .device.tablet { height: auto; min-height: 520px; }
+  .split { grid-template-columns: 1fr; }
+}
+.navlist { display: flex; flex-direction: column; gap: 8px; }
+</style>
+
+<div class="app">
+  <nav class="nav" aria-label="Flows">
+    <div>
+      <h1>TuWulira</h1>
+      <p class="sub">Low-fi wireframe demo</p>
+    </div>
+    <p class="intro">Choose a flow to walk through it step by step. Tap buttons inside the device to move forward. On the patient’s basic phone, press the outlined keys.</p>
+    <div id="navlist" class="navlist"></div>
+  </nav>
+
+  <main class="stage" aria-live="polite">
+    <div class="device-label" id="deviceLabel"></div>
+    <div class="device" id="device">
+      <div class="status"><span id="clock">09:41</span><span id="statusText">Offline · airplane mode on</span></div>
+      <div class="screen" id="screen"></div>
+      <div class="keypad" id="keypad" hidden></div>
+      <div class="toast" id="toast" role="status" hidden></div>
+    </div>
+    <p class="sample">All names and numbers are synthetic sample data.</p>
+  </main>
+
+  <aside class="panel" aria-label="Steps">
+    <div class="eyebrow" id="flowGroup"></div>
+    <h2 id="flowTitle"></h2>
+    <p class="desc" id="flowDesc"></p>
+    <div class="stepcard">
+      <div class="eyebrow" id="stepCount"></div>
+      <h3 id="stepTitle"></h3>
+      <p id="stepNote"></p>
+      <div class="refs" id="stepRefs"></div>
+      <div class="pn">
+        <button class="b ghost" id="prev">Previous</button>
+        <button class="b primary" id="next">Next</button>
+      </div>
+    </div>
+    <ol class="steps" id="steps"></ol>
+    <label class="jump" for="jump">Jump to any screen
+      <select id="jump"></select>
+    </label>
+  </aside>
+</div>
+
+<script>
+// ---------- wireframe helpers ----------
+
+// Basic phone (Path A): voice call and SMS screens. Keypad answers are set per step in `keys`.
+const YN = { 1: 'next', 2: 'next', 3: 'next', 0: 'next' };
+const YN_TXT = '1 Yes · 2 No · 3 Not sure · 0 Ask clinician';
+const rec = (label) => `<div class="rec"><i></i><span>${label}</span><div class="ph"><span>audio</span></div></div>`;
+const call = (time, said, opts, extra = '') => `<div class="call"><div class="who"><b>TuWulira clinic</b><span>On call ${time}</span></div><div class="hear"><span class="section-tag">You hear</span>“${said}”</div>${opts ? `<div class="opts">Keypad: ${opts}</div>` : ''}${extra}</div>`;
+const sms = (msgs, compose = 'Reply with a number') => `<div class="section-tag">Messages · [clinic number]</div><div class="thread">${msgs.map(([d, t]) => `<div class="bubble ${d}">${t}</div>`).join('')}</div><div class="compose">${compose}</div>`;
+
+
+// ---------- icons: one authored stroke set (24px grid, 1.75 stroke) ----------
+const ICON_PATHS = {
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  x: '<path d="M6 6l12 12M18 6L6 18"/>',
+  alert: '<path d="M12 3.5l9 16H3z"/><path d="M12 10v4"/><path d="M12 17v.01"/>',
+  lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>',
+  search: '<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>',
+  chev: '<path d="M9.5 6l6 6-6 6"/>',
+  clock: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 1.5"/>',
+  sync: '<path d="M19 9a7.5 7.5 0 0 0-13.4-1.5M5 15a7.5 7.5 0 0 0 13.4 1.5"/><path d="M19 4.5V9h-4.5M5 19.5V15h4.5"/>',
+  play: '<path d="M8 5.5l10.5 6.5L8 18.5z"/>',
+  mic: '<rect x="9" y="3.5" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v2.5"/>',
+  cont: '<path d="M7 5v7a3 3 0 0 0 3 3h8"/><path d="M15 12l3 3-3 3"/>',
+  phone: '<path d="M6.5 4h3l1.5 4-2 1.5a10 10 0 0 0 5.5 5.5l1.5-2 4 1.5v3a2 2 0 0 1-2 2A15 15 0 0 1 4.5 6a2 2 0 0 1 2-2z"/>',
+  msg: '<path d="M4 5.5h16v10H9l-4 3.5v-3.5H4z"/>',
+};
+const icon = (n, cls = '') => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICON_PATHS[n]}</svg>`;
+
+// ---------- staff-side components ----------
+const staffTop = (role, right) => `<div class="topbar"><span class="role">${role}</span><span class="lockt">${icon('lock')}${right || 'Locks in 2 min'}</span></div>`;
+
+const PATIENTS = {
+  p14: { id: '#014', name: 'Nakato A.', meta: '34 y · Female · New visit', code: '4821', via: 'phone', when: 'Flash call 08:40' },
+  p15: { id: '#015', name: 'Sample adult', meta: 'about 60 y (estimated) · Male', code: '7306', via: 'msg', when: 'Text 07:55' },
+  p16: { id: '#016', name: 'Sample child', meta: '3 y · Female · New visit', code: '5190', via: 'phone', when: 'Flash call 09:02', urgent: true },
+};
+const strip = (key = 'p14') => {
+  const p = PATIENTS[key];
+  return `<div class="pstrip ${p.urgent ? 'is-urgent' : ''}"><div class="pmain"><b>${p.name}</b><span>${p.meta}</span></div><div class="pside">${p.urgent ? `<span class="tag inv">${icon('alert')}URGENT</span>` : ''}<span class="meta">${icon(p.via)}${p.when} · code ${p.code}</span></div></div>`;
+};
+
+// Sticky bottom bar: one primary action in the same place on every staff screen.
+const bar = (label, act = 'next', { secondary, hint, disabled } = {}) => `<div class="actionbar">${hint ? `<p class="barhint">${hint}</p>` : ''}<div class="barrow">${secondary ? `<button class="b sq" data-act="${secondary[1]}">${secondary[0]}</button>` : ''}<button class="b sq primary" data-act="${act}" ${disabled ? 'disabled' : ''}>${label}</button></div></div>`;
+
+// Single-choice segmented control; tapping toggles within the group.
+const seg = (id, label, options, selected, note = '') => `<fieldset class="seg" id="${id}"><legend>${label}${note ? ` <span class="req">${note}</span>` : ''}</legend><div class="segrow">${options.map(o => `<button type="button" data-seg aria-pressed="${o === selected}">${o}</button>`).join('')}</div></fieldset>`;
+
+const num = (id, label, value, unit, hint = '') => { const m = /^([\d.]+) to ([\d.]+)$/.exec(hint); return `<label class="nf" for="${id}"><span class="nfl">${label}</span><span class="nfin"><input id="${id}" inputmode="decimal" value="${value}" ${m ? `data-range="${m[1]},${m[2]}" data-unit="${unit}"` : ''}><span class="unit">${unit}</span></span>${hint ? `<span class="nfh">${hint}</span>` : ''}<span class="nfe" role="alert" hidden></span></label>`; };
+const txt = (id, label, value, hint = '', ph = '', attrs = '') => `<label class="nf" for="${id}"><span class="nfl">${label}</span><span class="nfin"><input id="${id}" value="${value}" placeholder="${ph}" ${attrs}></span>${hint ? `<span class="nfh">${hint}</span>` : ''}</label>`;
+const lookupHtml = (code) => {
+  const p = Object.values(PATIENTS).find(x => x.code === code.trim());
+  if (p) return `<button class="qrow" data-act="next"><span class="qmark">${icon(p.via)}</span><span class="qtext"><b>${p.name}, ${p.meta.split(' · ')[0]}</b><small>${p.when} · fever and TB symptoms reported</small></span>${icon('chev')}</button>`;
+  if (code.trim().length < 4) return `<p class="hint" style="text-align:left">Enter all 4 digits.</p>`;
+  return `<p class="unclear">${icon('alert')}No card for code ${code.trim()}. Check the digits with the patient.</p><button class="linkb" data-act="goto:clerk:4">No code? Register as a walk-in${icon('chev')}</button>`;
+};
+
+// Clinician record tabs: progress plus direct navigation.
+const CLIN_TABS = ['Card', 'Diagnoses', 'Malaria', 'Treatment', 'Outcome'];
+const ctabs = (cur) => `<nav class="tabs" aria-label="Record sections">${CLIN_TABS.map((t, i) => `<button data-act="goto:clinician:${i}" aria-current="${i === cur}" class="${i < cur ? 'done' : ''}">${i < cur ? icon('check') : ''}${t}</button>`).join('')}</nav>`;
+
+const REG_TABS = ['Register', 'Tally', 'Export', 'Send'];
+const rtabs = (cur) => `<div class="regbar"><div class="regtitle"><b>October 2026</b><span>Health centre OPD · ${icon('lock')}records assistant</span></div><nav class="tabs" aria-label="Register sections">${REG_TABS.map((t, i) => `<button data-act="goto:register:${i}" aria-current="${i === cur}">${t}</button>`).join('')}</nav></div>`;
+
+const QROWS = [
+  { tags: 'urgent ready', cls: 'is-urgent', ic: 'alert', name: 'Sample child, 3 y', sub: 'Danger sign reported by phone · coming today', tag: '<span class="tag inv">URGENT</span>', to: 'open' },
+  { tags: 'ready', ic: 'phone', name: 'Nakato A., 34 y', sub: 'Flash call · code 4821 · arrived 09:12', tag: '<span class="tag">Card ready</span>', to: 'open' },
+  { tags: 'ready', ic: 'msg', name: 'Sample adult, about 60 y', sub: 'Text · main problem unclear', tag: '<span class="tag dash">Ask</span>', to: 'goto:card:2' },
+  { tags: 'nocard', ic: 'clock', name: 'Walk-in, no code', sub: 'No consent given · register on paper', tag: '<span class="tag">No card</span>', to: 'goto:clerk:4' },
+];
+const QCHIPS = [['all', 'All', 4], ['urgent', 'Urgent', 1], ['ready', 'Has card', 3], ['nocard', 'No card', 1]];
+const queue = (o = {}) => {
+  const f = o.filter || 'all', open = o.open || 'next';
+  const row = (r) => o.readonly
+    ? `<div class="qrow ${r.cls || ''}" data-tags="${r.tags}"><span class="qmark">${icon(r.ic)}</span><span class="qtext"><b>${r.name}</b><small>${r.sub}</small></span>${r.tag}<span></span></div>`
+    : `<button class="qrow ${r.cls || ''}" data-tags="${r.tags}" data-act="${r.to === 'open' ? open : r.to}"><span class="qmark">${icon(r.ic)}</span><span class="qtext"><b>${r.name}</b><small>${r.sub}</small></span>${r.tag}${icon('chev')}</button>`;
+  return `<div class="segrow chiprow" data-qchips role="group" aria-label="Filter the queue">${QCHIPS.map(([k, l, n]) => `<button data-qf="${k}" aria-pressed="${k === f}">${l} ${n}</button>`).join('')}</div>
+  <div class="qlist" data-qlist>${QROWS.map(row).join('')}</div>
+  <p class="qempty" hidden>No patients match this filter.</p>
+  <p class="syncline">${icon('sync')}<span data-qshow>Showing 4 of 4</span> · 3 records waiting for signal</p>`;
+};
+
+function tally(rows, bands) {
+  return `<div class="tbl-wrap"><table class="tally"><thead><tr><th rowspan="2">Code</th><th rowspan="2">Label</th>${bands.map(b => `<th colspan="2" class="band">${b}</th>`).join('')}<th rowspan="2" class="tot">Total</th></tr><tr>${bands.map(() => '<th class="mf">M</th><th class="mf">F</th>').join('')}</tr></thead><tbody>${rows.map(([c, l, v]) => `<tr><td><code>${c}</code></td><td>${l}</td>${v.map((x, i) => `<td class="n ${i % 2 ? 'f' : ''} ${x === null ? 'na' : x ? '' : 'z'}">${x === null ? '–' : x}</td>`).join('')}<td class="n tot">${v.reduce((a, b) => a + (b || 0), 0)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+const OPD_BANDS = ['0 to 28 d', '29 d to 4 y', '5 to 9', '10 to 19', '20+'];
+const TALLY_PANELS = [
+  tally([['OA01', 'New attendance', [0,1,2,1,0,0,1,0,3,5]], ['OA02', 'Re-attendance', [0,0,1,0,0,0,0,1,2,2]], ['OR01', 'Referrals to unit', [0,0,0,0,0,0,0,0,1,1]], ['OR02', 'Referrals from unit', [0,0,1,0,0,0,0,0,0,0]], ['EP01a', 'Suspected fever', [0,0,2,1,0,1,0,0,1,3]], ['EP01c', 'Malaria confirmed', [0,0,1,1,0,0,0,0,1,2]], ['CD11', 'Cough or cold - No pneumonia', [0,1,0,0,1,0,0,0,1,1]], ['CD12', 'Pneumonia', [0,0,1,0,0,0,0,0,0,0]]], OPD_BANDS),
+  tally([['TP01', 'Screened: answered the four TB symptom questions', [0,0,0,0,1,0,1,1,3,4]], ['TP02', 'Presumptive TB (clinician tick)', [0,0,0,0,0,0,0,0,1,1]]], ['under 5', '5 to 9', '10 to 14', '15 to 19', '20+']),
+  tally([['NA01a', 'MUAC recorded', [0,0,0,1,0,0,0,0,0,0,0,0,0,0]], ['NA01b', 'Weight-for-height recorded', [0,0,0,0,0,0,0,0,0,0,0,0,0,0]]], ['0 to 5 mo', '6 to 23 mo', '24 to 59 mo', '5 to 9', '10 to 19', '20 to 24', '25+']) + '<p class="hint" style="text-align:left">The form also splits women into non-pregnant and pregnant or lactating. Not drawn here.</p>',
+  tally([['RB01', 'Alcohol', [null,null,null,null,0,0,0,1,2,1]], ['RB02', 'Tobacco', [null,null,null,null,0,0,0,0,1,0]], ['RB03', 'Second-hand smoke at home', [0,0,1,1,0,0,0,0,0,1]]], OPD_BANDS) + '<p class="hint" style="text-align:left">RB01 and RB02 are not asked for ages 0 to 4, so those cells show a dash.</p>',
+].map((h, i) => `<div data-tp="${i}" ${i ? 'hidden' : ''}>${h}</div>`).join('');
+
+// Patient card: flat, ruled sections, main problem first. Never "findings".
+const card = (opts = {}) => `
+  ${strip(opts.urgent ? 'p16' : 'p14')}
+  <div class="pcard">
+    <div class="pchead"><b>Patient reported</b><span>Not findings. Take your own history.</span></div>
+    ${opts.urgent ? `<div class="urgent">${icon('alert')}<span><b>Danger sign reported:</b> child not able to drink</span></div>` : ''}
+    <section class="pcs">
+      <h4>Main problem</h4>
+      <p class="mainp">Cough, fever</p>
+      <p class="subp">5 days · getting worse</p>
+      ${opts.unclear ? `<p class="unclear">${icon('alert')}Unclear, clinician to ask: chest pain</p>` : ''}
+      <details><summary>Patient’s own words (Luganda)</summary><div class="ph" style="height:52px"><span>Original transcript shown here</span></div></details>
+    </section>
+    <section class="pcs">
+      <h4>Reported flags</h4>
+      <div class="tagrow"><span class="tag">Fever reported</span><span class="tag">TB symptoms reported: clinician to assess</span></div>
+    </section>
+    <section class="pcs">
+      <h4>Answers</h4>
+      <dl class="ans">
+        <dt>Cough</dt><dd>Yes</dd>
+        <dt>Night sweats</dt><dd><span class="tag dash">Not sure</span></dd>
+        <dt>Weight loss</dt><dd>No</dd>
+        <dt>Medicine taken</dt><dd>Yes</dd>
+        <dt>Allergies</dt><dd><span class="tag dash">Ask clinician</span></dd>
+        <dt>Private matter</dt><dd><b>Wants to talk alone</b></dd>
+      </dl>
+    </section>
+    <details class="pcs"><summary>Registration details</summary>
+      <dl class="ans"><dt>Age</dt><dd>${opts.estimated ? 'about 60 y <span class="tag dash">estimated</span>' : '34 y (date of birth)'}</dd><dt>Sex</dt><dd>Female</dd><dt>Village, parish</dt><dd>Sample village, sample parish</dd><dt>Visit</dt><dd>New (OA01)</dd><dt>Referred in</dt><dd>No</dd></dl>
+    </details>
+  </div>`;
+
+const DX = [
+  ['1.3.1 Epidemic-prone diseases', [['EP01a', 'Suspected fever'], ['EP01c', 'Malaria confirmed (B/s and RDT Positive)'], ['EP05', 'Dysentery'], ['EP07', 'Measles'], ['EP15', 'Typhoid Fever']]],
+  ['1.3.2 Other infectious / communicable diseases', [['CD01', 'Diarrhoea - Acute'], ['CD07', 'Urinary Tract Infections (UTI)'], ['CD08', 'Intestinal Worms'], ['CD11', 'Cough or cold - No pneumonia'], ['CD12', 'Pneumonia'], ['CD14', 'Skin Diseases']]],
+];
+
+// ---------- flows ----------
+const FLOWS = [
+  // Patient screens: the patient's own basic phone (Path A), by flash call or text
+  { id: 'callstart', group: 'Patient screens', title: 'Flash call 1: call back, consent and safety', device: 'feature', mode: 'Patient’s own basic phone · flash call',
+    desc: 'The patient gives the clinic line a missed call, which costs nothing. The clinic line calls back and asks the question set by voice. The patient answers with the keypad, and speaks only where asked.',
+    steps: [
+      { t: 'Flash the clinic line', n: 'The patient rings the clinic line once and hangs up. A flash call (missed call) is free for the patient. Press End.', r: 'Path A · PRD section 6',
+        keys: { end: 'next' },
+        s: () => `<div class="dial"><span class="section-tag">Calling</span><b>[clinic line]</b><p class="hint">Ring once, then hang up.<br>The call is free.</p></div>` },
+      { t: 'The clinic line calls back', n: 'The clinic’s line calls back within a minute. Press Call to answer.', r: 'Path A · online voice line',
+        keys: { call: 'next' },
+        s: () => `<div class="dial"><span class="section-tag">Incoming call</span><b>TuWulira clinic</b><p class="hint">[clinic line]</p><div class="ph" style="width:100%;height:60px"><span>Ringing</span></div></div>` },
+      { t: 'Choose a language', n: 'Every question is a recorded voice prompt. Luganda audio is not recorded yet and needs a native speaker.', r: 's0_language · PR3 · D14',
+        keys: { 1: 'next', 2: 'next' },
+        s: () => call('00:04', 'Press 1 for Luganda. Press 2 for English.', '1 Luganda · 2 English') },
+      { t: 'Consent', n: 'Nothing is asked or recorded before a spoken yes. The yes is recorded. Press 2 to see what happens on a no.', r: 's0_consent · PR10 · RQ5.1',
+        keys: { 1: 'next', 2: 'goto:noconsent:0' },
+        s: () => call('00:11', 'Your answers go only to the clinic staff. May we ask you some questions and record one answer? Say yes, or press 1.', '1 Yes · 2 No', rec('Listening for “yes”')) },
+      { t: 'Who is the visit for?', n: 'Decides which danger-sign set is asked: newborn, child 2 months to 5 years, pregnancy, or adult.', r: 's1_who · s1_child_age · Component 3',
+        keys: { 1: 'next', 2: 'next' },
+        s: () => call('00:24', 'Is this visit for you, or for a child? Press 1 for you. Press 2 for a child.', '1 Me · 2 A child') },
+      { t: 'Pregnancy and breastfeeding', n: 'Asked one after the other. In the pregnancy set, Not sure also raises the urgent flag.', r: 's1_pregnant · PREG-BF · D22',
+        keys: YN,
+        s: () => call('00:31', 'Are you pregnant?', YN_TXT, '<p class="hint">Next: “Are you breastfeeding?” 1 Yes · 2 No · 3 Prefer not to say</p>') },
+      { t: 'Danger-sign questions', n: 'One yes/no question per sign, from rules/danger-signs.json. Rules, not AI. Press 1 to see the remote danger path.', r: 's2_danger · PR9 · D3 · RQ4.1',
+        keys: { 1: 'goto:danger:1', 2: 'next', 3: 'next', 0: 'next' },
+        s: () => call('00:40', 'Is the child not able to drink or breastfeed?', YN_TXT, '<p class="hint">Child set, 1 of 4. Newborn, pregnancy and adult sets: source still to add (RQ4.1).</p>') },
+    ] },
+  { id: 'callreg', group: 'Patient screens', title: 'Flash call 2: registration', device: 'feature', mode: 'Patient’s own basic phone · flash call',
+    desc: 'Register details the patient can answer, captured once by voice or keypad. They pre-fill HMIS 031 columns 2 to 5, 7, 8 and 11.',
+    steps: [
+      { t: 'Name (spoken)', n: 'Spoken after a beep. The clerk checks the spelling when the patient arrives. Press # when done.', r: 's3_name · HMIS 031 col 2',
+        keys: { '#': 'next' },
+        s: () => call('00:58', 'After the beep, say your name. Press hash when you are done.', '# Done', rec('Recording')) },
+      { t: 'Village and parish (spoken)', n: 'Same pattern. Audio goes to the clinic device and is transcribed there.', r: 's3_village · HMIS 031 col 3 to 5',
+        keys: { '#': 'next' },
+        s: () => call('01:09', 'After the beep, say your village and parish. Press hash when you are done.', '# Done', rec('Recording')) },
+      { t: 'Date of birth', n: 'Typed on the keypad. The system works out every HMIS 105 age band. Press * for “I do not know”.', r: 'REG-DOB · PR20 · D16',
+        keys: { '#': 'next', '*': 'next' },
+        s: () => call('01:20', 'Enter the date of birth: day, month, then year. Press hash when done. Press star if you do not know.', '# Done · * Don’t know', '<div class="bigcode" style="font-size:20px;letter-spacing:.12em">12 03 1992</div>') },
+      { t: 'Estimated age', n: 'Only after star. The age is marked “estimated” on the card and in the export.', r: 'REG-AGE-EST · PR20',
+        keys: { 1: 'next', 2: 'next', 3: 'next' },
+        s: () => call('01:31', 'About how old? Enter the number, then press 1 for days, 2 for months, or 3 for years.', '60, then 3 for years', '<p class="hint">Baby under 2 months: “How many days old?” (REG-NEWBORN)</p>') },
+      { t: 'Sex and next of kin', n: 'Keypad for sex; next of kin name and phone are spoken.', r: 's3_sex · s3_next_of_kin · HMIS 031 col 3 to 5, 7',
+        keys: { 1: 'next', 2: 'next' },
+        s: () => call('01:44', 'Press 1 for female. Press 2 for male.', '1 Female · 2 Male', '<p class="hint">Next: “After the beep, say who we should contact and their phone number.”</p>') },
+      { t: 'Repeat visit and referral in', n: 'Feeds OA01/OA02 and OR01. A Yes on referral prompts the clerk for the note number at the desk.', r: 's3_repeat · s3_referral · REG-REFIN · D18',
+        keys: YN,
+        s: () => call('02:02', 'Have you been to this clinic before for this problem?', YN_TXT, '<p class="hint">Next: “Did a health worker send you here?”</p>') },
+    ] },
+  { id: 'callproblem', group: 'Patient screens', title: 'Flash call 3: the problem', device: 'feature', mode: 'Patient’s own basic phone · flash call',
+    desc: 'One spoken answer for the main problem, keypad answers for the rest, private questions on the keypad only, a read-back, then a visit code to show at the desk.',
+    steps: [
+      { t: 'Main problem (spoken)', n: 'The one free answer. The recording goes to the clinic device, where on-device speech-to-text transcribes it with a confidence score.', r: 's4_main · Component 4 · PR3',
+        keys: { '#': 'next' },
+        s: () => call('02:15', 'After the beep, tell us in your own words what brings you to the clinic. Press hash when you are done.', '# Done', rec('Recording 00:18')) },
+      { t: 'Duration and trend', n: 'Number on the keypad, then a three-way choice.', r: 's5_duration · s5_trend',
+        keys: { 1: 'next', 2: 'next', 3: 'next' },
+        s: () => call('02:41', 'Is it getting better, worse, or staying the same? Press 1 better, 2 worse, 3 the same.', '1 Better · 2 Worse · 3 Same', '<p class="hint">Already answered: 5 days (typed, then #)</p>') },
+      { t: 'Fever and TB symptom screen', n: 'Fever puts “fever reported” on the card. Any TB Yes puts “TB symptoms reported: clinician to assess”. Wording still to check against national TB guidance.', r: 'SYM-FEVER · TB-1 to TB-4 · PR21 · D19 · D21',
+        keys: YN,
+        s: () => call('02:55', 'Do you sweat a lot at night?', YN_TXT, '<p class="hint">Answered: fever Yes · cough Yes. TB 3 of 4.</p>') },
+      { t: 'Private questions (keypad only)', n: 'The patient hears the question in their ear and answers on the keypad, so nobody nearby hears the answer. “Prefer not to say” is always there. Not asked for ages 0 to 4.', r: 's6_* · RB-ALC · RB-TOB · RB-EXP · PR15 · D23',
+        keys: { 1: 'next', 2: 'next', 3: 'next' },
+        s: () => call('03:10', 'The next questions are private. Answer only with the keypad. Do not say your answer out loud. Do you drink alcohol?', '1 Yes · 2 No · 3 Prefer not to say') },
+      { t: 'Read-back', n: 'The patient hears what was noted and confirms or changes it. Press 2 to go back to the main problem.', r: 's7_readback · Component 1',
+        keys: { 1: 'next', 2: 'goto:callproblem:0' },
+        s: () => call('03:52', 'Here is what we noted: cough and fever, for 5 days, getting worse. Press 1 if this is correct. Press 2 to change it.', '1 Correct · 2 Change') },
+      { t: 'Visit code', n: 'On a call the code is spoken, not texted. Press End, then see the clerk use the code.', r: 'Visit code · D30 · PRD section 7',
+        keys: { 9: 'none', end: 'goto:clerk:0' },
+        s: () => call('04:05', 'Thank you. Your visit code is 4, 8, 2, 1. Show it at the clinic desk. Press 9 to hear it again.', '9 Repeat · End to finish', '<div class="bigcode">4821</div>') },
+    ] },
+  { id: 'text', group: 'Patient screens', title: 'Text (SMS) intake', device: 'feature', mode: 'Patient’s own basic phone · text (SMS)',
+    desc: 'The same question set by text. The patient replies with numbers, or writes the main problem in their own words. Every message stays in the phone’s inbox, so the wording is kept neutral.',
+    steps: [
+      { t: 'Patient texts the clinic', n: 'The patient sends any message to the clinic’s number. Press OK to send.', r: 'Path A · SMS gateway',
+        keys: { ok: 'next' },
+        s: () => sms([], 'To [clinic number]: HI', 'OK to send') },
+      { t: 'Language', n: 'Replies are single numbers so they work on any phone.', r: 's0_language · PR3',
+        keys: { 1: 'next', 2: 'next' },
+        s: () => sms([['out', 'HI'], ['in', 'TuWulira, [Clinic name]. Reply 1 for Luganda, 2 for English.']]) },
+      { t: 'Consent and privacy', n: 'Uses the agreed privacy wording (D7). Reply 2 to see the no-consent path.', r: 's0_consent · PR10 · D7',
+        keys: { 1: 'next', 2: 'goto:noconsent:0' },
+        s: () => sms([['out', '1'], ['in', 'Your answers go only to the clinic staff. Please delete these messages from your phone if you are worried about privacy. May we ask you some questions? 1 Yes, 2 No']]) },
+      { t: 'Who, then danger signs', n: 'Danger signs are rules, not AI. Reply 1 to see the remote danger path.', r: 's1_who · s2_danger · PR9',
+        keys: { 1: 'goto:danger:1', 2: 'next', 3: 'next', 0: 'next' },
+        s: () => sms([['out', '1'], ['in', 'Is this visit for you or a child? 1 Me, 2 Child'], ['out', '2'], ['in', 'Is the child not able to drink or breastfeed? 1 Yes, 2 No, 3 Not sure, 0 Ask clinician']]) },
+      { t: 'Registration', n: 'Name as text; date of birth as numbers, or 0 if unknown (then an estimate is asked and marked “estimated”).', r: 's3_* · REG-DOB · PR20',
+        keys: { 1: 'next', 2: 'next' },
+        s: () => sms([['in', 'What is the patient’s name?'], ['out', 'Nakato A.'], ['in', 'Date of birth as DD MM YYYY. Reply 0 if you do not know.'], ['out', '12 03 1992'], ['in', '1 Female, 2 Male']]) },
+      { t: 'Main problem in their own words', n: 'Written in Luganda or English. No speech step here: the understanding model maps the text to the fixed symptom list, and the original text stays under it on the card.', r: 's4_main · Component 5 · PR5',
+        keys: { ok: 'next' },
+        s: () => sms([['out', '1'], ['in', 'In your own words, what brings you to the clinic? You can write in Luganda or English.'], ['out', '[patient’s own words, Luganda]']], 'Reply sent', 'OK') },
+      { t: 'Follow-ups and TB screen', n: 'Number replies only. Fever and TB answers create the same patient-reported flags as the call.', r: 's5_* · TB-1 to TB-4 · PR21',
+        keys: YN,
+        s: () => sms([['in', 'How many days? Reply with a number.'], ['out', '5'], ['in', 'Do you sweat a lot at night? 1 Yes, 2 No, 3 Not sure, 0 Ask clinician']]) },
+      { t: 'Private questions stay off text', n: 'Alcohol, tobacco, medicines and private matters are never asked by SMS, because the thread stays on a shared phone. The clinician asks in person.', r: 'PR15 · RQ5.2 · D29',
+        keys: { ok: 'next' },
+        s: () => sms([['out', '1'], ['in', 'Some questions are private, so we will not ask them by text. The clinician will ask you in person.']], 'OK to continue', 'OK') },
+      { t: 'Visit code', n: 'Ends with the code and the privacy line. The visit code is the one exception PR12 allows: it carries no health information.', r: 'PR12 · D7 · D30',
+        keys: { ok: 'goto:clerk:0', end: 'goto:clerk:0' },
+        s: () => sms([['in', 'Thank you. Your visit code is 4821. Show it at [Clinic name]. Please delete these messages from your phone if you are worried about privacy.']], 'OK, then see the clerk', 'OK') },
+    ] },
+  { id: 'danger', group: 'Patient screens', title: 'Danger sign (remote)', device: 'feature', mode: 'Patient’s own basic phone · flash call or text',
+    desc: 'Decision D4. A danger-sign Yes tells the patient to come in today, then asks permission before the clinic is told or sees any answers. The SMS says only the clinic’s name.',
+    steps: [
+      { t: 'Danger-sign question', n: 'Rule-based. Checked before, and independently of, any AI confidence.', r: 'PR9 · D3',
+        keys: { 1: 'next' },
+        s: () => call('00:44', 'Does the child vomit everything?', YN_TXT) },
+      { t: 'Come in today, then permission', n: 'The patient decides whether the clinic is told now. Yes: alert and card shared. No: nothing shared.', r: 'D4 · PR9',
+        keys: { 1: 'next', 2: 'next' },
+        s: () => call('00:47', 'Please come to the clinic today. May we tell the clinic now and share your answers? Press 1 for yes. Press 2 for no.', '1 Yes, tell the clinic · 2 No') },
+      { t: 'SMS: clinic name only', n: 'No address, no symptoms, no word like “urgent”, because household phones are shared.', r: 'D4 · PR12 · RQ5.2',
+        keys: { ok: 'next' },
+        s: () => sms([['in', '[Clinic name]: please come in today.']], 'OK', 'OK') },
+      { t: 'Clinic sees the alert', n: 'Only after a yes. The alert reaches the triage desk device and the patient goes to the top of the queue.', r: 'Component 7 · D5', device: 'phone', mode: 'Clinic Android · staff mode',
+        s: () => `${staffTop('Triage nurse')}<div class="urgent"><span class="tag">REMOTE ALERT</span>#016 danger sign reported by phone, coming in today</div>${queue({ readonly: true })}` },
+    ] },
+  { id: 'notsure', group: 'Patient screens', title: 'Not sure: ask a person', device: 'feature', mode: 'Patient’s own basic phone · flash call',
+    desc: 'When speech-to-text understands nothing (silence, a crying child, noise) the tool asks once more, then hands over to a person. It never guesses.',
+    steps: [
+      { t: 'Recording with no speech', n: 'Silence, crying or noise gives an empty transcript or very low confidence.', r: 'PR8 · RQ4.4',
+        keys: { '#': 'next' },
+        s: () => call('02:15', 'After the beep, tell us in your own words what brings you to the clinic. Press hash when you are done.', '# Done', rec('Only background noise heard')) },
+      { t: 'Ask once more', n: 'One retry only (retryOnLowConfidence: 1).', r: 'Component 4',
+        keys: { '#': 'next' },
+        s: () => call('02:40', 'Sorry, we did not hear you. Please try once more after the beep.', '# Done', rec('Recording')) },
+      { t: 'Not sure. A person will ask.', n: 'Nothing from that answer is saved. The card shows “unclear, clinician to ask”, and the call continues with keypad questions.', r: 'PR6 · PR8 · Brief 09 fail-safe',
+        keys: { 1: 'goto:callproblem:1' },
+        s: () => call('03:01', 'We are not sure we understood. A person at the clinic will ask you about this. Press 1 to continue.', '1 Continue', '<div class="check" style="border-radius:8px;padding:6px 8px;font-size:12px">Card: <b>Main problem: unclear, clinician to ask</b></div>') },
+    ] },
+  { id: 'noconsent', group: 'Patient screens', title: 'No consent', device: 'feature', mode: 'Patient’s own basic phone · flash call',
+    desc: 'If the patient says no, nothing is recorded. They can still come to the clinic and register on paper.',
+    steps: [
+      { t: 'Consent declined', n: 'No recording, no card, no SMS. Press End.', r: 'end_no_consent · PR10',
+        keys: { end: 'next' },
+        s: () => call('00:16', 'That is fine. You can still come to the clinic. Goodbye.', 'End') },
+      { t: 'Staff see a walk-in with no code', n: 'The patient arrives without a visit code, so staff register them by hand.', r: 'Component 7', device: 'phone', mode: 'Clinic Android · staff mode',
+        s: () => `${staffTop('Clerk')}${queue({ readonly: true })}` },
+    ] },
+
+  // Patient card
+  { id: 'card', group: 'Patient card', title: 'Patient card', device: 'phone', mode: 'Clinic Android · staff mode',
+    desc: 'What the clinician reads in seconds. Headed “Patient reported”, never findings. Main problem first, not-sure answers marked, registration tucked away.',
+    steps: [
+      { t: 'Card in the queue', n: 'Cards arrive as patients finish the call or text. Urgent first, then arrival order. Filter chips narrow the list.', r: 'Component 6, 7',
+        s: () => `${staffTop('Clinician')}${queue()}` },
+      { t: 'Full card', n: 'Reading order: who, urgent flag, main problem, reported flags, answers. The original Luganda sits one tap away. Registration is collapsed because the clerk owns it. The nurse taps Enter measurements; the clinician taps Start consultation.', r: 'Component 6 · PR4 · PR21',
+        s: () => `${staffTop('Clinician')}${card()}${bar('Start consultation', 'goto:clinician:0', { secondary: ['Enter measurements', 'goto:nurse:1'] })}` },
+      { t: 'Card with unclear and estimated items', n: 'Low-confidence items read “unclear, clinician to ask”. An estimated age is marked, never shown as exact. Open “Registration details” to see it.', r: 'PR6 · PR20',
+        s: () => `${staffTop('Clinician')}${card({ unclear: true, estimated: true })}${bar('Start consultation', 'goto:clinician:0', { secondary: ['Enter measurements', 'goto:nurse:1'] })}` },
+    ] },
+
+  // Staff screen
+  { id: 'signin', group: 'Staff screen', title: 'Staff sign-in and queue', device: 'phone', mode: 'Clinic Android · staff mode',
+    desc: 'Records sit behind a staff PIN. The queue sorts urgent patients first, then by arrival time, and shows how each patient came in.',
+    steps: [
+      { t: 'Staff PIN', n: 'Data is stored encrypted on the device. The PIN protects it if the device is lost. Tap any four digits.', r: 'PR17 · Component 9',
+        s: () => `<div class="pinwrap"><p class="pintitle">Enter staff PIN</p><div class="dots" aria-label="PIN digits entered"><i></i><i></i><i></i><i></i></div><div class="pin">${[1,2,3,4,5,6,7,8,9].map(k => `<button data-pin="${k}">${k}</button>`).join('')}<span></span><button data-pin="0">0</button><button data-pin="del" aria-label="Delete last digit">${icon('x')}</button></div><p class="hint">Tap any four digits. Locks again after 2 minutes without use.</p></div>` },
+      { t: 'Queue', n: 'One list for every role. Each row shows the channel (call, text, walk-in), the card state, and a chevron that opens the record.', r: 'Component 7',
+        s: () => `${staffTop('All staff')}${queue({ open: 'goto:card:1' })}` },
+    ] },
+  { id: 'clerk', group: 'Staff screen', title: 'Clerk', device: 'phone', mode: 'Clinic Android · staff mode',
+    desc: 'The clerk finds the card from the visit code, fixes the name spelling, sets the report type, and adds the referral note number. The patient is never asked about origin or status.',
+    steps: [
+      { t: 'Find the card by visit code', n: 'The 4-digit code from the call or text opens the patient-reported card. A walk-in without a code is registered on paper.', r: 'PRD section 7 · Path A',
+        s: () => `${staffTop('Clerk')}<h3 class="sh">Find a card</h3>${txt('code', 'Visit code', '4821', '4 digits, spoken on the call or sent in the closing text. Try 7306 or 0000.', '', 'data-lookup inputmode="numeric" maxlength="4"')}<div id="lookup" aria-live="polite">${lookupHtml('4821')}</div>${bar('Open record')}` },
+      { t: 'Check the name spelling', n: 'The name was spoken. Play it back, then type the spelling the patient confirms.', r: 's3_name · HMIS 031 col 2',
+        s: () => `${staffTop('Clerk')}${strip()}<h3 class="sh">Name</h3><div class="heard"><button class="b sq iconb" data-play>${icon('play')}<span>Play recording</span></button><span>Heard: “Nakato A…”</span></div>${txt('name', 'Spelling', 'Nakato A.', 'Confirm with the patient')}${bar('Save name')}` },
+      { t: 'Report type', n: 'Required before the record closes. Entered by the clerk only, so the patient is never asked about origin or status.', r: 'PR22 · D17',
+        s: () => `${staffTop('Clerk')}${strip()}${seg('rtype', 'Report type', ['National', 'Refugee', 'Foreigner'], 'National', 'Required')}${bar('Save report type')}` },
+      { t: 'Referral note number', n: 'Shown only because the patient said a health worker sent them.', r: 'REG-REFIN · OR01 · D18',
+        s: () => `${staffTop('Clerk')}${strip()}<p class="reported">Patient reported: sent here by a health worker</p>${txt('refin', 'Referral note number', 'RN-0457')}${bar('Save and back to queue', 'goto:signin:1')}` },
+      { t: 'Walk-in without a code', n: 'No call or text on file, or the code did not match. Register on paper. In-clinic intake on this device (the Path B fallback) is not drawn in this wireframe.', r: 'PRD section 6 · D31',
+        s: () => `${staffTop('Clerk')}<h3 class="sh">Walk-in without a code</h3><p class="reported">No card on file. The patient did not give consent, or has no code.</p><button class="b sq" data-act="toast:In-clinic intake on this device is not drawn in this wireframe.">Start in-clinic intake on this device</button>${bar('Register on paper, back to queue', 'goto:signin:1')}` },
+    ] },
+  { id: 'nurse', group: 'Staff screen', title: 'Nurse', device: 'phone', mode: 'Clinic Android · staff mode',
+    desc: 'The nurse sees urgent patients first and enters measurements. The tool records them; it never assigns a malnutrition category.',
+    steps: [
+      { t: 'Urgent first', n: 'The urgent child sits at the top. Open it.', r: 'Component 7 · PR9',
+        s: () => `${staffTop('Triage nurse')}${queue({ filter: 'urgent' })}` },
+      { t: 'Weight and temperature', n: 'Typed with the number keypad. Each field shows its unit and the range the form accepts; a value outside it is refused, not guessed.', r: 'PR7 · HMIS 031 col 6 · field schema',
+        s: () => `${staffTop('Triage nurse')}${strip('p16')}<div class="urgent">${icon('alert')}<span><b>Danger sign reported:</b> child not able to drink</span></div><div class="nfgrid">${num('wt', 'Weight', '13.4', 'kg', '0.5 to 250')}${num('temp', 'Temperature', '38.6', '°C', '30 to 45')}</div><button class="linkb" data-act="goto:scribe:0">${icon('mic')}Dictate instead</button>${bar('Next: under-5 measures')}` },
+      { t: 'Under-5 measures', n: 'Height or length and MUAC for children under 5. The nurse picks the category; the tool offers no suggestion.', r: 'D22 · NA01a · NA01b',
+        s: () => `${staffTop('Triage nurse')}${strip('p16')}<div class="nfgrid">${num('len', 'Height or length', '94', 'cm')}${num('muac', 'MUAC', '13.1', 'cm')}</div><label class="nf" for="mcat"><span class="nfl">Malnutrition category</span><select id="mcat"><option>Select, nurse decides</option><option>Categories from the national guideline (to add)</option></select><span class="nfh">TuWulira records the measurement only.</span></label>${bar('Save and back to queue', 'goto:signin:1')}` },
+    ] },
+  { id: 'clinician', group: 'Staff screen', title: 'Clinician', device: 'phone', mode: 'Clinic Android · staff mode',
+    desc: 'Five tabs walk the clinician through the record: card, diagnoses, malaria, treatment, outcome. Tabs show progress and jump straight to any section. The AI suggests none of these entries.',
+    steps: [
+      { t: 'Card beside your own history', n: 'The card summary sits above the clinician’s own notes, not instead of them. Open the full card or dictate from here.', r: 'PR4 · RQ2.4',
+        s: () => `${staffTop('Clinician')}${strip()}${ctabs(0)}<div class="mini"><span class="minih">Patient reported</span><b>Cough, fever · 5 days · worse</b><div class="tagrow"><span class="tag">Fever reported</span><span class="tag">TB symptoms reported</span></div><button class="linkb" data-act="goto:card:1">Open full card${icon('chev')}</button></div><label class="nf" for="hist"><span class="nfl">Your history and examination</span><textarea id="hist" rows="4" placeholder="Your own questions and findings"></textarea></label><button class="linkb" data-act="goto:scribe:0">${icon('mic')}Dictate the encounter</button>${bar('Next: Diagnoses')}` },
+      { t: 'Diagnoses', n: 'Search the HMIS 105 section 1.3 list as printed (Sept 2019). Tick every diagnosis; each becomes its own register line. Try typing “pneu”.', r: 'PR7 · D15 · D20',
+        s: () => `${staffTop('Clinician')}${strip()}${ctabs(1)}<label class="search" for="dxsearch">${icon('search')}<input id="dxsearch" placeholder="Search diagnoses or codes" data-filter=".dxrow"></label><p class="count" data-count=".dxrow input">2 selected · 2 register lines</p><div class="dxlist">${DX.map(([h, items]) => `<h5>${h}</h5>${items.map(([c, l]) => `<label class="dxrow check-row"><input type="checkbox" ${['EP01a', 'EP01c'].includes(c) ? 'checked' : ''}><code>${c}</code><span>${l}</span></label>`).join('')}`).join('')}</div>${bar('Next: Malaria')}` },
+      { t: 'Malaria', n: 'Shown because fever was reported and a malaria diagnosis is ticked. Tap to change any choice.', r: 'D19 · EP01b to EP01d',
+        s: () => `${staffTop('Clinician')}${strip()}${ctabs(2)}<p class="reported">Fever reported · Malaria confirmed ticked</p>${seg('mtest', 'Test done', ['RDT', 'Blood slide', 'None'], 'RDT')}${seg('mres', 'Result', ['Positive', 'Negative'], 'Positive')}<label class="check-row big"><input type="checkbox" checked><span>Treated for malaria</span></label>${bar('Next: Treatment')}` },
+      { t: 'TB, treatment and referral out', n: 'Presumptive TB is the clinician’s decision, separate from the intake flag. The total updates as you type units, doses and days.', r: 'TP02 · PR7 · HMIS 031 col 10, 12',
+        s: () => `${staffTop('Clinician')}${strip()}${ctabs(3)}<label class="check-row big"><input type="checkbox"><span>Presumptive TB<small>Your decision. The intake flag only says symptoms were reported.</small></span></label>${txt('med', 'Medicine', '', '', 'Type the medicine')}<div class="nfgrid three" data-calc>${num('units', 'Units', '4', '')}${num('doses', 'Doses / day', '2', '')}${num('days', 'Days', '3', '')}</div><p class="count" data-total>Total: 24 units</p>${txt('refout', 'Referral-out number', '', 'Leave empty if not referred')}${bar('Next: Outcome')}` },
+      { t: 'Outcome', n: 'Feeds DT01 when the outcome is died. Gender-based violence and self-harm rows are recorded here by the clinician only; the tool never asks.', r: 'D24 · D26 · DT01',
+        s: () => `${staffTop('Clinician')}${strip()}${ctabs(4)}<fieldset class="radios"><legend>Visit outcome</legend>${['Went home', 'Referred out', 'Admitted', 'Died'].map((o, i) => `<label class="check-row big"><input type="radio" name="outcome" data-outcome="${o}" ${i === 0 ? 'checked' : ''}><span>${o}</span></label>`).join('')}</fieldset><p class="reported" id="diedwarn" hidden>${icon('alert')}You are recording a death (DT01). Check it before you close the visit.</p><details class="sens"><summary>Record a sensitive HMIS 105 row</summary><p class="hint" style="text-align:left">Clinician only. TuWulira never asks the patient.</p><label class="check-row"><input type="checkbox"><span>Gender-based violence rows (CD05, MH02, IN03, MC01)</span></label><label class="check-row"><input type="checkbox"><span>Attempted self-harm (NE21)</span></label></details>${bar('Review and close', 'next')}` },
+      { t: 'Review before closing', n: 'One last look at what will be written to the register. Nothing is saved until Close visit.', r: 'PR18 · PR6',
+        s: () => `${staffTop('Clinician')}${strip()}<h3 class="sh">Review before closing</h3><dl class="ans"><dt>Diagnoses</dt><dd>EP01a Suspected fever<br>EP01c Malaria confirmed</dd><dt>Malaria</dt><dd>RDT · Positive · Treated</dd><dt>Treatment</dt><dd>4 × 2 × 3 days</dd><dt>Referral out</dt><dd>None</dd><dt>Outcome</dt><dd>Went home</dd></dl><p class="reported">${icon('lock')}Voice clips for this visit are deleted when you close it.</p>${bar('Close visit #014', 'next', { secondary: ['Edit', 'goto:clinician:1'] })}` },
+      { t: 'Visit closed', n: 'Register row and tally update straight away. Totals wait on the device until there is signal.', r: 'PR17 · PR18 · PR11',
+        s: () => `${staffTop('Clinician')}<div class="done"><span class="donei">${icon('check')}</span><h3 class="sh">Visit #014 closed</h3></div><ul class="status"><li>${icon('check')}Register updated: 2 diagnosis lines</li><li>${icon('check')}Voice clips deleted</li><li>${icon('clock')}Totals waiting for signal</li></ul>${bar('Next patient', 'goto:signin:1', { secondary: ['View register', 'goto:register:0'] })}` },
+    ] },
+
+  // Scribe
+  { id: 'scribe', group: 'Scribe screen', title: 'Clinician dictation (scribe)', device: 'phone', mode: 'Clinic Android · staff mode',
+    desc: 'The clinician speaks the encounter. The scribe drafts only register fields from fixed lists or ranges, links each one to the words it came from, and blocks save until flagged fields are confirmed.',
+    steps: [
+      { t: 'Open scribe', n: 'Opened from the record. The screen says up front what it can and cannot draft.', r: 'Component 11 · PR19',
+        s: () => `${staffTop('Clinician · Scribe')}${strip()}<div class="scope"><div><h5>${icon('check')}Can draft</h5><p>Visit type, weight, temperature, referral yes or no</p></div><div><h5>${icon('lock')}Never drafts</h5><p>Diagnosis, treatment, outcome</p></div></div><div class="micwrap"><button class="micb" data-act="next">${icon('mic')}<span>Tap to start</span></button><p class="hint">Works offline. Recording is deleted when the visit closes.</p></div>` },
+      { t: 'Dictating', n: 'Same on-device speech model as intake. The transcript fills in as you speak.', r: 'Component 4, 11',
+        s: () => `${staffTop('Clinician · Scribe')}${strip()}<div class="micwrap"><button class="micb on" data-act="next">${icon('mic')}<span>00:14 · Tap to stop</span></button></div><div class="transcript"><h5>Live transcript</h5><p>“New patient, weight sixty one, temperature thirty eight point five, not referred…”</p></div>${bar('Stop and draft fields')}` },
+      { t: 'Drafted fields', n: 'Each field shows the words it came from (numbered underline). One field is below the confidence threshold, so Save stays off until it is checked. Tap the flagged field to check it. Tap any other field to edit it.', r: 'PR5 · PR6 · D2',
+        s: () => `${staffTop('Clinician · Scribe')}${strip()}<div class="transcript"><h5>Transcript</h5><p>“<mark data-n="1">New patient</mark>, <mark data-n="2">weight sixty one</mark>, <mark data-n="3" class="low">temperature thirty eight point five</mark>, <mark data-n="4">not referred</mark>.”</p></div><p class="count">4 drafted · <b>1 to check</b></p><div class="frows">${frow(1, 'Visit', 'New (OA01)', 'ok')}${frow(2, 'Weight', '61 kg', 'ok')}${frow(3, 'Temperature', '38.5 °C', 'check')}${frow(4, 'Referral', 'None', 'ok')}</div>${bar('Save fields', 'next', { disabled: true, hint: 'Check 1 field to save' })}` },
+      { t: 'Check the flagged field', n: 'The flagged field opens in place with what was heard. Confirm it or type the right value.', r: 'PR6 · PR19',
+        s: () => `${staffTop('Clinician · Scribe')}${strip()}<div class="frows">${frow(1, 'Visit', 'New (OA01)', 'ok')}${frow(2, 'Weight', '61 kg', 'ok')}<div class="frow open"><div class="frtop"><sup>3</sup><span class="frl">Temperature</span><span class="tag dash">Check</span></div><p class="hint" style="text-align:left">Heard: “thirty eight point five” · low confidence</p><div class="nfgrid">${num('tconf', 'Value', '38.5', '°C', '30 to 45')}</div><p class="nfe" id="tconf-need" role="alert" hidden>Enter a temperature, or ask the patient again.</p><div class="barrow"><button class="b sq" data-clear="tconf">Clear value</button><button class="b sq primary" data-act="next" data-needs="tconf">${icon('check')}Confirm</button></div></div>${frow(4, 'Referral', 'None', 'ok')}</div>` },
+      { t: 'Saved', n: 'All drafted fields confirmed. Diagnosis and treatment still come from the clinician tabs.', r: 'PR19',
+        s: () => `${staffTop('Clinician · Scribe')}${strip()}<div class="frows">${frow(1, 'Visit', 'New (OA01)', 'conf')}${frow(2, 'Weight', '61 kg', 'conf')}${frow(3, 'Temperature', '38.5 °C', 'conf')}${frow(4, 'Referral', 'None', 'conf')}</div><p class="reported">${icon('check')}4 fields saved on this device</p>${bar('Back to Diagnoses', 'goto:clinician:1')}` },
+    ] },
+
+  // Register and tally
+  { id: 'register', group: 'Register and tally', title: 'Register and tally', device: 'tablet', mode: 'Clinic Android · staff mode (landscape)',
+    desc: 'Answers pre-fill the OPD register (HMIS 031, 2010 version). The tally builds HMIS 105 (Sept 2019) section 1 totals by age band and sex. Only totals leave the clinic. Tabs move between the four views.',
+    steps: [
+      { t: 'OPD register (HMIS 031)', n: 'Shaded cells came from the patient card; plain cells were entered by staff. Extra diagnoses sit on continuation lines. Column numbers are working values.', r: 'PR18 · D6 · D20 · D28',
+        s: () => `${rtabs(0)}<div class="regtools"><label class="search" for="regsearch">${icon('search')}<input id="regsearch" placeholder="Search name or code" data-filter=".regrow"></label><div class="legend"><span><i class="sw p"></i>From patient card</span><span><i class="sw"></i>From staff</span></div></div><div class="tbl-wrap"><table class="reg"><thead><tr><th>1 No.</th><th>2 Name</th><th>3 to 5 Village · Age · Sex</th><th>6 Wt / Temp</th><th>7 Next of kin</th><th>8 Visit</th><th>9 Diagnosis</th><th>10 Treatment</th><th>11 Ref in</th><th>12 Ref out</th></tr></thead><tbody>
+          <tr class="regrow"><td>014</td><td class="p">Nakato A.</td><td class="p">Sample · 34 · F</td><td>61 / 38.5</td><td class="p">Sample contact</td><td class="p">New</td><td>EP01a Suspected fever</td><td>4 × 2 × 3</td><td class="p">RN-0457</td><td></td></tr>
+          <tr class="regrow cont"><td></td><td colspan="5" class="contl">${icon('cont')}Continuation line, #014 Nakato A.</td><td>EP01c Malaria confirmed</td><td></td><td></td><td></td></tr>
+          <tr class="regrow"><td>015</td><td class="p">Sample adult</td><td class="p">Sample · about 60 <span class="tag dash">est.</span> · M</td><td>70 / 37.0</td><td class="p">Sample contact</td><td class="p">Re</td><td>CD11 Cough or cold</td><td>Typed</td><td class="p"></td><td></td></tr>
+          <tr class="regrow"><td>016</td><td class="p">Sample child</td><td class="p">Sample · 3 · F</td><td>13.4 / 38.6</td><td class="p">Sample contact</td><td class="p">New</td><td>CD12 Pneumonia</td><td>Typed</td><td class="p"></td><td>RO-0021</td></tr>
+        </tbody></table></div>${bar('Open tally', 'next', { secondary: ['Export CSV', 'toast:Saved to this device. Sample only, no real file.'] })}` },
+      { t: 'Monthly tally (HMIS 105 section 1)', n: 'Codes as printed on the form, each age band split by sex, with a row total. The chips switch between 1.1 to 1.3 OPD, 1.4 TB, 1.5 Nutrition and risky behaviours, which use different age bands.', r: 'D15 · PR20 · OA01 · OR01 · EP01a',
+        s: () => `${rtabs(1)}<div class="segrow chiprow" role="group" aria-label="Tally section">${['1.1 to 1.3 OPD', '1.4 TB', '1.5 Nutrition', 'Risky behaviours'].map((c, i) => `<button data-tpbtn="${i}" aria-pressed="${i === 0}">${c}</button>`).join('')}</div>${TALLY_PANELS}<p class="hint" style="text-align:left">Sample counts (synthetic). Totals that include an estimated age are marked in the export.</p>${bar('Prepare export', 'next', { secondary: ['Back to register', 'prev'] })}` },
+      { t: 'Export totals for DHIS2', n: 'Totals only: one row per HMIS 105 code × age band × sex. Names and patient rows never leave the clinic.', r: 'PR13 · D27 · Component 10',
+        s: () => `${rtabs(2)}<div class="split"><div class="list"><h3 class="sh">File preview</h3><pre class="code">dataElement,ageBand,sex,value,estimated
+OA01,29d-4y,F,1,0
+OA01,20+,F,5,0
+OA01,20+,M,3,1
+OR01,20+,F,1,0
+EP01a,5-9,M,2,0
+EP01c,20+,F,2,0
+CD12,5-9,M,1,0</pre></div><div class="list"><h3 class="sh">What leaves the clinic</h3><ul class="status"><li>${icon('check')}Totals by code, age band and sex</li><li>${icon('check')}“Estimated” marker on affected totals</li><li class="no">${icon('x')}Names</li><li class="no">${icon('x')}Patient rows or answers</li><li class="no">${icon('x')}Voice recordings</li></ul></div></div>${bar('Queue for sending', 'next', { secondary: ['Save file', 'toast:Saved to this device. Sample only, no real file.'] })}` },
+      { t: 'Send when there is signal', n: 'Store and forward: exports wait on the device and send when a signal appears. Each has an ID, so nothing is sent twice.', r: 'PR11 · RQ6.2',
+        s: () => `${rtabs(3)}<div class="split"><ul class="timeline"><li class="done">${icon('check')}<span><b>Saved on this device</b><small>09:46 · 3 exports</small></span></li><li class="done">${icon('check')}<span><b>Signal found</b><small>11:20</small></span></li><li class="done">${icon('check')}<span><b>Sent to DHIS2 demo</b><small>11:21 · 0 duplicates</small></span></li></ul><div class="list"><h3 class="sh">Earlier sends</h3><ul class="status"><li>${icon('check')}September 2026 · sent 1 Oct</li><li>${icon('check')}August 2026 · sent 2 Sep</li></ul></div></div>${bar('Back to register', 'goto:register:0')}` },
+    ] },
+];
+
+// Scribe field row: number links to the transcript underline; state shown by border, label and icon.
+function frow(n, label, value, state) {
+  const st = { ok: '<span class="tag">Drafted</span>', check: '<span class="tag dash">Check</span>', conf: `<span class="tag inv">${icon('check')}Confirmed</span>` }[state];
+  const um = /^([\d.]+)\s+(\S.*)$/.exec(value);
+  const head = `<span class="frtop"><sup>${n}</sup><span class="frl">${label}</span>${st}</span><span class="frv">${value}</span>`;
+  if (state === 'check') return `<button class="frow check" data-act="next">${head}</button>`;
+  return `<div class="frow ${state}"><button class="frhead" data-edit aria-expanded="false">${head}</button><div class="fredit" hidden><label class="nfin"><input value="${um ? um[1] : value}" aria-label="${label}" data-unit="${um ? um[2] : ''}"><span class="unit">${um ? um[2] : ''}</span></label><button class="b sq primary" data-edit-save>Save change</button></div></div>`;
+}
+
+// ---------- state and render ----------
+const $ = (id) => document.getElementById(id);
+let fi = 0, si = 0;
+
+function renderNav() {
+  let html = '', last = '';
+  FLOWS.forEach((f, i) => {
+    if (f.group !== last) { html += `<div class="group">${f.group}</div>`; last = f.group; }
+    html += `<button class="flow" data-flow="${i}" aria-current="${i === fi}"><span>${f.title}</span><span class="n">${f.steps.length} step${f.steps.length > 1 ? 's' : ''}</span></button>`;
+  });
+  $('navlist').innerHTML = html;
+}
+
+function renderJump() {
+  $('jump').innerHTML = FLOWS.map((f, i) => `<optgroup label="${f.title}">${f.steps.map((s, j) => `<option value="${i}:${j}">${f.group}: ${s.t}</option>`).join('')}</optgroup>`).join('');
+}
+
+function render() {
+  const f = FLOWS[fi], s = f.steps[si];
+  $('flowGroup').textContent = f.group;
+  $('flowTitle').textContent = f.title;
+  $('flowDesc').textContent = f.desc;
+  $('stepCount').textContent = `Step ${si + 1} of ${f.steps.length}`;
+  $('stepTitle').textContent = s.t;
+  $('stepNote').textContent = s.n;
+  $('stepRefs').textContent = s.r;
+  $('prev').disabled = si === 0 && fi === 0;
+  $('next').textContent = si === f.steps.length - 1 ? (fi < FLOWS.length - 1 ? 'Next flow' : 'Done') : 'Next';
+  $('next').disabled = si === f.steps.length - 1 && fi === FLOWS.length - 1;
+  $('steps').innerHTML = f.steps.map((x, j) => `<li><button data-step="${j}" aria-current="${j === si}">${x.t}</button></li>`).join('');
+  const dev = s.device || f.device;
+  $('device').className = 'device' + (dev === 'phone' ? '' : ' ' + dev);
+  $('deviceLabel').textContent = s.mode || f.mode;
+  $('statusText').textContent = dev === 'feature' ? 'Signal ▂▄▆ · basic phone' : 'Offline · airplane mode on';
+  const kp = $('keypad');
+  kp.hidden = dev !== 'feature';
+  if (dev === 'feature') {
+    const keys = s.keys || {};
+    const sub = { 2: 'abc', 3: 'def', 4: 'ghi', 5: 'jkl', 6: 'mno', 7: 'pqrs', 8: 'tuv', 9: 'wxyz' };
+    const btn = (k, label) => `<button class="${k in keys ? 'hot' : ''} ${label ? 'fn' : ''}" data-key="${k}" aria-label="${label || 'Key ' + k}">${label || k}${sub[k] ? `<small>${sub[k]}</small>` : ''}</button>`;
+    kp.innerHTML = btn('call', 'Call') + btn('ok', 'OK') + btn('end', 'End') + [1, 2, 3, 4, 5, 6, 7, 8, 9, '*', 0, '#'].map(k => btn(k)).join('');
+  }
+  const scr = $('screen');
+  scr.innerHTML = s.s();
+  pinBuf = '';
+  const qc = scr.querySelector('[data-qchips]'); if (qc) applyQF(qc.querySelector('[aria-pressed="true"]').dataset.qf);
+  scr.scrollTop = dev === 'feature' ? scr.scrollHeight : 0;
+  scr.classList.remove('enter'); void scr.offsetWidth; scr.classList.add('enter');
+  $('jump').value = `${fi}:${si}`;
+  renderNav();
+  try { history.replaceState(null, '', '#' + f.id); } catch (e) {}
+}
+
+function go(f, s) { fi = f; si = s; render(); }
+function next() {
+  const f = FLOWS[fi];
+  if (si < f.steps.length - 1) go(fi, si + 1);
+  else if (fi < FLOWS.length - 1) go(fi + 1, 0);
+}
+function prev() {
+  if (si > 0) go(fi, si - 1);
+  else if (fi > 0) go(fi - 1, FLOWS[fi - 1].steps.length - 1);
+}
+
+$('navlist').addEventListener('click', (e) => { const b = e.target.closest('[data-flow]'); if (b) go(+b.dataset.flow, 0); });
+$('steps').addEventListener('click', (e) => { const b = e.target.closest('[data-step]'); if (b) go(fi, +b.dataset.step); });
+$('prev').addEventListener('click', prev);
+$('next').addEventListener('click', next);
+$('jump').addEventListener('change', (e) => { const [a, b] = e.target.value.split(':').map(Number); go(a, b); });
+$('screen').addEventListener('click', (e) => {
+  const qf = e.target.closest('[data-qf]');
+  if (qf) { qf.parentElement.querySelectorAll('[data-qf]').forEach(x => x.setAttribute('aria-pressed', x === qf)); applyQF(qf.dataset.qf); return; }
+  const tp = e.target.closest('[data-tpbtn]');
+  if (tp) { tp.parentElement.querySelectorAll('[data-tpbtn]').forEach(x => x.setAttribute('aria-pressed', x === tp)); $('screen').querySelectorAll('[data-tp]').forEach(d => d.hidden = d.dataset.tp !== tp.dataset.tpbtn); return; }
+  const pn = e.target.closest('[data-pin]');
+  if (pn) { pinKey(pn.dataset.pin); return; }
+  const ed = e.target.closest('[data-edit]');
+  if (ed) { const box = ed.parentElement.querySelector('.fredit'); box.hidden = !box.hidden; ed.setAttribute('aria-expanded', !box.hidden); if (!box.hidden) box.querySelector('input').focus(); return; }
+  const sv = e.target.closest('[data-edit-save]');
+  if (sv) { const row = sv.closest('.frow'); { const i = row.querySelector('input'); row.querySelector('.frv').textContent = i.value + (i.dataset.unit ? ' ' + i.dataset.unit : ''); } row.querySelector('.tag').textContent = 'Edited'; row.querySelector('.fredit').hidden = true; row.querySelector('[data-edit]').setAttribute('aria-expanded', false); return; }
+  const cl = e.target.closest('[data-clear]');
+  if (cl) { const i = $(cl.dataset.clear); i.value = ''; i.focus(); return; }
+  const pl = e.target.closest('[data-play]');
+  if (pl) { const t = pl.querySelector('span'); t.textContent = 'Playing…'; setTimeout(() => { t.textContent = 'Play recording'; }, 1600); return; }
+  const nd = e.target.closest('[data-needs]');
+  if (nd && !$(nd.dataset.needs).value.trim()) { $(nd.dataset.needs + '-need').hidden = false; $(nd.dataset.needs).focus(); return; }
+  const sg = e.target.closest('[data-seg]');
+  if (sg) { sg.parentElement.querySelectorAll('[data-seg]').forEach(x => x.setAttribute('aria-pressed', x === sg)); return; }
+  const t = e.target.closest('[data-toggle]');
+  if (t) { t.setAttribute('aria-pressed', t.getAttribute('aria-pressed') !== 'true'); return; }
+  const b = e.target.closest('[data-act]');
+  if (b) doAct(b.dataset.act);
+});
+$('screen').addEventListener('input', (e) => {
+  const f = e.target.dataset.filter;
+  if (f) { const q = e.target.value.trim().toLowerCase(); $('screen').querySelectorAll(f).forEach(r => { r.hidden = q && !r.textContent.toLowerCase().includes(q); }); }
+  if (e.target.matches('.nfin.invalid input, [data-range]')) { const nf = e.target.closest('.nf'); nf.querySelector('.nfe').hidden = true; e.target.closest('.nfin').classList.remove('invalid'); }
+  if (e.target.id === 'tconf') { const w = $('tconf-need'); if (w) w.hidden = true; }
+  if (e.target.dataset.lookup !== undefined) { $('lookup').innerHTML = lookupHtml(e.target.value); const b = $('screen').querySelector('.actionbar .primary'); if (b) b.disabled = !$('lookup').querySelector('[data-act="next"]'); }
+  const calc = e.target.closest('[data-calc]');
+  if (calc) { const v = [...calc.querySelectorAll('input')].map(i => parseFloat(i.value) || 0); const out = $('screen').querySelector('[data-total]'); if (out) out.textContent = `Total: ${v.reduce((a, b) => a * b, 1)} units`; }
+});
+$('screen').addEventListener('change', (e) => {
+  const c = $('screen').querySelector('[data-count]');
+  if (c && e.target.type === 'checkbox') { const n = $('screen').querySelectorAll(c.dataset.count + ':checked').length; c.textContent = `${n} selected · ${n} register line${n === 1 ? '' : 's'}`; }
+});
+function applyQF(key) {
+  const rows = [...$('screen').querySelectorAll('[data-tags]')];
+  let n = 0;
+  rows.forEach(r => { const on = key === 'all' || r.dataset.tags.split(' ').includes(key); r.hidden = !on; if (on) n++; });
+  const sh = $('screen').querySelector('[data-qshow]'); if (sh) sh.textContent = `Showing ${n} of ${rows.length}`;
+  const em = $('screen').querySelector('.qempty'); if (em) em.hidden = n > 0;
+}
+let pinBuf = '';
+function pinKey(k) {
+  pinBuf = k === 'del' ? pinBuf.slice(0, -1) : (pinBuf + k).slice(0, 4);
+  $('screen').querySelectorAll('.dots i').forEach((d, i) => d.classList.toggle('f', i < pinBuf.length));
+  if (pinBuf.length === 4) { const at = [fi, si].join(); setTimeout(() => { if ([fi, si].join() === at) next(); }, 160); }
+}
+let toastT;
+function showToast(m) { const t = $('toast'); t.textContent = m; t.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => { t.hidden = true; }, 2600); }
+$('screen').addEventListener('focusout', (e) => {
+  const r = e.target.dataset && e.target.dataset.range; if (!r) return;
+  const [lo, hi] = r.split(',').map(Number), v = parseFloat(e.target.value), err = e.target.closest('.nf').querySelector('.nfe');
+  const bad = !(v >= lo && v <= hi);
+  err.hidden = !bad; err.textContent = bad ? `Enter ${lo} to ${hi} ${e.target.dataset.unit}.` : '';
+  e.target.closest('.nfin').classList.toggle('invalid', bad);
+});
+$('screen').addEventListener('change', (e) => { const w = $('diedwarn'); if (w && e.target.dataset.outcome) w.hidden = e.target.dataset.outcome !== 'Died'; });
+$('keypad').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-key]');
+  const act = b && (FLOWS[fi].steps[si].keys || {})[b.dataset.key];
+  if (act) doAct(act);
+});
+function doAct(act) {
+  if (act === 'next') next();
+  else if (act === 'prev') prev();
+  else if (act.startsWith('toast:')) showToast(act.slice(6));
+  else if (act.startsWith('goto:')) {
+    const [, id, step] = act.split(':');
+    const idx = FLOWS.findIndex(f => f.id === id);
+    if (idx >= 0) go(idx, +step);
+  }
+}
+document.addEventListener('keydown', (e) => {
+  if (e.target.closest('select, input')) return;
+  if (e.key === 'ArrowRight') next();
+  if (e.key === 'ArrowLeft') prev();
+});
+
+const start = FLOWS.findIndex(f => '#' + f.id === location.hash);
+fi = start >= 0 ? start : 0;
+renderJump();
+render();
+</script>

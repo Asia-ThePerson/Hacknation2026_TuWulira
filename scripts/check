@@ -72,7 +72,7 @@ def check_pointed_files():
 
 
 def check_doc_links():
-    docs = [str(p) for p in Path("docs").rglob("*.md")]
+    docs = [p for p in tracked() if p.endswith(".md") and p.startswith("docs/")]
     others = [p for p in tracked() if p.endswith(".md") and not p.startswith((".claude/", "docs/"))]
     return links_in(docs + others)
 

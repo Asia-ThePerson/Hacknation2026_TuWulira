@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Icon } from '../components/Icon.tsx';
 import { AppBar, Banner, Button } from '../components/ui.tsx';
 import { resetDemo } from '../demo.ts';
+import { canFrame } from '../frame/DeviceStage.tsx';
 import type { Draft } from '../patient/flow.ts';
 import { CARDS_KEY } from '../patient/intake-store.ts';
 import { navigate } from '../router.ts';
@@ -32,6 +33,11 @@ export function Home() {
             </span>
           </button>
         </div>
+        {canFrame() && (
+          <Button variant="outline" icon="chevron" onClick={() => navigate('/both')}>
+            Show both devices side by side
+          </Button>
+        )}
         <Banner kind="info" title="Synthetic demo data only">
           No real patients. Not a medical device. TuWulira never gives a diagnosis or treatment; staff make every decision. Questions marked * in
           the clinic use wording that is not yet validated.

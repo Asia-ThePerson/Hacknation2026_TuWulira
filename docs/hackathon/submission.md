@@ -35,7 +35,7 @@ Human makes every final call. Danger signs are rules, not AI, and the transcript
 - Prototype / code: https://github.com/Asia-ThePerson/Hacknation2026_TuWulira (must be public)
 - Design hub: https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1
 - Video: TODO
-- Demo (web prototype, Path B, synthetic data): https://asia-theperson.github.io/Hacknation2026_TuWulira/ (live once Pages is enabled; see docs/links.md)
+- Demo (web prototype, Path B, synthetic data): https://asia-theperson.github.io/Hacknation2026_TuWulira/ (see docs/links.md)
 
 ## Disclaimer
 

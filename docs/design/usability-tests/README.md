@@ -39,5 +39,5 @@ Pass another file as the first argument to test a different copy of the wirefram
 
 - `dead-controls` reports a few false alarms: tabs and choices that are already selected, checkboxes, and text fields do not change the screen markup. Read its list, do not trust the count.
 - A checkbox or choice that the test cannot see change is not necessarily broken.
-- The in-clinic intake button on the walk-in screen only shows a note, because that fallback (Path B) is not drawn.
+- The in-clinic intake button on the walk-in screen only shows a note pointing to the web prototype, because the main flow (Path B, staff-assisted, D32) is drawn there, not in this file.
 - The check for hidden elements relies on the `hidden` rule, which the wireframe sets itself.

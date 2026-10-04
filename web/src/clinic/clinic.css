@@ -207,6 +207,24 @@
 .record-actions > .btn {
   flex: 1 1 160px;
 }
+/* Narrow phones: the primary action full width on top, secondary actions below. */
+@media (max-width: 480px) {
+  .ans-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .record-actions > .btn {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: var(--s1) var(--s3);
+    font-size: 16px;
+    line-height: 20px;
+    text-align: center;
+  }
+  .record-actions > .btn-primary {
+    order: -1;
+    flex-basis: 100%;
+  }
+}
 .record-empty {
   height: 100%;
   min-height: 320px;
@@ -236,6 +254,8 @@
 .pstrip-main {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .pstrip-name {
   display: inline-flex;
@@ -341,7 +361,7 @@ details.pcs > summary,
 }
 .ans-row {
   display: grid;
-  grid-template-columns: minmax(120px, 40%) 1fr;
+  grid-template-columns: minmax(0, 40%) minmax(0, 1fr);
   gap: var(--s1) var(--s3);
   align-items: center;
   padding: var(--s2) 0;
@@ -352,9 +372,13 @@ details.pcs > summary,
 }
 .ans dt {
   color: var(--text-muted);
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .ans dd {
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -371,7 +395,8 @@ details.pcs > summary,
   gap: var(--s2);
 }
 .check-editor {
-  grid-column: 1 / -1;
+  flex: 1 1 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--s3);
@@ -408,7 +433,7 @@ details.pcs > summary,
   padding: 0 var(--s2);
   border: 1px solid var(--accent);
   border-radius: var(--r-sm);
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 0;
   text-transform: none;
 }
@@ -461,7 +486,7 @@ select.text-input {
   color: var(--text);
   font-weight: 700;
 }
-.tabs button.done svg {
+.tabs button.tab-done svg {
   color: var(--accent);
 }
 .mini {
@@ -534,6 +559,7 @@ select.text-input {
   padding: 0;
 }
 .link {
+  min-height: var(--touch-min);
   border: 0;
   background: none;
   padding: var(--s1) 0;
@@ -541,7 +567,7 @@ select.text-input {
   text-decoration: underline;
   font-weight: 600;
 }
-.done {
+.visit-done {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -571,8 +597,8 @@ select.text-input {
 }
 .row-note {
   display: block;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 20px;
   color: var(--flag);
   font-weight: 600;
 }

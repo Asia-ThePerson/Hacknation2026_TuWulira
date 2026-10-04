@@ -1,7 +1,7 @@
 // Turns a stored intake (patient side) into what the clinic card shows. Read-only: the patient's
 // answers are never changed here. Staff corrections live separately in staff-store.ts.
 import { DANGER_SETS } from '../patient/danger-sets.ts';
-import { answerLabel, dangerSetFor, isUnderFive, type Draft } from '../patient/flow.ts';
+import { answerLabel, dangerSetFor, isUnderFive, urgentReasons, type Draft } from '../patient/flow.ts';
 
 export type CheckKind = 'not_sure' | 'ask' | 'unclear' | 'estimated' | 'pending' | 'prefer_not' | 'missing';
 
@@ -144,7 +144,7 @@ export function cardModel(d: Draft): CardModel {
     underFive: isUnderFive(d) || /\b(d|mo)\b/.test(age.text) || (/^\d+ y$/.test(age.text) && parseInt(age.text) < 5),
     sex: a.s3_sex ? answerLabel(a.s3_sex) : '',
     visit: a.s3_repeat === 'yes' ? 'Re-attendance' : a.s3_repeat === 'no' ? 'New visit' : '',
-    urgentReasons: d.urgent?.reasons ?? [],
+    urgentReasons: urgentReasons(d), // stored reasons plus any danger answer on file, so none is missed
     mainProblem: unclear ? null : (d.spoken.s4_main?.transcript ?? a.s4_main ?? null),
     durationTrend: [days, trend].filter(Boolean).join(' · '),
     flags,

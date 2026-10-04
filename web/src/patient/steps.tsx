@@ -9,8 +9,8 @@ import { Banner, Button } from '../components/ui.tsx';
 import { navigate } from '../router.ts';
 import { read } from '../store.ts';
 import { PENDING_PAGE_CHECK } from './danger-sets.ts';
-import { answerLabel, nextStep, type Draft, type Step } from './flow.ts';
-import { sendToClinic, updateDraft } from './intake-store.ts';
+import { answerLabel, dangerReason, nextStep, PENDING_NURSE_REASON, type Draft, type Step } from './flow.ts';
+import { discardIntake, sendToClinic, updateDraft } from './intake-store.ts';
 
 const DRAFT_KEY = 'tuwulira.intake.draft';
 
@@ -50,12 +50,14 @@ export function ChoiceStep({ step, draft }: StepProps) {
     setAnswer(step.id, value);
     if (step.id === 's0_language') updateDraft((d) => ({ ...d, lang: value as 'lg' | 'en' }));
     // Short pause so the patient sees the choice register before the next question.
+    // A quick second tap replaces the first: only one timer runs, and it reads the latest stored answer.
+    window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => {
       const d = read<Draft | null>(DRAFT_KEY, null);
-      if (step.danger && d && step.danger.set.urgentAnswers.includes(value)) {
+      const latest = d?.answers[step.id] ?? value;
+      if (step.danger && d && step.danger.set.urgentAnswers.includes(latest)) {
         const q = step.danger.set.questions[step.danger.index];
-        const reason = value === 'yes' ? q.label : `${q.label}: ${answerLabel(value)}`;
-        return raiseUrgent(reason, nextStep(step.id, d));
+        return raiseUrgent(dangerReason(q.label, latest), nextStep(step.id, d));
       }
       advance(step.id);
     }, 280);
@@ -78,14 +80,23 @@ export function ChoiceStep({ step, draft }: StepProps) {
 
 export function ConsentStep({ step, draft }: StepProps) {
   const [phase, setPhase] = useState<'ask' | 'listening' | 'recorded'>(draft.answers.s0_consent === 'yes' ? 'recorded' : 'ask');
+  const consentTimer = useRef<number>(undefined);
   useEffect(() => {
     if (phase !== 'listening') return;
     const t = window.setTimeout(() => {
       setAnswer(step.id, 'yes');
       setPhase('recorded');
     }, 1600);
+    consentTimer.current = t;
     return () => window.clearTimeout(t);
   }, [phase, step.id]);
+
+  // "No, stop": the timer is cleared by the effect cleanup when the view goes away; clear it here too.
+  const stop = () => {
+    window.clearTimeout(consentTimer.current);
+    discardIntake();
+    navigate('/intake/no-consent');
+  };
 
   if (phase === 'ask')
     return (
@@ -113,6 +124,7 @@ export function ConsentStep({ step, draft }: StepProps) {
             <b>{phase === 'listening' ? 'Please say “yes” out loud.' : 'Spoken yes recorded.'}</b>
           </p>
           <p className="t-body-sm t-muted">{phase === 'listening' ? 'Listening for “yes”…' : 'Kept with the card as the record of consent.'}</p>
+          <p className="t-body-sm t-muted">Prototype: simulated spoken yes. No audio is recorded.</p>
         </div>
       </div>
       {phase === 'recorded' && (
@@ -120,6 +132,9 @@ export function ConsentStep({ step, draft }: StepProps) {
           Next
         </Button>
       )}
+      <Button block variant="outline" icon="x" onClick={stop}>
+        No, stop
+      </Button>
     </div>
   );
 }
@@ -151,7 +166,7 @@ export function DangerPendingStep({ step, draft }: StepProps) {
         icon="alert"
         onClick={() => {
           setAnswer(step.id, 'asked_for_nurse');
-          raiseUrgent('Asked to see the nurse now (safety questions pending validation)', nextStep(step.id, { ...draft, answers: { ...draft.answers, [step.id]: 'asked_for_nurse' } }));
+          raiseUrgent(PENDING_NURSE_REASON, nextStep(step.id, { ...draft, answers: { ...draft.answers, [step.id]: 'asked_for_nurse' } }));
         }}
       >
         I need the nurse now

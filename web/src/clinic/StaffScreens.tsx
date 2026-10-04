@@ -5,19 +5,24 @@ import { fieldByName } from '../../../app/shared/field-schemas.ts';
 import hmis from '../../../config/hmis105-diagnoses.json';
 import { AnswerButtons } from '../components/AnswerButtons.tsx';
 import { Icon } from '../components/Icon.tsx';
-import { NumberField } from '../components/NumberField.tsx';
+import { NumberField, numberProblem } from '../components/NumberField.tsx';
 import { Banner, Button, SectionLabel } from '../components/ui.tsx';
 import { navigate } from '../router.ts';
 import { MissingCard, PatientStrip, UrgentBanner } from './CardView.tsx';
 import { time, useRow } from './queue.ts';
-import { updateStaff, type Role, type StaffRecord } from './staff-store.ts';
+import { lock } from './session.ts';
+import { clearFormDraft, updateStaff, useFormDraft, type Role, type StaffRecord } from './staff-store.ts';
 
 const range = (name: string) => {
   const f = fieldByName(name);
   return f && f.kind === 'number' ? { min: f.min, max: f.max } : {};
 };
-const numOk = (v: string | undefined, r: { min?: number; max?: number }) =>
-  !v || (!Number.isNaN(Number(v)) && Number(v) >= 0 && (r.min === undefined || (Number(v) >= r.min && Number(v) <= r.max!)));
+const numOk = (v: string | undefined, r: { min?: number; max?: number }) => numberProblem(v, r.min, r.max) === null;
+
+// Shown when a form was refilled from what staff typed before but did not save.
+function DraftNote({ show }: { show: boolean }) {
+  return show ? <p className="t-body-sm t-muted">Unsaved changes from before are filled in. Not saved yet.</p> : null;
+}
 
 function Screen({ id, title, children, actions }: { id: string; title: string; children: ReactNode; actions: ReactNode }) {
   const row = useRow(id);
@@ -51,9 +56,15 @@ export function ClerkScreen({ id }: { id: string }) {
   const row = useRow(id);
   const clerk = row?.staff.clerk;
   const heard = row?.draft.answers.s3_name;
-  const [name, setName] = useState(clerk?.name ?? (heard && heard !== 'ask_clinician' ? heard : ''));
-  const [reportType, setReportType] = useState(clerk?.reportType);
-  const [note, setNote] = useState(clerk?.referralNote ?? '');
+  const [form, setForm, restored] = useFormDraft(id, 'clerk', () => ({
+    name: clerk?.name ?? (heard && heard !== 'ask_clinician' ? heard : ''),
+    reportType: clerk?.reportType,
+    note: clerk?.referralNote ?? '',
+  }));
+  const { name, reportType, note } = form;
+  const setName = (name: string) => setForm((x) => ({ ...x, name }));
+  const setReportType = (reportType: string) => setForm((x) => ({ ...x, reportType }));
+  const setNote = (note: string) => setForm((x) => ({ ...x, note }));
   if (!row) return <MissingCard />;
   const referred = row.draft.answers.s3_referral === 'yes';
   const save = () => {
@@ -61,6 +72,7 @@ export function ClerkScreen({ id }: { id: string }) {
       ...s,
       clerk: { name: name.trim() || undefined, reportType, referralNote: note.trim() || undefined, savedAt: new Date().toISOString() },
     }));
+    clearFormDraft(id, 'clerk');
     navigate(`/clinic/card/${id}`);
   };
   return (
@@ -90,6 +102,7 @@ export function ClerkScreen({ id }: { id: string }) {
           <input className="text-input" aria-label="Referral note number" value={note} onChange={(e) => setNote(e.target.value)} />
         </section>
       )}
+      <DraftNote show={restored} />
       <Saved at={clerk?.savedAt} by="Clerk" />
     </Screen>
   );
@@ -100,10 +113,12 @@ export function ClerkScreen({ id }: { id: string }) {
 export function NurseScreen({ id }: { id: string }) {
   const row = useRow(id);
   const n = row?.staff.nurse;
-  const [weight, setWeight] = useState(n?.weight ?? '');
-  const [temperature, setTemperature] = useState(n?.temperature ?? '');
-  const [length, setLength] = useState(n?.length ?? '');
-  const [muac, setMuac] = useState(n?.muac ?? '');
+  const [form, setForm, restored] = useFormDraft(id, 'nurse', () => ({ weight: n?.weight ?? '', temperature: n?.temperature ?? '', length: n?.length ?? '', muac: n?.muac ?? '' }));
+  const { weight, temperature, length, muac } = form;
+  const setWeight = (weight: string) => setForm((x) => ({ ...x, weight }));
+  const setTemperature = (temperature: string) => setForm((x) => ({ ...x, temperature }));
+  const setLength = (length: string) => setForm((x) => ({ ...x, length }));
+  const setMuac = (muac: string) => setForm((x) => ({ ...x, muac }));
   if (!row) return <MissingCard />;
   const wR = range('weight_kg');
   const tR = range('temperature_c');
@@ -113,6 +128,7 @@ export function NurseScreen({ id }: { id: string }) {
       ...s,
       nurse: { weight: weight || undefined, temperature: temperature || undefined, length: length || undefined, muac: muac || undefined, savedAt: new Date().toISOString() },
     }));
+    clearFormDraft(id, 'nurse');
     navigate(`/clinic/card/${id}`);
   };
   return (
@@ -147,6 +163,7 @@ export function NurseScreen({ id }: { id: string }) {
           <p className="t-body-sm t-muted">TuWulira records the measurement only. It never suggests a category.</p>
         </section>
       )}
+      <DraftNote show={restored} />
       <Saved at={n?.savedAt} by="Nurse" />
     </Screen>
   );
@@ -176,16 +193,21 @@ type ClinicianForm = NonNullable<StaffRecord['clinician']>;
 export function ClinicianScreen({ id, tab: tabParam }: { id: string; tab?: string }) {
   const row = useRow(id);
   const tab: Tab = (TABS.find(([t]) => t === tabParam)?.[0] ?? 'card') as Tab;
-  const [f, setF] = useState<ClinicianForm>(() => row?.staff.clinician ?? { savedAt: '' });
+  const [f, setF, restored] = useFormDraft<ClinicianForm>(id, 'clinician', () => row?.staff.clinician ?? { savedAt: '' });
   const [q, setQ] = useState('');
   if (!row) return <MissingCard />;
   const set = (patch: Partial<ClinicianForm>) => setF((x) => ({ ...x, ...patch }));
   const closed = row.state === 'closed';
   const i = TABS.findIndex(([t]) => t === tab);
 
-  const persist = () => updateStaff(id, 'Clinician', `Saved ${TABS[i][1].toLowerCase()}`, (s) => ({ ...s, clinician: { ...f, savedAt: new Date().toISOString() } }));
+  // Units, doses and days: a bad number is refused, never guessed. It stays in the unsaved draft until fixed.
+  const numbersOk = [f.units, f.doses, f.days].every((x) => numOk(x, {}));
+  const persist = () => {
+    updateStaff(id, 'Clinician', `Saved ${TABS[i][1].toLowerCase()}`, (s) => ({ ...s, clinician: { ...f, savedAt: new Date().toISOString() } }));
+    clearFormDraft(id, 'clinician');
+  };
   const go = (t: Tab) => {
-    if (!closed) persist();
+    if (!closed && numbersOk) persist();
     navigate(`/clinic/card/${id}/clinician/${t}`);
   };
 
@@ -197,10 +219,12 @@ export function ClinicianScreen({ id, tab: tabParam }: { id: string; tab?: strin
     !row.staff.clerk?.reportType && ['Report type (clerk)', `/clinic/card/${id}/clerk`],
     !dx.length && ['At least one diagnosis', `/clinic/card/${id}/clinician/diagnoses`],
     !f.outcome && ['Visit outcome', `/clinic/card/${id}/clinician/outcome`],
+    !numbersOk && ['Check the flagged treatment numbers', `/clinic/card/${id}/clinician/treatment`],
   ].filter(Boolean) as [string, string][];
 
   const close = () => {
     updateStaff(id, 'Clinician', 'Closed the visit', (s) => ({ ...s, clinician: { ...f, savedAt: new Date().toISOString() }, closedAt: new Date().toISOString() }));
+    clearFormDraft(id, 'clinician');
   };
 
   const next = i < TABS.length - 1 ? TABS[i + 1] : null;
@@ -216,19 +240,22 @@ export function ClinicianScreen({ id, tab: tabParam }: { id: string; tab?: strin
       </Button>
     </>
   ) : (
-    <Button onClick={() => go(next![0])}>{next![0] === 'review' ? 'Review and close' : `Next: ${next![1]}`}</Button>
+    <Button disabled={!numbersOk} onClick={() => go(next![0])}>
+      {!numbersOk ? 'Check the flagged value to go on' : next![0] === 'review' ? 'Review and close' : `Next: ${next![1]}`}
+    </Button>
   );
 
   return (
     <Screen id={id} title="Consultation" actions={actions}>
       <nav className="tabs" aria-label="Record sections">
         {TABS.map(([t, label], j) => (
-          <button key={t} type="button" aria-current={t === tab ? 'step' : undefined} className={j < i ? 'done' : undefined} onClick={() => go(t)}>
+          <button key={t} type="button" aria-current={t === tab ? 'step' : undefined} className={j < i ? 'tab-done' : undefined} onClick={() => go(t)}>
             {j < i && <Icon name="check" size={16} />}
             {label}
           </button>
         ))}
       </nav>
+      <DraftNote show={restored && !closed} />
 
       {tab === 'card' && (
         <>
@@ -376,7 +403,7 @@ export function ClinicianScreen({ id, tab: tabParam }: { id: string; tab?: strin
 
       {tab === 'review' &&
         (closed ? (
-          <div className="done">
+          <div className="visit-done">
             <span className="done-icon">
               <Icon name="check" size={36} />
             </span>
@@ -448,7 +475,14 @@ export function WalkIn() {
       <div className="record-body">
         <h2 className="t-title">Walk-in without a code</h2>
         <p className="reported">No card on file. The patient did not give consent, or has no code.</p>
-        <Button variant="outline" block onClick={() => navigate('/intake')}>
+        <Button
+          variant="outline"
+          block
+          onClick={() => {
+            lock(); // the patient holds the device next: staff screens need the PIN again
+            navigate('/intake');
+          }}
+        >
           Start in-clinic intake on this device
         </Button>
         <p className="t-body-sm t-muted">One-device mode: the intake runs here, then the card appears in this queue.</p>

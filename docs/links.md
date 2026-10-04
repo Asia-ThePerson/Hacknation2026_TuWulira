@@ -13,7 +13,9 @@ Every link the team and judges need. Test each from a logged-out browser before 
 | Figma data architecture (two-device, v2) | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=99-2 | Intake phone (AI) + clinic device (no AI), QR handoff. Text version: docs/product/data-architecture.md |
 | Figma design system | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=87-2 | Guidelines handbook style: principles, colour, type, spacing, components, accessibility, content. Tokens also as Figma variables "TuWulira tokens" |
 | Figma design style proposals | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=63-2 | Five candidate styles for the clinic device, each shown on queue, full card, clerk, nurse, diagnoses and register and tally |
-| Demo (build or recording) | TODO | |
+| Web prototype (live) | https://asia-theperson.github.io/Hacknation2026_TuWulira/ | Path B intake to clinic review, synthetic data, offline after first load. Deployed by `.github/workflows/pages.yml` from main. Needs the repo public and Settings > Pages > Source: GitHub Actions. Open `#/intake` and `#/clinic` in two tabs |
+| Clickable wireframe (remote path, design only) | [docs/design/wireframes.html](design/wireframes.html) | Download and open in a browser |
+| Demo recording | TODO | |
 | Video (2 to 5 min) | TODO | |
 | Pitch deck | TODO | Build with the frontend-slides plugin |
 | Submission page | TODO: Hack-Nation Global AI Hackathon submission URL | |

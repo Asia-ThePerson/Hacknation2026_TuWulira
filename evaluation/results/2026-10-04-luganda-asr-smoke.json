@@ -1,0 +1,145 @@
+{
+  "title": "Luganda speech-recognition smoke test (3 Common Voice clips + 2 failure clips)",
+  "date": "2026-10-04",
+  "status": "Small hackathon evaluation. NOT clinical validation. 3 real clips is far too few to estimate accuracy.",
+  "dataset": {
+    "name": "Mozilla Common Voice Corpus 17.0, Luganda (lg), test split",
+    "licence": "CC0-1.0",
+    "source": "https://huggingface.co/datasets/0x3/common_voice_17_0 (unofficial mirror of https://commonvoice.mozilla.org)",
+    "clip_list": "evaluation/luganda-asr/common-voice-clips.tsv (clip IDs, official transcripts, SHA-256)",
+    "audio": "Local only, never committed or deployed: resources/datasets/raw/common-voice-lg/ (gitignored). Re-download with evaluation/luganda-asr/fetch_clips.py.",
+    "note": "Only 3 clips were downloaded (HTTP range request on the first 2 MB of the test archive). Transcripts copied exactly; no Luganda was written or translated by the team."
+  },
+  "model": {
+    "name": "allandclive/whisper-tiny-luganda-v2",
+    "revision": "7c130c391d20243f879596898a2b52b308ab87e2",
+    "base": "openai/whisper-tiny, fine-tuned for Luganda (model card: Common Voice 16.1 and FLEURS)",
+    "licence": "Apache-2.0",
+    "parameters": 37760640,
+    "weights_mb_on_disk": 151.1,
+    "precision": "float32 (not quantized)"
+  },
+  "safety_layer": {
+    "code": "app/safety/index.ts assessTurn()",
+    "confidence_threshold": 0.8,
+    "rule": "empty transcript or confidence below threshold -> \"Not sure. Please ask a person.\""
+  },
+  "summary": {
+    "real_clips_word_errors": "2 of 22 words",
+    "real_clips_wer": 0.091,
+    "exact_matches": 1,
+    "failure_clips_caught_by_safety": "2 of 2",
+    "model_invented_words_on_failure_clips": "2 of 2",
+    "offline_run_identical": true
+  },
+  "runtime": {
+    "machine": {
+      "os": "Windows-10-10.0.26200-SP0",
+      "cpu": "Intel64 Family 6 Model 142 Stepping 12, GenuineIntel",
+      "logical_cpus": 8,
+      "ram_gb": 16.9,
+      "torch_threads": 4
+    },
+    "software": {
+      "python": "3.9.7",
+      "torch": "2.8.0+cpu",
+      "transformers": "4.57.6"
+    },
+    "model_load_seconds": 1.4,
+    "process_memory_mb": {
+      "before_model": 274.4,
+      "after_model_load_peak": 319.5,
+      "peak_during_transcription": 510
+    },
+    "memory_note": "Whole Python + PyTorch process on a laptop, not phone RAM. The model itself added about 45 MB.",
+    "decoding": "greedy, max 96 new tokens, no language model"
+  },
+  "results": [
+    {
+      "clip": "common_voice_lg_23704551.mp3",
+      "kind": "common_voice_test",
+      "audio_seconds": 5.26,
+      "transcript": "Ekirwadde kino kitadde nnyo abantu ku bwenkenge.",
+      "confidence": 0.802,
+      "processing_seconds": 4.673,
+      "peak_rss_mb": 495.6,
+      "official_transcript": "Ekirwadde kino kitadde nnyo abantu ku bunkenke.",
+      "word_errors": 1,
+      "reference_words": 7,
+      "wer": 0.143,
+      "cer": 0.065,
+      "verdict": "close",
+      "tuwulira_safety": "ok",
+      "expected_safety": "ok (usable speech)",
+      "safety_as_expected": true
+    },
+    {
+      "clip": "common_voice_lg_23704504.mp3",
+      "kind": "common_voice_test",
+      "audio_seconds": 4.51,
+      "transcript": "Ekikajjo kino ku birime ebirimu ssente ennaku zino.",
+      "confidence": 0.91,
+      "processing_seconds": 4.264,
+      "peak_rss_mb": 506.3,
+      "official_transcript": "Ekikajjo kimu ku birime ebirimu ssente ennaku zino.",
+      "word_errors": 1,
+      "reference_words": 8,
+      "wer": 0.125,
+      "cer": 0.04,
+      "verdict": "close",
+      "tuwulira_safety": "ok",
+      "expected_safety": "ok (usable speech)",
+      "safety_as_expected": true
+    },
+    {
+      "clip": "common_voice_lg_23710054.mp3",
+      "kind": "common_voice_test",
+      "audio_seconds": 5.38,
+      "transcript": "Wano we muleese omulwadde wammwe tewaliiwo ddagala.",
+      "confidence": 0.839,
+      "processing_seconds": 4.863,
+      "peak_rss_mb": 510,
+      "official_transcript": "Wano we muleese omulwadde wammwe tewaliiwo ddagala.",
+      "word_errors": 0,
+      "reference_words": 7,
+      "wer": 0,
+      "cer": 0,
+      "verdict": "correct",
+      "tuwulira_safety": "ok",
+      "expected_safety": "ok (usable speech)",
+      "safety_as_expected": true
+    },
+    {
+      "clip": "synthetic_silence_01.wav",
+      "kind": "synthetic_silence",
+      "audio_seconds": 5,
+      "transcript": "Abaggwa baggwa mu ggwanga ggwanga.",
+      "confidence": 0.252,
+      "processing_seconds": 2.853,
+      "peak_rss_mb": 505.1,
+      "official_transcript": null,
+      "verdict": "invented words from silence",
+      "tuwulira_safety": "ask_person: \"Not sure. Please ask a person.\"",
+      "expected_safety": "ask_person (unusable audio)",
+      "safety_as_expected": true
+    },
+    {
+      "clip": "common_voice_lg_23704551.noisy.real.wav",
+      "kind": "real_clip_plus_noise",
+      "audio_seconds": 5.26,
+      "transcript": "Baddukira ssanyu nnyo nnyo.",
+      "confidence": 0.387,
+      "processing_seconds": 2.569,
+      "peak_rss_mb": 504.6,
+      "official_transcript": "Ekirwadde kino kitadde nnyo abantu ku bunkenke.",
+      "word_errors": 6,
+      "reference_words": 7,
+      "wer": 0.857,
+      "cer": 0.674,
+      "verdict": "wrong",
+      "tuwulira_safety": "ask_person: \"Not sure. Please ask a person.\"",
+      "expected_safety": "ask_person (unusable audio)",
+      "safety_as_expected": true
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# For run_asr.py. Install torch and torchaudio first from https://download.pytorch.org/whl/cpu (CPU only).
+# Versions used on 2026-10-04: torch 2.8.0, torchaudio 2.8.0, transformers 4.57.6.
+transformers>=4.40,<5
+soundfile>=0.12
+numpy
+psutil

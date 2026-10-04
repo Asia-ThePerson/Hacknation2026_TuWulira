@@ -43,7 +43,7 @@ Plan: [docs/hackathon/video-plan.md](docs/hackathon/video-plan.md).
 - [ ] **C.1** Runs on a device the user already has (assumption stated). *Owner:* Asia. *Evidence:* TODO answer in [research/questions.md](research/questions.md). *Source:* brief 06; RQ2.2.
 - [ ] **C.2** Core feature works with airplane mode on. *Owner:* TBD. *Evidence:* TODO recording or results file. *Source:* brief 06.
 - [ ] **C.3** Model file sizes measured and listed. *Owner:* TBD. *Evidence:* TODO [models/README.md](models/README.md). *Source:* brief 06; RQ6.1.
-- [ ] **C.4** At least one interaction in Luganda. *Owner:* TBD. *Evidence:* TODO. *Source:* brief 06.
+- [ ] **C.4** At least one interaction in Luganda. *Owner:* TBD. *Evidence:* TODO. Plan (D14): transcribe real Luganda speech from Common Voice test clips in the demo, and say so on screen. *Source:* brief 06.
 - [ ] **C.5** Lusoga answer prepared: measured result or a reasoned estimate. *Owner:* TBD. *Evidence:* TODO. *Source:* brief 06; RQ3.3.
 
 ## D. Responsible AI gate (pass/fail, brief 09)
@@ -79,7 +79,7 @@ Function
 
 - [ ] **F.21** Question list is one JSON file per language and country, and changing a question needs no code change. *Owner:* TBD. *Evidence:* draft in [config/questions.lg-UG.json](config/questions.lg-UG.json); TODO app reads it. *Source:* PR16; RQ7.3.
 - [ ] **F.22** Staff screen behind a staff PIN; storage encrypted; voice clips deleted when the visit closes. *Owner:* TBD. *Evidence:* TODO. *Source:* PR17; RQ5.1.
-- [ ] **F.23** OPD register row (HMIS 031) and tally pre-filled from intake, with CSV export. *Owner:* TBD. *Evidence:* TODO. *Source:* PR18; RQ1.2.
+- [ ] **F.23** OPD register row (HMIS 031) and tally pre-filled from intake, with CSV export. Tally uses HMIS 105 codes and age bands ([config/hmis105-diagnoses.json](config/hmis105-diagnoses.json)). *Owner:* TBD. *Evidence:* TODO. *Source:* PR18; RQ1.2.
 - [ ] **F.24** "Export totals" produces a DHIS2-style file with aggregate totals only, no names. *Owner:* TBD. *Evidence:* TODO. *Source:* PR13; R5.
 
 Offline and sync

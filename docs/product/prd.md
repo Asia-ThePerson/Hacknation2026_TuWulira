@@ -146,12 +146,12 @@ Numbers match the component table in the [README](../../README.md).
 - Behind a staff PIN.
 - Queue sorted urgent first, then by arrival time.
 - Nurse: enters weight (kg) and temperature.
-- Clinician: picks a diagnosis from the HMIS 105 list (notifiable conditions marked), enters treatment as units x doses per day x days, and the referral-out number.
+- Clinician: picks a diagnosis from the HMIS 105 section 1.3 list ([config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json), print version September 2019), enters treatment as units x doses per day x days, and the referral-out number. The form marks no condition as notifiable, so the pick-list does not either.
 
 ### Component 8: Register and tally (PR18)
 
 - Pre-fills the OPD register row: serial number (automatic, restarts monthly); columns 2 to 5, 7, 8 and 11 from the card; columns 6, 9, 10 and 12 from staff.
-- Tally: new vs re-attendance, referrals in and out, diagnoses by age 0 to 4 and 5+, notifiable cases listed daily.
+- Tally, using the HMIS 105 codes and bands: new attendance (OA01) vs re-attendance (OA02), referrals to unit (OR01) and from unit (OR02), and diagnoses by the form's five age bands (0 to 28 days, 29 days to 4 years, 5 to 9, 10 to 19, 20 and above), each split by male and female.
 - CSV export.
 
 ### Component 9: Safe storage (PR17)
@@ -234,7 +234,7 @@ Record decisions as D# here, one line each, with the PR# they serve. Use the doc
 | D1 | Hub and spokes: the model runs on one shared clinic device; patients reach it in person or by voice or SMS on their own phone. | PR1, PR2 | 2026-10-03 |
 | D2 | Rule-based constrained extractor instead of a generative model, so outputs can only come from fixed lists. Narrowed by D10. | PR5 | 2026-10-03 |
 | D3 | Danger-sign matching runs before, and independently of, the confidence threshold. | PR9 | 2026-10-03 |
-| D4 | Remote danger-sign response (Path A): SMS "Please come to your clinic immediately for support, [clinic address]", then ask permission to notify the clinic and share answers. Yes: alert and card shared. No: nothing shared. | PR9, PR12 | 2026-10-04 |
+| D4 | Remote danger-sign response (Path A): SMS "[Clinic name]: please come in today.", which keeps to PR12 (only a date and the clinic's name, no address, no symptoms, no word like "urgent"), then ask permission to notify the clinic and share answers. Yes: alert and card shared. No: nothing shared. The strict rule wins because household phones are shared, and any hint of illness or urgency on a shared phone can disclose a condition (RQ5.2). | PR9, PR12 | 2026-10-04 |
 | D5 | Danger alerts go to the clinic: the clinic Android at the triage desk, then the nurse or in-charge. | PR9 | 2026-10-04 |
 | D6 | Pre-filling the OPD register is acceptable because the data is patient-provided; clinician-only columns are still entered by staff. | PR7, PR18 | 2026-10-04 |
 | D7 | SMS privacy wording: "Please delete these messages from your phone if you are worried about privacy." | PR12 | 2026-10-04 |
@@ -244,11 +244,11 @@ Record decisions as D# here, one line each, with the PR# they serve. Use the doc
 | D11 | Clinician dictation (scribe) stays core scope, alongside the staff screen pick-lists. | PR19 | 2026-10-04 |
 | D12 | Repo layout follows the team README: question list in `config/`, danger-sign rules in `rules/`, tests and results in `evaluation/`. | PR9, PR16 | 2026-10-04 |
 | D13 | Model choices stay as candidates for now: Meta MMS or a Sunbird AI model for speech-to-text, Meta NLLB-200 or an alternative for understanding. | PR2 | 2026-10-04 |
+| D14 | No native Luganda speaker is available, so the demo uses real Luganda speech from Mozilla Common Voice test clips as the spoken input, and says so openly in the video and README. Luganda prompt text and audio stay empty (no machine translation) and the app falls back to English prompts. | PR3 | 2026-10-04 |
+| D15 | The diagnosis pick-list and tally follow the official HMIS 105 form (print version September 2019): section 1.3 codes and labels as printed, the form's five age bands by sex, and the OA and OR codes for attendance and referrals. | PR7, PR18 | 2026-10-04 |
 
 ## 15. Open questions
 
-1. The diagnosis pick-list must match HMIS 105 exactly. We do not have a copy of the official list yet.
-2. Which clinic device is available, and how is it charged? (RQ2.2, RQ6.3)
-3. No native Luganda speaker is lined up to translate and record the prompts. Until one is, Luganda text and audio stay empty and the app falls back to English. Do not machine-translate. This puts the brief's Luganda requirement (C.4) at risk.
-4. Final model choices and licenses (D13). (RQ3.1, RQ6.1)
-5. D4's danger-sign SMS includes the clinic address and an urgent message, which goes beyond PR12 ("only a date and the clinic's name"). Agree which rule wins and update PR12, responsible-ai.md and CLAUDE.md together.
+1. Which device will the demo run on (model and RAM), and how is it charged at the clinic? (RQ2.2, RQ6.3)
+2. Final model choices and licenses (D13). (RQ3.1, RQ6.1)
+3. Native Luganda prompts: still needed for a real clinic, even though the demo uses Common Voice clips (D14). Do not machine-translate.

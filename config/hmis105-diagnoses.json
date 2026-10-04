@@ -1,0 +1,1160 @@
+{
+ "_note": "Uganda Ministry of Health, HMIS Form 105, Health Unit Outpatient Monthly Report, print version September 2019, section 1.3 Outpatient diagnoses. Transcribed from the official form the team supplied (32-page PDF, kept out of the repo). Labels are as printed, including the form's own spellings (for example 'Epixtasis'). The clinician picks the diagnosis; TuWulira never suggests one (PR7). Rows with pickable: false are counts on the form, not diagnoses. Not included: 1.3.19 Minor operations in OPD, 1.3.23 Risky behaviours, 1.3.24 Emergency medical services, DT01 Deaths in OPD, and sections 1.4 onwards. The form marks no condition as notifiable.",
+ "source": {
+  "title": "HMIS 105: Health Unit Outpatient Monthly Report",
+  "publisher": "Ministry of Health, Uganda",
+  "version": "Print Version September 2019",
+  "section": "1.3"
+ },
+ "ageBands": [
+  "0-28 days",
+  "29 days - 4 years",
+  "5 - 9 years",
+  "10 - 19 years",
+  "20 years and above"
+ ],
+ "sex": [
+  "Male",
+  "Female"
+ ],
+ "attendance": [
+  {
+   "code": "OA01",
+   "label": "New attendance"
+  },
+  {
+   "code": "OA02",
+   "label": "Re-attendance"
+  }
+ ],
+ "referrals": [
+  {
+   "code": "OR01",
+   "label": "Referrals to unit"
+  },
+  {
+   "code": "OR02",
+   "label": "Referrals from unit"
+  }
+ ],
+ "diagnoses": [
+  {
+   "section": "1.3.1",
+   "name": "Epidemic-Prone Diseases",
+   "items": [
+    {
+     "code": "EP01a",
+     "label": "Suspected fever"
+    },
+    {
+     "code": "EP01b",
+     "label": "Malaria Total",
+     "pickable": false
+    },
+    {
+     "code": "EP01c",
+     "label": "Malaria confirmed (B/s and RDT Positive)"
+    },
+    {
+     "code": "EP01d",
+     "label": "Malaria cases treated",
+     "pickable": false
+    },
+    {
+     "code": "EP02",
+     "label": "Acute Flaccid Paralysis"
+    },
+    {
+     "code": "EP03",
+     "label": "Animal Bites (suspected rabies)"
+    },
+    {
+     "code": "EP04",
+     "label": "Cholera"
+    },
+    {
+     "code": "EP05",
+     "label": "Dysentery"
+    },
+    {
+     "code": "EP06",
+     "label": "Guinea Worm"
+    },
+    {
+     "code": "EP07",
+     "label": "Measles"
+    },
+    {
+     "code": "EP08",
+     "label": "Bacterial Meningitis"
+    },
+    {
+     "code": "EP09",
+     "label": "Neonatal tetanus"
+    },
+    {
+     "code": "EP10",
+     "label": "Plague"
+    },
+    {
+     "code": "EP11",
+     "label": "Yellow Fever"
+    },
+    {
+     "code": "EP12",
+     "label": "Other Viral Haemorrhagic Fevers"
+    },
+    {
+     "code": "EP13",
+     "label": "Severe Acute Respiratory Infection (SARI)"
+    },
+    {
+     "code": "EP14",
+     "label": "Adverse Events Following Immunization (AEFI): Serious / Non Serious"
+    },
+    {
+     "code": "EP15",
+     "label": "Typhoid Fever"
+    },
+    {
+     "code": "EP16",
+     "label": "Presumptive MDR TB cases"
+    },
+    {
+     "code": "EP17",
+     "label": "Other Emerging infectious Diseases e.g. Influenza like illness (ILI), SARS"
+    }
+   ]
+  },
+  {
+   "section": "1.3.2",
+   "name": "Other Infectious / Communicable Diseases",
+   "items": [
+    {
+     "code": "CD01",
+     "label": "Diarrhoea - Acute"
+    },
+    {
+     "code": "CD02",
+     "label": "Diarrhoea - Persistent"
+    },
+    {
+     "code": "CD03",
+     "label": "Urethral discharges"
+    },
+    {
+     "code": "CD04",
+     "label": "Genital ulcers"
+    },
+    {
+     "code": "CD05",
+     "label": "Sexually Transmitted Infection due to Sexual Gender Based Violence"
+    },
+    {
+     "code": "CD06",
+     "label": "Other Sexually Transmitted Infections"
+    },
+    {
+     "code": "CD07",
+     "label": "Urinary Tract Infections (UTI)"
+    },
+    {
+     "code": "CD08",
+     "label": "Intestinal Worms"
+    },
+    {
+     "code": "CD09",
+     "label": "Haematological Meningitis"
+    },
+    {
+     "code": "CD10",
+     "label": "Other types of meningitis"
+    },
+    {
+     "code": "CD11",
+     "label": "Cough or cold - No pneumonia"
+    },
+    {
+     "code": "CD12",
+     "label": "Pneumonia"
+    },
+    {
+     "code": "CD13",
+     "label": "Severe Pneumonia"
+    },
+    {
+     "code": "CD14",
+     "label": "Skin Diseases"
+    },
+    {
+     "code": "CD15",
+     "label": "Tetanus (over 28 days)"
+    },
+    {
+     "code": "CD16",
+     "label": "Sleeping sickness"
+    },
+    {
+     "code": "CD17",
+     "label": "Pelvic Inflammatory Disease (PID)"
+    },
+    {
+     "code": "CD18",
+     "label": "Brucellosis"
+    }
+   ]
+  },
+  {
+   "section": "1.3.3",
+   "name": "Neonatal Diseases",
+   "items": [
+    {
+     "code": "ND01",
+     "label": "Neonatal Sepsis (0-7days)"
+    },
+    {
+     "code": "ND02",
+     "label": "Neonatal Sepsis (8-28days)"
+    },
+    {
+     "code": "ND03",
+     "label": "Neonatal Pneumonia (0-7days)"
+    },
+    {
+     "code": "ND04",
+     "label": "Neonatal Pneumonia (8-28days)"
+    },
+    {
+     "code": "ND05",
+     "label": "Neonatal Meningitis"
+    },
+    {
+     "code": "ND06",
+     "label": "Neonatal Jaundice"
+    },
+    {
+     "code": "ND07",
+     "label": "Premature baby (as a Condition for management)"
+    },
+    {
+     "code": "ND08",
+     "label": "Other Neonatal Conditions"
+    }
+   ]
+  },
+  {
+   "section": "1.3.4",
+   "name": "Non Communicable Diseases/Conditions",
+   "items": [
+    {
+     "code": "NC01",
+     "label": "Sickle Cell Anaemia"
+    },
+    {
+     "code": "NC02",
+     "label": "Other types of Anaemia"
+    },
+    {
+     "code": "NC03",
+     "label": "Gastro-Intestinal Disorders (non-Infective)"
+    },
+    {
+     "code": "NC04",
+     "label": "Pain Requiring Palliative Care"
+    }
+   ]
+  },
+  {
+   "section": "1.3.5",
+   "name": "Oral diseases",
+   "items": [
+    {
+     "code": "OD01",
+     "label": "Dental Caries"
+    },
+    {
+     "code": "OD02",
+     "label": "Gingivitis"
+    },
+    {
+     "code": "OD03",
+     "label": "HIV-Oral lesions"
+    },
+    {
+     "code": "OD04",
+     "label": "Oral Cancers"
+    },
+    {
+     "code": "OD05",
+     "label": "Other Oral Conditions"
+    }
+   ]
+  },
+  {
+   "section": "1.3.6",
+   "name": "ENT conditions",
+   "items": [
+    {
+     "code": "EN01",
+     "label": "Otitis media acute and chronic"
+    },
+    {
+     "code": "EN02",
+     "label": "Mastoiditis"
+    },
+    {
+     "code": "EN03",
+     "label": "Hearing loss"
+    },
+    {
+     "code": "EN04",
+     "label": "Rhinitis"
+    },
+    {
+     "code": "EN05",
+     "label": "Sinusitis"
+    },
+    {
+     "code": "EN06",
+     "label": "Epixtasis"
+    },
+    {
+     "code": "EN07",
+     "label": "Adenoid Hypertrophy"
+    },
+    {
+     "code": "EN08",
+     "label": "Foreign Body in nose ear and aero-digestive system"
+    },
+    {
+     "code": "EN09",
+     "label": "Infected pre-auricular sinuses and abscess"
+    },
+    {
+     "code": "EN10",
+     "label": "Otitis external"
+    },
+    {
+     "code": "EN11",
+     "label": "Mastoid abscess"
+    },
+    {
+     "code": "EN12",
+     "label": "Vertigo"
+    },
+    {
+     "code": "EN13",
+     "label": "Tonsillitis"
+    },
+    {
+     "code": "EN14",
+     "label": "Tonsillar hypertrophy"
+    },
+    {
+     "code": "EN15",
+     "label": "Tinnitus"
+    },
+    {
+     "code": "EN16",
+     "label": "Head and neck cancers"
+    },
+    {
+     "code": "EN17",
+     "label": "Other ENT conditions"
+    }
+   ]
+  },
+  {
+   "section": "1.3.7",
+   "name": "Eye conditions",
+   "items": [
+    {
+     "code": "EC01",
+     "label": "Allergic conjunctivitis"
+    },
+    {
+     "code": "EC02",
+     "label": "Bacterial Conjunctivitis"
+    },
+    {
+     "code": "EC03",
+     "label": "Ophthalmia neonatorum"
+    },
+    {
+     "code": "EC04",
+     "label": "Other Forms of Conjunctivitis"
+    },
+    {
+     "code": "EC05",
+     "label": "Corneal Ulcers/ Keratitis"
+    },
+    {
+     "code": "EC06",
+     "label": "Un Operable Cataract (>6/60)"
+    },
+    {
+     "code": "EC07",
+     "label": "Operable Cataract (< 6/60)"
+    },
+    {
+     "code": "EC08",
+     "label": "Refractive errors"
+    },
+    {
+     "code": "EC09",
+     "label": "Glaucoma"
+    },
+    {
+     "code": "EC10",
+     "label": "Trachoma"
+    },
+    {
+     "code": "EC11",
+     "label": "Vitamin A Deficiency"
+    },
+    {
+     "code": "EC12",
+     "label": "Ocular trauma and Burns"
+    },
+    {
+     "code": "EC13",
+     "label": "Diabetic Retinopathy (All stages)"
+    },
+    {
+     "code": "EC14",
+     "label": "Chorioretinal, Macular & Vitreous Disorders"
+    },
+    {
+     "code": "EC15",
+     "label": "Uveitis"
+    },
+    {
+     "code": "EC16",
+     "label": "Endophthalmitis"
+    },
+    {
+     "code": "EC17",
+     "label": "Corneal scars (Non trachomatous)"
+    },
+    {
+     "code": "EC18",
+     "label": "Tumours"
+    },
+    {
+     "code": "EC19",
+     "label": "Strabismus (All types)"
+    },
+    {
+     "code": "EC20",
+     "label": "Ptosis and other lid Disorders"
+    },
+    {
+     "code": "EC21",
+     "label": "Squamous Cell Carcinoma of Conjunctiva"
+    },
+    {
+     "code": "EC22",
+     "label": "Retinoblastoma"
+    },
+    {
+     "code": "EC23",
+     "label": "Other Malignant Tumours"
+    },
+    {
+     "code": "EC24",
+     "label": "Other Benign Tumours/Growths"
+    },
+    {
+     "code": "EC25",
+     "label": "Other Eye Disorders"
+    },
+    {
+     "code": "EC26",
+     "label": "Blindness"
+    },
+    {
+     "code": "EC27",
+     "label": "Other eye conditions"
+    },
+    {
+     "code": "EC28",
+     "label": "Spectacles Dispensed",
+     "pickable": false
+    }
+   ]
+  },
+  {
+   "section": "1.3.8",
+   "name": "Mental Health",
+   "items": [
+    {
+     "code": "MH01",
+     "label": "Anxiety Disorders"
+    },
+    {
+     "code": "MH02",
+     "label": "Anxiety Disorders due to gender based violence"
+    },
+    {
+     "code": "MH03",
+     "label": "Unipolar Depressive Disorder"
+    },
+    {
+     "code": "MH04",
+     "label": "Bipolar disorder"
+    },
+    {
+     "code": "MH05",
+     "label": "Schizophrenia"
+    },
+    {
+     "code": "MH06",
+     "label": "Post-Traumatic Stress Disorder"
+    },
+    {
+     "code": "MH07",
+     "label": "Epilepsy"
+    },
+    {
+     "code": "MH08",
+     "label": "HIV related psychosis"
+    },
+    {
+     "code": "MH09",
+     "label": "Alzheimer's disease"
+    },
+    {
+     "code": "MH10",
+     "label": "HIV related dementia"
+    },
+    {
+     "code": "MH11",
+     "label": "Alcohol related Dementia"
+    },
+    {
+     "code": "MH12",
+     "label": "Dementia due to stroke (Diabetes, Hypertension)"
+    },
+    {
+     "code": "MH13",
+     "label": "Other form of Dementia"
+    },
+    {
+     "code": "MH14",
+     "label": "Other Adult Mental Health Conditions"
+    },
+    {
+     "code": "MH15",
+     "label": "Internet addiction"
+    },
+    {
+     "code": "MH16",
+     "label": "Alcohol Use Disorder"
+    },
+    {
+     "code": "MH17",
+     "label": "Substance (Drug) use Disorder"
+    },
+    {
+     "code": "MH18",
+     "label": "Delirium"
+    },
+    {
+     "code": "MH19",
+     "label": "Intellectual disability"
+    },
+    {
+     "code": "MH20",
+     "label": "Autism spectrum disorders"
+    }
+   ]
+  },
+  {
+   "section": "1.3.9",
+   "name": "Neurological Disorders",
+   "items": [
+    {
+     "code": "NE01",
+     "label": "Aphasia or Loss of Language due to Stroke"
+    },
+    {
+     "code": "NE02",
+     "label": "Dysarthria or Speech Disorder due to Stroke"
+    },
+    {
+     "code": "NE03",
+     "label": "Parkinson's disease"
+    },
+    {
+     "code": "NE04",
+     "label": "Dementia or excessive forgetfulness due to advanced age"
+    },
+    {
+     "code": "NE05",
+     "label": "Amyotrophic Lateral Sclerosis (ALS)"
+    },
+    {
+     "code": "NE06",
+     "label": "Speech disorders due to Head Injuries (penetrating or closed)"
+    },
+    {
+     "code": "NE07",
+     "label": "Persons in Coma / Emergency Care"
+    },
+    {
+     "code": "NE08",
+     "label": "Alzheimer Disease"
+    },
+    {
+     "code": "NE09",
+     "label": "Down Syndrome (DS)"
+    },
+    {
+     "code": "NE10",
+     "label": "CP / PMLD"
+    },
+    {
+     "code": "NE11",
+     "label": "Child abuse and Neglect"
+    },
+    {
+     "code": "NE12",
+     "label": "Attention Deficit Hyperactivity disorder (ADHD)"
+    },
+    {
+     "code": "NE13",
+     "label": "Learning Disability"
+    },
+    {
+     "code": "NE14",
+     "label": "Conduct disorders"
+    },
+    {
+     "code": "NE15",
+     "label": "Eating disorders (anorexia, Bulimia, other feeding)"
+    },
+    {
+     "code": "NE16",
+     "label": "Somatoform disorders"
+    },
+    {
+     "code": "NE17",
+     "label": "Sleeping Disorders"
+    },
+    {
+     "code": "NE18",
+     "label": "Enuresis/Encopresis"
+    },
+    {
+     "code": "NE19",
+     "label": "Other Childhood Mental Disorders"
+    },
+    {
+     "code": "NE20",
+     "label": "Mental illness due other Medical/ surgical conditions"
+    },
+    {
+     "code": "NE21",
+     "label": "Attempted Suicide/Self-harm"
+    }
+   ]
+  },
+  {
+   "section": "1.3.10",
+   "name": "Chronic respiratory diseases",
+   "items": [
+    {
+     "code": "CR01",
+     "label": "Asthma"
+    },
+    {
+     "code": "CR02",
+     "label": "Chronic Obstructive Pulmonary Disease (COPD)"
+    }
+   ]
+  },
+  {
+   "section": "1.3.11",
+   "name": "Cancers",
+   "items": [
+    {
+     "code": "CA01",
+     "label": "Cervical Cancer"
+    },
+    {
+     "code": "CA02",
+     "label": "Prostate Cancer"
+    },
+    {
+     "code": "CA03",
+     "label": "Breast Cancer"
+    },
+    {
+     "code": "CA04",
+     "label": "Lung Cancer"
+    },
+    {
+     "code": "CA05",
+     "label": "Liver Cancer"
+    },
+    {
+     "code": "CA06",
+     "label": "Colon Cancer"
+    },
+    {
+     "code": "CA07",
+     "label": "Kaposis Sarcoma"
+    },
+    {
+     "code": "CA08",
+     "label": "Other Cancers"
+    }
+   ]
+  },
+  {
+   "section": "1.3.12",
+   "name": "Physiotherapy",
+   "items": [
+    {
+     "code": "PT01",
+     "label": "Muscular disorders"
+    },
+    {
+     "code": "PT02",
+     "label": "Joint dysfunction"
+    },
+    {
+     "code": "PT03",
+     "label": "Soft tissue injuries"
+    },
+    {
+     "code": "PT04",
+     "label": "Chronic respiratory diseases"
+    },
+    {
+     "code": "PT05",
+     "label": "Chest trauma/Injury"
+    },
+    {
+     "code": "PT06",
+     "label": "Paralysis due to spinal cord injury and other diseases"
+    },
+    {
+     "code": "PT07",
+     "label": "Cerebral Palsy/Delayed motor or sensory developmental milestones (CP)"
+    },
+    {
+     "code": "PT08",
+     "label": "Upper Motor Neuron lesions (UMN)"
+    },
+    {
+     "code": "PT09",
+     "label": "Facial palsy"
+    },
+    {
+     "code": "PT10",
+     "label": "Lower motor neuron lesions (LMN)"
+    },
+    {
+     "code": "PT11",
+     "label": "Gynaecological, obstetric and urogenital conditions"
+    },
+    {
+     "code": "PT12",
+     "label": "Amputee"
+    },
+    {
+     "code": "PT13",
+     "label": "Altered Posture and gait"
+    },
+    {
+     "code": "PT14",
+     "label": "Injection neuritis/Acute flaccid paralysis"
+    },
+    {
+     "code": "PT15",
+     "label": "Congenital abnormalities"
+    },
+    {
+     "code": "PT16",
+     "label": "Spine disorders e.g neck, thoracic, lumber, coccygeal pains"
+    },
+    {
+     "code": "PT17",
+     "label": "Lymph oedema"
+    },
+    {
+     "code": "PT18",
+     "label": "Patients prescribed with assistive devices",
+     "pickable": false
+    },
+    {
+     "code": "PT19",
+     "label": "Others"
+    }
+   ]
+  },
+  {
+   "section": "1.3.13",
+   "name": "Occupational therapy conditions",
+   "items": [
+    {
+     "code": "OT01",
+     "label": "Neuro-developmental Disorders"
+    },
+    {
+     "code": "OT02",
+     "label": "Sensory Integration disorders"
+    },
+    {
+     "code": "OT03",
+     "label": "Adult Neurological Disorders"
+    },
+    {
+     "code": "OT04",
+     "label": "Burn injuries"
+    },
+    {
+     "code": "OT05",
+     "label": "Post-burns contractures"
+    },
+    {
+     "code": "OT06",
+     "label": "Orthopaedic Conditions"
+    },
+    {
+     "code": "OT07",
+     "label": "Mental Health Conditions"
+    },
+    {
+     "code": "OT08",
+     "label": "Birth Defects and Trauma"
+    },
+    {
+     "code": "OT09",
+     "label": "Arthrogryposis"
+    },
+    {
+     "code": "OT10",
+     "label": "HIV/ AIDS"
+    },
+    {
+     "code": "OT11",
+     "label": "Diabetes"
+    },
+    {
+     "code": "OT12",
+     "label": "Cancer"
+    },
+    {
+     "code": "OT13",
+     "label": "Other chronic conditions"
+    },
+    {
+     "code": "OT14",
+     "label": "Cardiac Conditions"
+    },
+    {
+     "code": "OT15",
+     "label": "Patients prescribed with assistive devices",
+     "pickable": false
+    }
+   ]
+  },
+  {
+   "section": "1.3.14",
+   "name": "Speech and Language Therapy",
+   "items": [
+    {
+     "code": "SL01",
+     "label": "Speech and language delay/ disorder"
+    },
+    {
+     "code": "SL02",
+     "label": "Motor speech disorders"
+    },
+    {
+     "code": "SL03",
+     "label": "Hearing impairments"
+    },
+    {
+     "code": "SL04",
+     "label": "Voice disorders"
+    },
+    {
+     "code": "SL05",
+     "label": "Dysfluency /stammering"
+    },
+    {
+     "code": "SL06",
+     "label": "Acquired neurological disorders"
+    },
+    {
+     "code": "SL07",
+     "label": "Cleft lip and palate"
+    },
+    {
+     "code": "SL08",
+     "label": "Others"
+    }
+   ]
+  },
+  {
+   "section": "1.3.15",
+   "name": "Disabilities",
+   "items": [
+    {
+     "code": "DS01",
+     "label": "Individuals with Difficulty in seeing"
+    },
+    {
+     "code": "DS02",
+     "label": "Individuals with Albinism"
+    },
+    {
+     "code": "DS03",
+     "label": "Individuals with Difficulty in hearing"
+    },
+    {
+     "code": "DS04",
+     "label": "Individuals with Speech Difficulties"
+    },
+    {
+     "code": "DS05",
+     "label": "Individuals with delayed age specific motor development"
+    },
+    {
+     "code": "DS06",
+     "label": "Individuals with Dwarfism"
+    },
+    {
+     "code": "DS07",
+     "label": "Individuals with Difficulty understanding"
+    },
+    {
+     "code": "DS08",
+     "label": "Individuals with Difficulty in remembering"
+    },
+    {
+     "code": "DS09",
+     "label": "Individuals with Difficulty in reading"
+    },
+    {
+     "code": "DS10",
+     "label": "Individuals with Difficulty in writing"
+    },
+    {
+     "code": "DS11",
+     "label": "Individuals with Difficulty in self-care"
+    },
+    {
+     "code": "DS12",
+     "label": "Individuals with Mentally impairment"
+    },
+    {
+     "code": "DS13",
+     "label": "Individuals with Emotionally impairment"
+    }
+   ]
+  },
+  {
+   "section": "1.3.16",
+   "name": "Cardiovascular diseases",
+   "items": [
+    {
+     "code": "CV01",
+     "label": "Stroke/ Cardiovascular Accident (CVA)"
+    },
+    {
+     "code": "CV02",
+     "label": "Hypertension"
+    },
+    {
+     "code": "CV03",
+     "label": "Heart failure"
+    },
+    {
+     "code": "CV04",
+     "label": "Ischemic Heart Diseases"
+    },
+    {
+     "code": "CV05",
+     "label": "Rheumatic Heart Diseases"
+    },
+    {
+     "code": "CV06",
+     "label": "Chronic Heart Diseases"
+    },
+    {
+     "code": "CV07",
+     "label": "Other Cardiovascular Diseases"
+    }
+   ]
+  },
+  {
+   "section": "1.3.17",
+   "name": "Endocrine and Metabolic Disorders",
+   "items": [
+    {
+     "code": "EM01",
+     "label": "Diabetes mellitus"
+    },
+    {
+     "code": "EM02",
+     "label": "Thyroid Disease"
+    },
+    {
+     "code": "EM03",
+     "label": "Other Endocrine and Metabolic Diseases"
+    }
+   ]
+  },
+  {
+   "section": "1.3.18",
+   "name": "Injuries",
+   "items": [
+    {
+     "code": "IN01",
+     "label": "Jaw injuries"
+    },
+    {
+     "code": "IN02a",
+     "label": "Road Traffic Injuries: Motor Vehicle"
+    },
+    {
+     "code": "IN02b",
+     "label": "Road Traffic Injuries: Motor Cycle"
+    },
+    {
+     "code": "IN02c",
+     "label": "Road Traffic Injuries: Bicycles"
+    },
+    {
+     "code": "IN02d",
+     "label": "Road Traffic Injuries: Others"
+    },
+    {
+     "code": "IN03",
+     "label": "Injuries due to Gender based violence"
+    },
+    {
+     "code": "IN04",
+     "label": "Injuries (Trauma due to other causes)"
+    },
+    {
+     "code": "IN05a",
+     "label": "Animal bites: Domestic"
+    },
+    {
+     "code": "IN05b",
+     "label": "Animal bites: Wild"
+    },
+    {
+     "code": "IN06",
+     "label": "Snake bites"
+    },
+    {
+     "code": "IN07",
+     "label": "Insect bites"
+    }
+   ]
+  },
+  {
+   "section": "1.3.20",
+   "name": "Neglected Tropical Diseases (NTDs)",
+   "items": [
+    {
+     "code": "NT01",
+     "label": "Leishmaniasis"
+    },
+    {
+     "code": "NT02",
+     "label": "Lymphatic Filariasis (hydrocele)"
+    },
+    {
+     "code": "NT03",
+     "label": "Lymphatic Filariasis (Lympoedema)"
+    },
+    {
+     "code": "NT04",
+     "label": "Urinary Schistosomiasis"
+    },
+    {
+     "code": "NT05",
+     "label": "Intestinal Schistosomiasis"
+    },
+    {
+     "code": "NT06",
+     "label": "Onchocerciasis"
+    }
+   ]
+  },
+  {
+   "section": "1.3.21",
+   "name": "Maternal conditions",
+   "items": [
+    {
+     "code": "MC01",
+     "label": "Abortions due to Gender-Based Violence (GBV)"
+    },
+    {
+     "code": "MC02",
+     "label": "Abortions due to other causes"
+    },
+    {
+     "code": "MC03",
+     "label": "Number of Post Abortion women who received FP",
+     "pickable": false
+    },
+    {
+     "code": "MC04",
+     "label": "Malaria in pregnancy"
+    },
+    {
+     "code": "MC05",
+     "label": "High blood pressure in pregnancy"
+    },
+    {
+     "code": "MC06",
+     "label": "Obstructed labour"
+    },
+    {
+     "code": "MC07",
+     "label": "Puerperal sepsis"
+    },
+    {
+     "code": "MC08",
+     "label": "Haemorrhage related to pregnancy (APH)"
+    },
+    {
+     "code": "MC09",
+     "label": "Haemorrhage related to pregnancy (PPH)"
+    },
+    {
+     "code": "MC10",
+     "label": "Breast cancer: Total Screened / Number with breast cancer",
+     "pickable": false
+    },
+    {
+     "code": "MC11",
+     "label": "Cervical cancer: Total Screened / Number with cervical cancer",
+     "pickable": false
+    }
+   ]
+  },
+  {
+   "section": "1.3.22",
+   "name": "Other OPD conditions",
+   "items": [
+    {
+     "code": "OP01",
+     "label": "All others"
+    },
+    {
+     "code": "OP02",
+     "label": "Other diagnoses (specify priority diseases for District): Disease code1, code2, code3"
+    }
+   ]
+  }
+ ]
+}

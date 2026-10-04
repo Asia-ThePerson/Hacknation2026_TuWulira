@@ -91,13 +91,13 @@ flowchart TD
 flowchart TD
   A[Patient answers on own phone] --> B{Danger-sign yes?}
   B -->|No| C[Card waits for the clinic visit]
-  B -->|Yes| S[SMS: come to your clinic immediately, with clinic address]
+  B -->|Yes| S[SMS: [Clinic name]: please come in today. Date and clinic name only]
   S --> P{May we tell the clinic and share your answers?}
   P -->|Yes| Y[Alert and card sent to the clinic Android at the triage desk]
   P -->|No| N[Nothing shared]
 ```
 
-Open: this SMS goes beyond the "date and clinic name only" rule (PRD open question 5).
+The SMS keeps to the "date and clinic name only" rule (PR12), because household phones are shared.
 
 ## 7. "Not sure, ask a person"
 

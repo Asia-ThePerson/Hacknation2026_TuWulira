@@ -24,14 +24,14 @@ Every field the tool can touch, and who is allowed to fill it. This is the "fixe
 | `age_years` | Intake (section 3) | 3 to 5 (exact column to check) | AI drafts, clinician confirms | 0 to 120 | Intake keypad or dictation | Under 5 changes which danger signs apply |
 | `sex` | Intake (section 3) | 3 to 5 (exact column to check) | AI drafts, clinician confirms | `female`, `male` | Intake buttons or dictation |  |
 | `village` | Intake (section 3) | 3 to 5 (exact column to check) | AI drafts, clinician confirms | Free text, copied word for word from what was said | Intake | Never inferred. Includes parish. |
-| `attendance` | Intake (section 3) | 8 | AI drafts, clinician confirms | `new`, `re_attendance` | Intake buttons or dictation |  |
+| `attendance` | Intake (section 3) | 8 | AI drafts, clinician confirms | `new` (HMIS 105 OA01), `re_attendance` (OA02) | Intake buttons or dictation |  |
 | `weight_kg` | Consultation | 6 | AI drafts, clinician confirms | 0.5 to 250 | Nurse types it, or dictates and confirms | Never asked at intake |
 | `temperature_c` | Consultation | 6 | AI drafts, clinician confirms | 30.0 to 45.0 | Nurse types it, or dictates and confirms | Never asked at intake |
 | `patient_reported_symptoms` | Intake (sections 4 and 5) | Consultation notes, not a column | AI drafts, clinician confirms | Fixed symptom list in field-schemas.ts | Intake | Shown under the heading "Patient reported". Never "findings". |
 | `danger_sign_flag` | Intake (section 2) or consultation | n/a (urgent flag) | AI drafts, clinician confirms | Sourced danger-sign IDs in [rules/danger-signs.json](../../rules/danger-signs.json) | Intake buttons or dictation | Triggers "Tell the nurse now". Only a person can clear it. |
 | `referral` | Consultation | 12 | AI drafts, clinician confirms | `none`, `referred` | Clinician dictation or pick | Never asked at intake. Where to refer is clinician only |
 | `next_visit_date` | Consultation | TODO | AI drafts, clinician confirms | Date | Dictation | The only clinical detail that may reach an SMS, as a bare date |
-| `diagnosis` | Consultation | 9 | Clinician only | HMIS 105 list (exact list still open), or clinician's own words | Clinician | Never asked at intake. Implies a diagnosis |
+| `diagnosis` | Consultation | 9 | Clinician only | HMIS 105 section 1.3 code from [config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json), or clinician's own words | Clinician | Never asked at intake. Implies a diagnosis |
 | `tests_and_results` | Consultation | TODO | Clinician only | Clinician's own words | Clinician |  |
 | `treatment` | Consultation | 10 | Clinician only | Units x doses per day x days, or clinician's own words | Clinician | Never asked at intake. Implies a prescription |
 | `referral_destination` | Consultation | 12 | Clinician only | Clinician's own words | Clinician |  |

@@ -5,6 +5,7 @@ The question list and its audio prompts (component 2 in the [README](../README.m
 | Path | What |
 |---|---|
 | [questions.lg-UG.json](questions.lg-UG.json) | Luganda, Uganda. Every question: id, section, Luganda text, English text, audio file, answer type, next-question rule, target field |
+| [hmis105-diagnoses.json](hmis105-diagnoses.json) | Official HMIS 105 (print version September 2019) section 1.3 diagnosis list with codes, plus age bands and attendance and referral codes. Used for the clinician's pick-list and the tally |
 | `audio/lg-UG/` | Recorded Luganda prompts, one file per question, named by question id. Not yet recorded. |
 
 ## Rules for editing

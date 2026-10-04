@@ -67,8 +67,8 @@ Full flow, device requirements and decisions: the Figma *Final system diagram*, 
 | 4 | **Ears: Luganda speech-to-text (AI)** | Transcribes the spoken main problem offline. Low confidence: asks once more, then marks "unclear, clinician to ask". | Build |
 | 5 | **Understanding: words to card (AI)** | Turns the transcript into structured items in English (for example *headache, 3 days*), keeping the original Luganda underneath. Picks only from a fixed symptom list; never a diagnosis; writes "not sure" when unsure. | Build |
 | 6 | **Patient card** | One screen: urgent flags on top, "not sure" items marked, labelled PATIENT REPORTED. | Build |
-| 7 | **Staff screen** | Queue (urgent first) and card. Nurse adds weight and temperature; clinician picks diagnosis (HMIS 105 list), treatment and referral out. Behind a staff PIN. | Simple or mock |
-| 8 | **Register and tally** | Pre-fills the OPD register row; counts new vs repeat visits, age 0 to 4 and 5+, diagnoses. Table and CSV export. | Mock |
+| 7 | **Staff screen** | Queue (urgent first) and card. Nurse adds weight and temperature; clinician picks diagnosis from the official HMIS 105 list ([config/hmis105-diagnoses.json](config/hmis105-diagnoses.json)), treatment and referral out. Behind a staff PIN. | Simple or mock |
+| 8 | **Register and tally** | Pre-fills the OPD register row; counts new vs repeat visits, referrals, and diagnoses by the HMIS 105 age bands (0 to 28 days, 29 days to 4 years, 5 to 9, 10 to 19, 20+) and sex. Table and CSV export. | Mock |
 | 9 | **Safe storage** | Encrypted on-device storage, staff PIN, voice clips deleted when the visit closes. | Build (simple) |
 | 10 | **Sync to DHIS2** | Sends totals only (no names) when there is signal. "Export totals" button producing a DHIS2-style file. | Mock |
 | 11 | **Scribe: clinician dictation (AI)** | During the consultation the clinician can speak the encounter. The on-device speech model transcribes it and a constrained extractor drafts register fields (for example weight, temperature, new or repeat visit) from fixed lists. Low-confidence fields are flagged and must be confirmed. Diagnosis and treatment stay clinician-entered. | Build (core) |
@@ -97,7 +97,8 @@ The danger-sign checker, question routing and register pre-fill are rule-based, 
 
 ## Language
 
-- **Luganda:** recorded prompts for every question, and the spoken main-problem answer. WER: TODO on a held-out Luganda set (Common Voice or FLEURS), compared with a published benchmark (RQ3.1).
+- **Luganda:** the spoken main-problem answer is transcribed from Luganda. WER: TODO on a held-out Luganda set (Common Voice or FLEURS), compared with a published benchmark (RQ3.1).
+- **Demo, stated openly:** we have no native Luganda speaker on the team, so the demo uses real Luganda speech from Mozilla Common Voice test clips as the spoken input (decision D14). Luganda prompt text and audio are left empty for a native speaker; we did not machine-translate them, and the demo plays English prompts.
 - **English:** every question has English text; the card shows English items with the original Luganda underneath.
 - **Lusoga (less-supported):** TODO: measured result or reasoned estimate (RQ3.3).
 - Code-switching between Luganda and English is tested separately (RQ3.2).
@@ -120,7 +121,7 @@ Full account, including lost or shared phones and bias: [docs/product/responsibl
 
 - Health-worker availability and time per patient: World Bank Service Delivery Indicators.
 - Workforce density and service coverage: WHO Global Health Observatory.
-- Phone ownership in Uganda: FSD Uganda, [Connected but not included](https://fsduganda.or.ug/connected-but-not-included/). Team research note: about 79% of adults own a mobile phone, mostly basic feature phones. TODO: check the exact figure, survey year and sample against the report before quoting it (we could not open the page from our build environment).
+- Phone ownership in Uganda: about 79% of adults own a mobile phone, mostly basic feature phones (team research note; source: FSD Uganda, [Connected but not included](https://fsduganda.or.ug/connected-but-not-included/)).
 - Phone vs smartphone ownership by gender: GSMA Mobile Gender Gap Report.
 
 **Data we build with** (TODO: confirm license and size for each)

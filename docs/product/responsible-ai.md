@@ -49,7 +49,7 @@ Nothing goes to a cloud AI service. Storage is encrypted on the device and opene
 
 A recorded spoken yes, in Luganda, before any question is asked or anything is recorded. If the patient says no or says nothing, the tool asks nothing more and the visit goes on as normal on paper. TODO: write the consent prompt with a native speaker (RQ5.1); none is lined up yet.
 
-**Remote danger alerts (Path A, design only, decision D4):** if a patient answering on their own phone reports a danger sign, they are told to come to the clinic, then asked whether the clinic may be notified and see their answers. Yes: the clinic gets the alert and the card. No: nothing is shared with the clinic.
+**Remote danger alerts (Path A, design only, decision D4):** if a patient answering on their own phone reports a danger sign, they get the SMS "[Clinic name]: please come in today." (only a date and the clinic's name, per PR12), then are asked whether the clinic may be notified and see their answers. Yes: the clinic gets the alert and the card. No: nothing is shared with the clinic.
 
 ## The "ask a person" path
 

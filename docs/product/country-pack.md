@@ -9,7 +9,7 @@ What changes when TuWulira moves to a new country or language. Answers RQ7.3. Th
 | Question file | Luganda and English question list (draft) | One JSON file per language and country: every question, both texts, audio file, answer type, branching and target register column | [config/questions.lg-UG.json](../../config/questions.lg-UG.json) |
 | Prompts and strings | Luganda and English (Luganda not yet written or recorded) | Recorded audio prompts and on-screen strings, written and recorded by native speakers | `config/audio/`, `app/shared/i18n/` |
 | Speech model | Luganda (candidates: Meta MMS or a Sunbird AI model; see [models/README.md](../../models/README.md)) | A small speech model for the new language, with a measured WER on a public benchmark (for example FLEURS) and on 20 to 30 local clips | `models/`, `models/cards/` |
-| Register map | Uganda HMIS 031 OPD register and HMIS 105 (to verify, RQ1.2) | The country's register columns, diagnosis list and DHIS2 data elements | `app/shared/field-schemas.ts`, [register-field-map.md](register-field-map.md) |
+| Register map | Uganda HMIS 031 OPD register (to verify, RQ1.2) and HMIS 105 diagnosis list ([config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json)) | The country's register columns, diagnosis list and DHIS2 data elements | `app/shared/field-schemas.ts`, [register-field-map.md](register-field-map.md) |
 | Danger-sign list | WHO IMCI, Uganda Clinical Guidelines, WHO maternal danger signs | The country's own clinical guidelines, plus WHO lists. Never invented. | [rules/danger-signs.json](../../rules/danger-signs.json) |
 
 ## What stays the same

@@ -14,7 +14,7 @@ import { read, useStored, write } from '../store.ts';
 export const CALL_KEY = 'tuwulira.call.draft';
 
 type Key = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0' | '*' | '#' | 'call' | 'ok' | 'end';
-type Phase =
+export type Phase =
   | { k: 'home' }
   | { k: 'dialing' }
   | { k: 'incoming' }
@@ -59,7 +59,11 @@ function keyMap(step: Step) {
 
 const mmss = (s: number) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
-export function CallPage() {
+// Set from outside (the desktop flow console) to jump straight to a step with a prepared, synthetic draft.
+export type Jump = { nonce: number; phase: Phase; draft: Draft | null; retry?: boolean; outcome?: Outcome };
+export type CallState = { phase: Phase; retry: boolean };
+
+export function CallPage({ jump, onState, inConsole }: { jump?: Jump; onState?: (s: CallState) => void; inConsole?: boolean } = {}) {
   const draft = useStored<Draft | null>(CALL_KEY, null);
   const [phase, setPhase] = useState<Phase>({ k: 'home' });
   const [callStart, setCallStart] = useState(0);
@@ -77,6 +81,23 @@ export function CallPage() {
     const d = load();
     if (d && !d.urgent) write(CALL_KEY, null);
   }, []);
+
+  useEffect(() => {
+    if (!jump) return;
+    write(CALL_KEY, jump.draft);
+    setPhase(jump.phase);
+    setEntry('');
+    setErr('');
+    setRetry(jump.retry ?? false);
+    setOutcome(jump.outcome ?? 'clear');
+    setRecStart(Date.now());
+    setCallStart(Date.now() - 60_000);
+    setCode(jump.draft?.visitCode ?? '');
+  }, [jump]);
+
+  useEffect(() => {
+    onState?.({ phase, retry });
+  }, [phase, retry, onState]);
 
   const onCall = !['home', 'dialing', 'incoming', 'hungup'].includes(phase.k);
   useEffect(() => {
@@ -474,6 +495,8 @@ export function CallPage() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
       if (t && (t.closest('input, select, textarea, [contenteditable="true"]') || e.metaKey || e.ctrlKey || e.altKey)) return;
+      // Enter or Space on a button outside the phone belongs to that button.
+      if ((e.key === 'Enter' || e.key === ' ') && t?.closest('button, a') && !t.closest('.basic-phone')) return;
       const k = /^[0-9*#]$/.test(e.key) ? (e.key as Key) : e.key === 'Enter' ? '#' : e.key === 'Escape' ? 'end' : e.key.toLowerCase() === 'c' ? 'call' : null;
       if (k && view.keys[k]) {
         e.preventDefault();
@@ -490,7 +513,7 @@ export function CallPage() {
   const clock = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <div className="call-page">
+    <div className={`call-page${inConsole ? ' in-console' : ''}`}>
       <main className="basic-phone" aria-label="Patient's basic phone">
         <div className="bp-status">
           <span>{clock}</span>

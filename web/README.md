@@ -20,11 +20,13 @@ Open `#/call` (the patient's basic phone) and `#/clinic` in two tabs of the same
 
 `#/call` shows the patient's own basic phone in the Figma patient-screen style: missed call, the clinic line calls back, each question as "You hear", answers on a working keypad (1 Yes, 2 No, 3 Not sure, 0 Ask clinician, # Done, * Not sure or I do not know, OK clears a number). A computer keyboard works too. It runs the same question set, routing and danger-sign rules as the intake phone. Following D4, a danger answer asks permission before anything reaches the clinic; until then, or after a hang-up, nothing is shared. The call and the speech step are simulated: a prototype control picks a synthetic transcript. Code: [src/call/](src/call/).
 
+On a desktop, `#/call` opens as a walkthrough laid out like the wireframes: flows on the left (call back and safety, registration, the problem, danger sign, not sure, no consent), the working phone in the middle, and the steps of the chosen flow on the right with what each one does and its IDs. Click a step to jump the phone there with a synthetic record, or press keys and the step list follows. Phones show the phone only.
+
 ### Device frames (desktop)
 
 On a desktop browser (window at least 1024 px wide, with a mouse), each screen shows inside the device it runs on (D33), like the Figma frames:
 
-- `#/call`: the patient's basic phone, which draws its own body and keypad.
+- `#/call`: the patient's basic phone, in the walkthrough described above.
 - `#/intake`: the intake phone, an Android smartphone (360 x 720 screen), for staff-assisted walk-ins.
 - `#/clinic`: the clinic device, an Android tablet in landscape (900 x 600 screen).
 - `#/both`: the basic phone and the clinic tablet side by side. Finish the call and the card appears in the clinic queue, which suits the demo video.

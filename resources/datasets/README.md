@@ -90,7 +90,7 @@ Full problem statement and what we do not claim: [problem-statement.md](../../do
 
 | Priority | Source | Publisher | License | Size | Used for | Status | Card |
 |---|---|---|---|---|---|---|---|
-| ★ | HMIS 105: Health Unit Outpatient Monthly Report, print version September 2019 | Ministry of Health, Uganda | to verify (government form; PDF kept out of the repo) | 32-page PDF; 246 rows from section 1.3 used | build: diagnosis pick-list, tally codes and age bands ([config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json)) | reviewed for section 1.3 | |
+| ★ | HMIS 105: Health Unit Outpatient Monthly Report, print version September 2019 | Ministry of Health, Uganda | No licence found: a Ministry of Health, Uganda government reporting form. Used only as a column and code reference; the PDF is not redistributed | 32-page PDF; 246 rows from section 1.3 used | build: diagnosis pick-list, tally codes and age bands ([config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json)) | reviewed for section 1.3 | |
 | ★ | Connected but not included | FSD Uganda, https://fsduganda.or.ug/connected-but-not-included/ | Copyright FSD Uganda, all rights reserved (site notice); no open licence ([report page](https://fsduganda.or.ug/connected-but-not-included/)); cited as evidence only | TODO | evidence: phone ownership in Uganda (about 79% of adults, team research note) | not reviewed | |
 
 What these do not cover: the HMIS 105 form is the monthly summary, not the daily OPD register (HMIS 031), so register column numbers still need the HMIS 031 form (RQ1.2). It does not say which conditions are notifiable. The 2019 print version may have been revised since.

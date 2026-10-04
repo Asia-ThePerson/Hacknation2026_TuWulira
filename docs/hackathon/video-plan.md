@@ -2,7 +2,7 @@
 
 Required by brief section 08. **2 to 5 minutes total. No video means no shortlist.** Target: 4:00, which leaves a minute of slack.
 
-Each part links to its item in [CHECKLIST.md](../../CHECKLIST.md) section B. Fill the script slots; do not put a number on screen unless it is in [evaluation/results/](../../evaluation/results/).
+Each part links to its item in [CHECKLIST.md](../../CHECKLIST.md) section B. The script lines below are drafts; edit them in your own words. Do not put a number on screen unless it is in [evaluation/results/](../../evaluation/results/), and label laptop numbers as laptop.
 
 | # | Part | Target time | Checklist |
 |---|---|---|---|
@@ -14,50 +14,44 @@ Each part links to its item in [CHECKLIST.md](../../CHECKLIST.md) section B. Fil
 
 ## 1. Problem statement (B.1)
 
-Exact template, one sentence, on screen and spoken:
+Exact template, one sentence, on screen and spoken. Same sentence as [submission.md](submission.md):
 
-> Because of this tool, [user] will [action] by [when] that they would otherwise [not do / do late / do worse]; we know because [evidence].
-
-Script slot (TODO, needs RQ1.1 answered):
-> Because of this tool, **[a clinical officer at a rural Ugandan health centre]** will **[TODO: action]** by **[TODO: when]** that they would otherwise **[TODO]**; we know because **[TODO: evidence with source, year, country]**.
+> Because of this tool, health workers at rural Ugandan health centres will capture each patient's danger signs, main complaint in Luganda, and register details once, before the consultation, which would otherwise be gathered late in a rushed verbal history and re-written by hand into the OPD register and tally sheets; we know because more than half (52%) of public health providers were absent from their facility on an unannounced visit (World Bank Service Delivery Indicators, Uganda, 2013), and Uganda's outpatient process requires each visit to be written in the OPD register, then tallied by hand into monthly reports (Ministry of Health Uganda, HMIS Health Unit Procedure Manual, 2010).
 
 ## 2. AI capabilities and guardrails (B.2, B.3)
 
-Say what the AI does and why SMS, a spreadsheet or a search could not:
-- On-device speech recognition turns spoken Luganda into text. SMS cannot listen.
-- A constrained extractor turns that text into a fixed register form. A spreadsheet cannot read speech.
-- It flags what it is unsure of instead of guessing.
+Draft script:
+> SMS can ask yes or no. It cannot listen. TuWulira lets the patient describe the problem in their own words, in Luganda. Speech-to-text runs offline on the clinic's intake phone, and a labeler maps the words onto a fixed symptom list, keeping the original words. The patient's basic phone runs nothing; the clinic tablet runs no AI. Danger signs are not AI at all: they are rules from WHO and Uganda guidelines.
 
-Guardrails to **name on screen** (B.3): human makes every final call; "not sure, ask a person"; danger signs from WHO / Uganda guidelines only; no diagnosis or prescription; fixed list of answers; nothing added that nobody said; SMS says only date and clinic name.
-
-Script slot: TODO
+Guardrails to **name on screen** (B.3): a person makes every final call; "Not sure. Please ask a person."; danger signs from WHO and Uganda guidelines only; no diagnosis or prescription; fixed list of answers; nothing added that nobody said; permission before the clinic is told; SMS says only the clinic's name and a date.
 
 ## 3. Tool demo (B.4, B.7)
 
-Follow [docs/demo/demo-script.md](../demo/demo-script.md). Must show, end to end, with airplane mode visibly on:
-1. Patient gives a recorded spoken yes, then intake in Luganda. Card says "patient reported".
-2. Clinician dictates. Form fills; a low-confidence field is flagged and confirmed.
-3. **A live "not sure, ask a person" moment** (B.7). Use the silence or crying-child clip.
-4. A danger-sign phrase triggers "tell the nurse now".
-5. Airplane mode off, the queued record syncs.
+Follow [docs/demo/demo-script.md](../demo/demo-script.md) on the live prototype in side-by-side view (`#/both`). Must show:
+1. A missed call from a basic phone, the call back, and consent before any question.
+2. A danger-sign yes: come in today, permission, and the urgent card at the top of the clinic queue ("Tell the nurse now").
+3. **A live "Not sure. Please ask a person." moment** (B.7): silence on the main problem, one retry, then hand-over.
+4. The card on the clinic tablet labelled "Patient reported", a refused out-of-range value, and a clinician-only diagnosis.
+5. Real Luganda speech on the evidence page (`#/evaluation/audio`), with its caveats.
 
-Script slot: TODO
+Say on screen that the call and the speech step are simulated in the prototype.
 
 ## 4. Where it sits in the user's day, plus tech stack (B.5)
 
-Morning: staff switch on the shared device. Waiting room: patients do intake. Consult: clinician dictates. End of day or when signal appears: records sync to DHIS2. Show the stack: see [README.md](../../README.md#tech-stack) and measured model size, RAM and latency from [evaluation/results/](../../evaluation/results/).
+Draft script:
+> Before the visit, from home, the patient gives the clinic a missed call and answers by phone. Danger signs reach the nurse straight away. At the desk, the clerk finds the card by its visit code; walk-ins answer the same questions with the clerk on the intake phone. In the consultation, the clinician reads one screen of patient-reported answers, asks their own questions, and enters the diagnosis. The answers pre-fill the OPD register, and only monthly totals leave the clinic.
 
-Script slot: TODO
+Tech stack to show: the web prototype (React, TypeScript, Vite, offline after first load), the shared safety and card logic in `app/` with tests, the danger-sign rules file, and the speech smoke test: whisper-tiny-luganda-v2, 151.1 MB, about 4.3 to 4.9 s per clip **on a laptop, not a phone** ([results](../../evaluation/results/2026-10-04-luganda-asr-smoke.md)).
 
 ## 5. Our take: what localizing AI development means (B.6)
 
-Starting point from the landscape review: moving Dari from limited-English-proficiency immigrants in Toronto to a rural Ugandan clinic is itself an answer. Cover trade-offs honestly (the brief encourages it): Luganda works better than Lusoga; synthetic test data; no real clinic validation yet.
-
-Script slot: TODO
+Draft script:
+> Localizing is not translating an app. It is fitting the tool to the phones people already own, the paper forms staff already fill, and the guidelines nurses already trust. Honest trade-offs: we had no native Luganda speaker, so the prompts are empty rather than machine-translated; Luganda works better than Lusoga today; our test data is synthetic or public; and nothing has been validated in a real clinic yet.
 
 ## Before upload (B.8)
 
 - [ ] Runtime between 2:00 and 5:00
-- [ ] Every number on screen matches evaluation/results
+- [ ] Every number on screen matches evaluation/results, laptop numbers labelled as laptop
+- [ ] Simulated parts said out loud
 - [ ] Captions on (low-literacy and non-English-speaking judges)
 - [ ] Link tested from a logged-out browser

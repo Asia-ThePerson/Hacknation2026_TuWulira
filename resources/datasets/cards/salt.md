@@ -1,13 +1,13 @@
 # SALT
 
 - **Source:** Sunbird AI
-- **Link:** TODO
-- **License:** to verify
-- **Size:** TODO
+- **Link:** https://huggingface.co/datasets/Sunbird/salt
+- **License:** CC BY-SA 4.0 (Hugging Face card)
+- **Size:** ~25,000 sentences in English + 6 languages; ~5,000 multispeaker ASR sentences; ~5,000 studio TTS sentences
 - **Layer:** named in our research questions
 - **Used for:** build: Luganda benchmark and model reference
 - **Synthetic:** no
-- **Status:** not reviewed
+- **Status:** reviewed
 
 ## What it is
 
@@ -19,8 +19,10 @@ Benchmark reference for Luganda WER (RQ3.1), transcripts for code-switching (RQ3
 
 ## What this does not cover
 
-- TODO: check which languages, domains and speakers it covers, and whether clinical speech is included.
+- Mostly read sentences, not people describing symptoms; no clinical conversations.
+- Six speech languages; Lusoga is not one of them (it appears only as a tag on the dataset card).
+- Share-alike licence: derivatives must keep CC BY-SA 4.0.
 
 ## Checked by
 
-TODO: name and date.
+Team research, 4 Oct 2026 (see [resources/datasets/README.md](../README.md)). Re-check the source page before release.

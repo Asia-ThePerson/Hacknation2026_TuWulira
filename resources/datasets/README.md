@@ -10,10 +10,10 @@ Legend. **Used for:** *evidence* = shows the problem is real (cite source, year,
 
 | Priority | Dataset | Source | License | Size | Used for | Status | Card |
 |---|---|---|---|---|---|---|---|
-| ★ | Mozilla Common Voice | Mozilla | to verify (brief says CC0) | TODO | build: Luganda speech for testing | not reviewed | [card](cards/common-voice.md) |
-| ★ | FLEURS | Google | to verify | TODO | build: Luganda WER benchmark (RQ3.1) | not reviewed | [card](cards/fleurs.md) |
+| ★ | Mozilla Common Voice | Mozilla | CC0 | Luganda: ~560 h recorded, ~437 h validated, 672 speakers (Common Voice 26.0, per team research) | build: fine-tune / test the Ears model | reviewed (team research, 4 Oct 2026) | [card](cards/common-voice.md) |
+| ★ | FLEURS | Google | CC BY 4.0 (CHECK on the dataset card) | Small per-language test split | build: held-out Luganda WER benchmark only, never trained on (RQ3.1) | reviewed (team research, 4 Oct 2026) | [card](cards/fleurs.md) |
 | ★ | MMS | Meta | to verify | TODO | build: speech recognition starting point | not reviewed | [card](cards/mms.md) |
-| | FLORES-200 / NLLB-200 | Meta | to verify | TODO | build: only if we translate Luganda to English | not reviewed | |
+| | FLORES-200 / NLLB-200 | Meta | to verify | TODO | not used: translation model dropped from the device (D37) | not used | |
 | | OPUS | OPUS project | to verify | TODO | build: parallel text, if needed | not reviewed | |
 | | MASSIVE | Amazon | to verify | TODO | build: intent sorting template; Luganda coverage to check | not reviewed | |
 | | Masakhane | Masakhane community | to verify | TODO | build: African-language NLP resources | not reviewed | |
@@ -47,20 +47,44 @@ Legend. **Used for:** *evidence* = shows the problem is real (cite source, year,
 
 | Priority | Dataset | Source | License | Size | Used for | Status | Card |
 |---|---|---|---|---|---|---|---|
-| ★ | SALT | Sunbird AI | to verify | TODO | build: Luganda benchmark and models (RQ3.1, RQ3.2) | not reviewed | [card](cards/salt.md) |
+| ★ | SALT | Sunbird AI (Hugging Face `Sunbird/salt`) | CC BY-SA 4.0 (Hugging Face card) | ~25,000 sentences in English + 6 languages; ~5,000 multispeaker ASR sentences; ~5,000 studio TTS sentences | build: Luganda speech + Luganda–English text, glossary (RQ3.1, RQ3.2) | reviewed (team research, 4 Oct 2026) | [card](cards/salt.md) |
+| ★ | Makerere Radio Speech Corpus (Mukiibi et al., 2022) | Makerere University (Zenodo, access restricted) | CC BY-NC-ND 4.0 per the paper (Zenodo metadata says CC BY 4.0; we follow the stricter one) | 155 h, of which 20 h human-transcribed | **test only**: natural speech, some code-switching. No derivatives, so never trained on | reviewed (team research, 4 Oct 2026) | [card](cards/makerere-radio-corpus.md) |
+| ★ | Dialogs of Delivery (Kimera et al., 2026) | Harvard Dataverse | CHECK on Harvard Dataverse | 3,640 Q/A pairs in English, Luganda, Runyankore, Swahili | build: symptom glossary and labeler test (text only, maternal health) | reviewed (team research, 4 Oct 2026); licence still to check | [card](cards/dialogs-of-delivery.md) |
+| | SunflowerASR (Sunbird; Whisper large-v3 adaptation, 51 languages) | Sunbird AI (Hugging Face) | CHECK model card | Whisper large-v3 class | benchmark only; too large for the device | reviewed (team research, 4 Oct 2026) | |
+| | Sunflower on-device (Gemma 4 E2B) | Sunbird AI (GitHub `SunbirdAI/sunflower-app`) | n/a | ~3.8 GB smallest variant (3.8 to 7.3 GB) | not used: breaks the side-loading constraint | not used | |
+| | Small Luganda CTC ASR (candidate) | TBD | CHECK model card | Target under ~120 MB int8 | build: on-device Ears model | candidate | |
 
 ## Our own data
 
 | Dataset | Source | License | Size | Used for | Status |
 |---|---|---|---|---|---|
-| Synthetic test clips and transcripts | This team, [synthetic/](synthetic/) and [evaluation/test-sets/](../../evaluation/test-sets/) | MIT (this repo) | TODO | build: evaluation | in progress. Every file labelled synthetic. |
+| Synthetic test clips and transcripts | This team, [synthetic/](synthetic/) and [evaluation/test-sets/](../../evaluation/test-sets/) | MIT (this repo) | TODO (target 20 to 30) | build: labeler and safety evaluation | in progress. Every file labelled synthetic. |
+| Team role-play recordings | This team; consent recorded | Ours; CC0 if we release | TODO (target 20 to 30 clips) | build: code-switched clinical test clips; WER reported separately for pure-Luganda and mixed clips | planned |
 
 ## What our data does not cover (overall)
 
-- No open local-language clinical conversation corpus exists that we know of, so our test encounters are synthetic (landscape review, H1 Data score).
-- No real clinic recordings, so results show behaviour on scripted clips, not in a real clinic.
-- Lusoga coverage in public speech data: TODO, measure per dataset (RQ3.3).
-- TODO: fill per-dataset gaps from each card.
+- **Code-switched clinical speech.** No public Luganda–English dataset of people describing symptoms exists. Our role-play clips are the only examples.
+- **Read vs natural speech.** Common Voice and SALT are mostly read sentences, not sick people speaking freely.
+- **Older and rural voices, regional accents, noisy waiting rooms.**
+- **Clinical vocabulary** beyond maternal health (Dialogs of Delivery).
+- **Other languages.** Lusoga, Lumasaaba and others have far less data ([less-supported-language.md](../../docs/product/less-supported-language.md)).
+- **Real patient data.** We use none. All test complaints are synthetic or role-played.
+
+**Licence notes for scaling:** SALT is share-alike (derivatives must keep CC BY-SA). The radio corpus is non-commercial and no-derivatives. A commercial or ministry deployment needs these checked or replaced.
+
+## Evidence the problem is real (not used for training)
+
+| Source | Used for | Year | Country |
+|---|---|---|---|
+| World Bank / EPRC Service Delivery Indicators | Provider absence, diagnostic accuracy | 2013 | Uganda |
+| MoH HMIS Health Unit Procedure Manual (HMIS 031, tally sheet) | Paper documentation process | 2010 | Uganda |
+| HMIS 105 monthly report | Diagnosis list, report fields | 2019 print | Uganda |
+| WHO IMCI Chart Booklet; WHO PCPNC; Uganda Clinical Guidelines 2023 | Danger-sign rules ([danger-signs.md](../../docs/product/danger-signs.md)) | 2014 / 3rd ed. / 2023 | Global / Uganda |
+| GSMA Mobile Gender Gap Report | Phone ownership by gender | 2025 | Incl. Uganda |
+| eCHIS (MoH, Medic, Living Goods) | Android devices at VHT level | 2023 to 2026 | Uganda |
+| Statcounter / phone market data | Reference device choice | 2025 to 2026 | Uganda / Africa |
+
+Full problem statement and what we do not claim: [problem-statement.md](../../docs/product/problem-statement.md).
 
 ## Team-supplied sources
 

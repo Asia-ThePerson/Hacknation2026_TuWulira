@@ -1,42 +1,323 @@
 {
-  "_note": "Danger signs that trigger 'Tell the nurse now' (PR9, RQ4.1). Only from WHO IMCI general danger signs, Uganda Clinical Guidelines and WHO maternal danger signs. NEVER add a sign without a source. 'verified' is true only after a team member has checked the entry against the source document. 'phrasesEn' are English demo phrases for synthetic test clips. 'phrasesLg' stays empty until a native Luganda speaker writes the phrases; do not machine-translate. 'set' says which patient group the question is asked of: newborn (under 2 months), child (2 months to 5 years), pregnancy, adult.",
+  "_note": "Danger signs that trigger 'Tell the nurse now' (PR9, RQ4.1). Only from WHO IMCI, WHO PCPNC (maternal danger signs) and Uganda Clinical Guidelines 2023. NEVER add a sign without a source. Sources and status per sign: docs/product/danger-signs.md. 'status': cited = source checked; verify_page = source known, page number still to confirm (shown in the demo with a 'pending page check' label); disabled = no checked source, never loaded. 'verified' is true only for cited entries. 'question' is the English text asked; Luganda text and audio must be written and recorded by a native speaker and clinician-checked (never machine-translated). 'phrasesEn' are English demo phrases for synthetic test clips, taken from the sourced wording; transcript matching may only ADD a flag. 'notSureIsYes': in pregnancy, Not sure raises the flag too.",
+  "version": "2026-10-04",
+  "adultStandingPrompt": "If you feel very unwell right now, tell the staff immediately.",
   "signs": [
     {
       "id": "imci_unable_to_drink",
+      "ruleId": "CHILD_DRINK",
       "label": "Child not able to drink or breastfeed",
+      "question": "Is the child unable to drink or breastfeed?",
       "set": "child",
-      "source": "WHO IMCI general danger signs",
-      "verified": false,
-      "phrasesEn": ["not able to drink", "cannot drink", "not able to breastfeed", "cannot breastfeed", "unable to drink", "unable to breastfeed"],
+      "appliesWhen": "visit_for == child AND age_months >= 2 AND age_months < 60",
+      "source": "WHO IMCI Chart Booklet (2014), Check for general danger signs; Uganda Clinical Guidelines 2023 s17.3.2.1",
+      "status": "cited",
+      "verified": true,
+      "notSureIsYes": false,
+      "phrasesEn": [
+        "not able to drink",
+        "cannot drink",
+        "not able to breastfeed",
+        "cannot breastfeed",
+        "unable to drink",
+        "unable to breastfeed"
+      ],
       "phrasesLg": []
     },
     {
       "id": "imci_vomits_everything",
+      "ruleId": "CHILD_VOMIT",
       "label": "Child vomits everything",
+      "question": "Does the child vomit everything?",
       "set": "child",
-      "source": "WHO IMCI general danger signs",
-      "verified": false,
-      "phrasesEn": ["vomits everything", "vomiting everything", "throws up everything"],
+      "appliesWhen": "visit_for == child AND age_months >= 2 AND age_months < 60",
+      "source": "WHO IMCI Chart Booklet (2014), Check for general danger signs; Uganda Clinical Guidelines 2023 s17.3.2.1",
+      "status": "cited",
+      "verified": true,
+      "notSureIsYes": false,
+      "phrasesEn": [
+        "vomits everything",
+        "vomiting everything",
+        "throws up everything"
+      ],
       "phrasesLg": []
     },
     {
       "id": "imci_convulsions",
+      "ruleId": "CHILD_CONVULSION",
       "label": "Convulsions",
+      "question": "Has the child had convulsions (fits) during this illness?",
       "set": "child",
-      "source": "WHO IMCI general danger signs",
-      "verified": false,
-      "phrasesEn": ["convulsion", "convulsions", "fits", "seizure"],
+      "appliesWhen": "visit_for == child AND age_months >= 2 AND age_months < 60",
+      "source": "WHO IMCI Chart Booklet (2014), Check for general danger signs; Uganda Clinical Guidelines 2023 s17.3.2.1",
+      "status": "cited",
+      "verified": true,
+      "notSureIsYes": false,
+      "phrasesEn": [
+        "convulsion",
+        "convulsions",
+        "fits",
+        "seizure"
+      ],
       "phrasesLg": []
     },
     {
       "id": "imci_lethargic_unconscious",
+      "ruleId": "CHILD_LETHARGIC",
       "label": "Child lethargic or unconscious",
+      "question": "Is the child very sleepy or hard to wake?",
       "set": "child",
-      "source": "WHO IMCI general danger signs",
+      "appliesWhen": "visit_for == child AND age_months >= 2 AND age_months < 60",
+      "source": "WHO IMCI Chart Booklet (2014), Check for general danger signs; Uganda Clinical Guidelines 2023 s17.3.2.1",
+      "status": "cited",
+      "verified": true,
+      "notSureIsYes": false,
+      "phrasesEn": [
+        "lethargic",
+        "unconscious",
+        "will not wake",
+        "cannot wake"
+      ],
+      "phrasesLg": [],
+      "note": "Lay wording of 'lethargic or unconscious'; clinician to confirm"
+    },
+    {
+      "id": "infant_feeding",
+      "ruleId": "INFANT_FEEDING",
+      "label": "Baby not feeding well",
+      "question": "Is the baby not feeding well?",
+      "set": "newborn",
+      "appliesWhen": "visit_for == child AND age_months < 2",
+      "source": "WHO IMCI Chart Booklet (2014), young infant module; Uganda Clinical Guidelines 2023 s17",
+      "status": "verify_page",
       "verified": false,
-      "phrasesEn": ["lethargic", "unconscious", "will not wake", "cannot wake"],
+      "notSureIsYes": false,
+      "phrasesEn": [
+        "not feeding well",
+        "not breastfeeding well"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "infant_convulsion",
+      "ruleId": "INFANT_CONVULSION",
+      "label": "Baby has had convulsions",
+      "question": "Has the baby had convulsions (fits)?",
+      "set": "newborn",
+      "appliesWhen": "visit_for == child AND age_months < 2",
+      "source": "WHO IMCI Chart Booklet (2014), young infant module; Uganda Clinical Guidelines 2023 s17",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": false,
+      "phrasesEn": [
+        "baby had convulsions",
+        "baby had fits"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "infant_breathing",
+      "ruleId": "INFANT_BREATHING",
+      "label": "Baby breathing fast or with difficulty",
+      "question": "Is the baby breathing fast or with difficulty?",
+      "set": "newborn",
+      "appliesWhen": "visit_for == child AND age_months < 2",
+      "source": "WHO IMCI Chart Booklet (2014), young infant module; Uganda Clinical Guidelines 2023 s17",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": false,
+      "phrasesEn": [
+        "breathing fast",
+        "difficulty breathing"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "infant_temp",
+      "ruleId": "INFANT_TEMP",
+      "label": "Baby feels very hot or very cold",
+      "question": "Does the baby feel very hot or very cold?",
+      "set": "newborn",
+      "appliesWhen": "visit_for == child AND age_months < 2",
+      "source": "WHO IMCI Chart Booklet (2014), young infant module; Uganda Clinical Guidelines 2023 s17",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": false,
+      "phrasesEn": [
+        "feels very hot",
+        "feels very cold"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "infant_movement",
+      "ruleId": "INFANT_MOVEMENT",
+      "label": "Baby moves only when touched, or not at all",
+      "question": "Does the baby move only when touched, or not at all?",
+      "set": "newborn",
+      "appliesWhen": "visit_for == child AND age_months < 2",
+      "source": "WHO IMCI Chart Booklet (2014), young infant module; Uganda Clinical Guidelines 2023 s17",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": false,
+      "phrasesEn": [
+        "moves only when touched",
+        "not moving"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "preg_bleeding",
+      "ruleId": "PREG_BLEEDING",
+      "label": "Bleeding from the vagina in pregnancy",
+      "question": "Any bleeding from the vagina?",
+      "set": "pregnancy",
+      "appliesWhen": "pregnant == yes",
+      "source": "WHO PCPNC 3rd edition, Advise on danger signs (C15)",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": true,
+      "phrasesEn": [
+        "bleeding from the vagina",
+        "vaginal bleeding"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "preg_convulsion",
+      "ruleId": "PREG_CONVULSION",
+      "label": "Convulsions in pregnancy",
+      "question": "Any convulsions (fits)?",
+      "set": "pregnancy",
+      "appliesWhen": "pregnant == yes",
+      "source": "WHO PCPNC 3rd edition, Advise on danger signs (C15)",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": true,
+      "phrasesEn": [],
+      "phrasesLg": []
+    },
+    {
+      "id": "preg_headache_vision",
+      "ruleId": "PREG_HEADACHE_VISION",
+      "label": "Severe headache with blurred vision in pregnancy",
+      "question": "Severe headache with blurred vision?",
+      "set": "pregnancy",
+      "appliesWhen": "pregnant == yes",
+      "source": "WHO PCPNC 3rd edition, Advise on danger signs (C15)",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": true,
+      "phrasesEn": [
+        "blurred vision"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "preg_fever_weak",
+      "ruleId": "PREG_FEVER_WEAK",
+      "label": "Fever and too weak to get out of bed in pregnancy",
+      "question": "Fever and too weak to get out of bed?",
+      "set": "pregnancy",
+      "appliesWhen": "pregnant == yes",
+      "source": "WHO PCPNC 3rd edition, Advise on danger signs (C15)",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": true,
+      "phrasesEn": [
+        "too weak to get out of bed"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "preg_abdo_pain",
+      "ruleId": "PREG_ABDO_PAIN",
+      "label": "Severe abdominal pain in pregnancy",
+      "question": "Severe pain in the belly?",
+      "set": "pregnancy",
+      "appliesWhen": "pregnant == yes",
+      "source": "WHO PCPNC 3rd edition, Advise on danger signs (C15)",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": true,
+      "phrasesEn": [
+        "severe pain in the belly",
+        "severe abdominal pain"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "preg_breathing",
+      "ruleId": "PREG_BREATHING",
+      "label": "Fast or difficult breathing in pregnancy",
+      "question": "Fast or difficult breathing?",
+      "set": "pregnancy",
+      "appliesWhen": "pregnant == yes",
+      "source": "WHO PCPNC 3rd edition, Advise on danger signs (C15)",
+      "status": "verify_page",
+      "verified": false,
+      "notSureIsYes": true,
+      "phrasesEn": [
+        "difficult breathing"
+      ],
+      "phrasesLg": []
+    },
+    {
+      "id": "adult_breathing",
+      "ruleId": "ADULT_BREATHING",
+      "label": "Very hard to breathe (candidate)",
+      "question": "Very hard to breathe right now?",
+      "set": "adult",
+      "appliesWhen": "visit_for == self AND age_years >= 5 AND pregnant != yes",
+      "source": "PENDING: no national adult triage guideline found; confirm with clinician against UCG 2023 Ch.1 or WHO Basic Emergency Care / IITT",
+      "status": "disabled",
+      "verified": false,
+      "notSureIsYes": false,
+      "phrasesEn": [],
+      "phrasesLg": []
+    },
+    {
+      "id": "adult_convulsion",
+      "ruleId": "ADULT_CONVULSION",
+      "label": "Convulsions today (candidate)",
+      "question": "Convulsions (fits) today?",
+      "set": "adult",
+      "appliesWhen": "visit_for == self AND age_years >= 5 AND pregnant != yes",
+      "source": "PENDING: no national adult triage guideline found; confirm with clinician against UCG 2023 Ch.1 or WHO Basic Emergency Care / IITT",
+      "status": "disabled",
+      "verified": false,
+      "notSureIsYes": false,
+      "phrasesEn": [],
+      "phrasesLg": []
+    },
+    {
+      "id": "adult_faint",
+      "ruleId": "ADULT_FAINT",
+      "label": "Fainted or could not be woken today (candidate)",
+      "question": "Fainted or could not be woken today?",
+      "set": "adult",
+      "appliesWhen": "visit_for == self AND age_years >= 5 AND pregnant != yes",
+      "source": "PENDING: no national adult triage guideline found; confirm with clinician against UCG 2023 Ch.1 or WHO Basic Emergency Care / IITT",
+      "status": "disabled",
+      "verified": false,
+      "notSureIsYes": false,
+      "phrasesEn": [],
+      "phrasesLg": []
+    },
+    {
+      "id": "adult_bleeding",
+      "ruleId": "ADULT_BLEEDING",
+      "label": "Bleeding that will not stop (candidate)",
+      "question": "Bleeding that will not stop?",
+      "set": "adult",
+      "appliesWhen": "visit_for == self AND age_years >= 5 AND pregnant != yes",
+      "source": "PENDING: no national adult triage guideline found; confirm with clinician against UCG 2023 Ch.1 or WHO Basic Emergency Care / IITT",
+      "status": "disabled",
+      "verified": false,
+      "notSureIsYes": false,
+      "phrasesEn": [],
       "phrasesLg": []
     }
   ],
-  "_todo": "RQ4.1: add the newborn (under 2 months), pregnancy (WHO maternal danger signs) and adult (Uganda Clinical Guidelines) sets, each entry with its source. In the pregnancy set, 'not sure' also raises the urgent flag (PRD component 3)."
+  "_todo": "Adult set stays disabled until a Ugandan clinician confirms it against UCG 2023 Ch.1 or WHO Basic Emergency Care / IITT. verify_page entries need the page number confirmed in the source PDF (CHECKLIST D.3)."
 }

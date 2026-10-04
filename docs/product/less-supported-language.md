@@ -1,4 +1,4 @@
-# How TuWulira would fare in a less-supported language (Lusoga)
+# Less-supported language: Lusoga (RQ3.3)
 
 The brief says entries will be asked this. Our example is **Lusoga**, spoken in Busoga (eastern Uganda) and much less resourced than Luganda.
 
@@ -15,7 +15,7 @@ The brief says entries will be asked this. Our example is **Lusoga**, spoken in 
 
 - **Speech accuracy would drop** noticeably. There is far less Lusoga training data, and no small on-device Lusoga model we could find. Sunbird's own model cards report Lusoga results on small test sets, and their speech model's Lusoga error rates are markedly worse than for better-resourced languages. Treat these as directional, not as our numbers.
 - **The safety-critical parts would not degrade.** Danger signs and most questions are buttons with recorded prompts. They work the same in any language once a native speaker records the prompts.
-- **Low confidence falls back safely.** Unclear speech → ask once more → keypad → "unclear — clinician to ask". In a weaker language this path simply happens more often.
+- **Low confidence falls back safely.** Unclear speech → ask once more → keypad → "unclear: clinician to ask". In a weaker language this path simply happens more often.
 
 ## What it would take to add Lusoga
 

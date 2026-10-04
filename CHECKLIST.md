@@ -18,9 +18,9 @@ Last updated: 2026-10-04.
 ## A. Required deliverables (brief 08)
 
 - [ ] **A.1** Application form submitted on Hack-Nation's site before the weekend. *Owner:* TBD. *Evidence:* TODO confirmation email or screenshot. *Source:* brief 08.
-- [ ] **A.2** Working prototype submitted, with code or a link to it. *Owner:* TBD. *Evidence:* TODO link in [docs/links.md](docs/links.md). *Source:* brief 08.
+- [ ] **A.2** Working prototype submitted, with code or a link to it. *Owner:* TBD. *Evidence:* live prototype https://asia-theperson.github.io/Hacknation2026_TuWulira/ and code in [web/](web/) (see [docs/links.md](docs/links.md)); tick once the submission form carries the link. *Source:* brief 08.
 - [ ] **A.3** Video, 2 to 5 minutes, uploaded (no video means no shortlist). *Owner:* TBD. *Evidence:* TODO link in [docs/links.md](docs/links.md). *Source:* brief 08.
-- [ ] **A.4** Repo set to public and linked from the submission. *Owner:* Asia. *Evidence:* TODO. *Source:* team check (brief asks for "the code, or a link to it").
+- [ ] **A.4** Repo set to public and linked from the submission. *Owner:* Asia. *Evidence:* repo public since 4 Oct 2026; tick once the submission form carries the link. *Source:* team check (brief asks for "the code, or a link to it").
 - [ ] **A.5** Submission form completed before the deadline. *Owner:* TBD. *Evidence:* TODO screenshot in [docs/links.md](docs/links.md). *Source:* brief 08.
 - [ ] **A.6** Every team member is aged 18 to 35. *Owner:* Beth, Asia. *Evidence:* TODO confirm. *Source:* brief 04. **(Added from the brief.)**
 - [ ] **A.7** Proof it works: at least one measured example (for example a Luganda conversation transcribed and filled into the form). *Owner:* TBD. *Evidence:* TODO file in [evaluation/results/](evaluation/results/). *Source:* brief 05. **(Added from the brief.)**

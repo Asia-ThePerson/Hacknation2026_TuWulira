@@ -16,7 +16,7 @@ Hack-Nation x World Bank Youth Summit, Global AI Hackathon 2026, Challenge 04: S
 | | |
 |---|---|
 | Video (2 to 5 min) | TODO |
-| Web prototype | [web/](web/): live at https://asia-theperson.github.io/Hacknation2026_TuWulira/ (once Pages is enabled), offline after first load. See [Web prototype](#web-prototype) |
+| Web prototype | [web/](web/): live at https://asia-theperson.github.io/Hacknation2026_TuWulira/, offline after first load. See [Web prototype](#web-prototype) |
 | Figma design hub | [TuWulira Project hub](https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1) |
 | All links | [docs/links.md](docs/links.md) |
 

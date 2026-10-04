@@ -1,8 +1,8 @@
 # MMS (Massively Multilingual Speech)
 
 - **Source:** Meta
-- **Link:** TODO
-- **License:** to verify
+- **Link:** https://github.com/facebookresearch/fairseq/tree/main/examples/mms
+- **License:** CC BY-NC 4.0 for the MMS code and model weights (stated in the [MMS README](https://github.com/facebookresearch/fairseq/blob/main/examples/mms/README.md)). Non-commercial: a commercial or ministry deployment would need another model or permission
 - **Size:** TODO
 - **Layer:** common (brief 7.3 A)
 - **Used for:** build: speech recognition starting point
@@ -20,7 +20,7 @@ Candidate speech model, see [resources/libraries/README.md](../../libraries/READ
 ## What this does not cover
 
 - Not trained on clinical vocabulary.
-- TODO: check its Luganda and Lusoga coverage and the model license.
+- TODO: check its Luganda and Lusoga coverage.
 
 ## Checked by
 

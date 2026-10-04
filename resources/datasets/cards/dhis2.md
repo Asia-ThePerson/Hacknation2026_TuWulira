@@ -1,8 +1,8 @@
 # DHIS2
 
 - **Source:** DHIS2 (University of Oslo)
-- **Link:** TODO
-- **License:** to verify
+- **Link:** https://github.com/dhis2/dhis2-core
+- **License:** BSD 3-Clause, for the DHIS2 software ([dhis2-core licence](https://github.com/dhis2/dhis2-core/blob/master/LICENSE))
 - **Size:** TODO
 - **Layer:** health (brief Annex A.2)
 - **Used for:** build: target schema for synced records

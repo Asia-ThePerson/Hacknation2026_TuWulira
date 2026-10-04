@@ -12,36 +12,36 @@ Legend. **Used for:** *evidence* = shows the problem is real (cite source, year,
 |---|---|---|---|---|---|---|---|
 | ★ | Mozilla Common Voice | Mozilla | CC0 | Luganda: ~560 h recorded, ~437 h validated, 672 speakers (Common Voice 26.0, per team research) | build: fine-tune / test the Ears model | reviewed (team research, 4 Oct 2026) | [card](cards/common-voice.md) |
 | ★ | FLEURS | Google | CC BY 4.0 (CHECK on the dataset card) | Small per-language test split | build: held-out Luganda WER benchmark only, never trained on (RQ3.1) | reviewed (team research, 4 Oct 2026) | [card](cards/fleurs.md) |
-| ★ | MMS | Meta | to verify | TODO | build: speech recognition starting point | not reviewed | [card](cards/mms.md) |
-| | FLORES-200 / NLLB-200 | Meta | to verify | TODO | not used: translation model dropped from the device (D37) | not used | |
-| | OPUS | OPUS project | to verify | TODO | build: parallel text, if needed | not reviewed | |
-| | MASSIVE | Amazon | to verify | TODO | build: intent sorting template; Luganda coverage to check | not reviewed | |
-| | Masakhane | Masakhane community | to verify | TODO | build: African-language NLP resources | not reviewed | |
+| ★ | MMS | Meta | CC BY-NC 4.0, code and model weights ([fairseq MMS README](https://github.com/facebookresearch/fairseq/blob/main/examples/mms/README.md)) | TODO | build: speech recognition starting point | not reviewed | [card](cards/mms.md) |
+| | FLORES-200 / NLLB-200 | Meta | FLORES-200: CC BY-SA 4.0 ([Hugging Face card](https://huggingface.co/datasets/facebook/flores)). NLLB-200: models CC BY-NC 4.0, code MIT ([fairseq NLLB README](https://github.com/facebookresearch/fairseq/blob/nllb/README.md)) | TODO | not used: translation model dropped from the device (D37) | not used | |
+| | OPUS | OPUS project | Varies per corpus; each corpus page on [OPUS](https://opus.nlpl.eu/) states its own licence | TODO | build: parallel text, if needed | not reviewed | |
+| | MASSIVE | Amazon | Data CC BY 4.0, code Apache 2.0 ([NOTICE.md](https://github.com/alexa/massive/blob/main/NOTICE.md)) | TODO | build: intent sorting template; Luganda coverage to check | not reviewed | |
+| | Masakhane | Masakhane community | No single licence; each repository sets its own (MIT, Apache 2.0, GPL 3.0, CC BY 4.0, or none) ([masakhane-io on GitHub](https://github.com/masakhane-io)) | TODO | build: African-language NLP resources | not reviewed | |
 | | AI4Bharat / IndicVoices | AI4Bharat | n/a | n/a | not relevant (South Asian languages) | not used | |
-| ★ | GSMA Mobile Gender Gap Report | GSMA | to verify | TODO | evidence: phone vs smartphone ownership by gender (device claim) | not reviewed | |
-| | OpenCelliD | OpenCelliD | to verify | TODO | evidence: where there is no signal (offline need) | not reviewed | |
-| | Global Findex | World Bank | to verify | TODO | evidence: mobile money use by gender | not reviewed | |
-| | WorldPop | WorldPop | to verify | TODO | evidence: clinic catchment size | not reviewed | |
-| | OpenStreetMap | OpenStreetMap contributors | to verify | TODO | evidence: facility locations, offline maps | not reviewed | |
-| | VIIRS Nighttime Lights | (named in brief 7.3 C) | to verify | TODO | evidence: electrification proxy (power for the device, RQ6.3) | not reviewed | |
-| | World Bank Data360 | World Bank | to verify | TODO | evidence: country indicators | not reviewed | |
-| | World Development Indicators | World Bank | to verify | TODO | evidence: country indicators by year | not reviewed | |
-| | World Bank Microdata Library and Data Catalog | World Bank | to verify | TODO | evidence: survey microdata | not reviewed | |
-| | Humanitarian Data Exchange (HDX) | UN OCHA | to verify | TODO | evidence: boundaries, population, infrastructure | not reviewed | |
+| ★ | GSMA Mobile Gender Gap Report | GSMA | Copyright 2025 GSMA, no open licence stated ([report PDF](https://www.gsma.com/wp-content/uploads/2025/12/The-Mobile-Gender-Gap-Report-2025.pdf)); cited as evidence only | TODO | evidence: phone vs smartphone ownership by gender (device claim) | not reviewed | |
+| | OpenCelliD | OpenCelliD | CC BY-SA 4.0 ([attribution page](https://docs.opencellid.org/docs/attribution)) | TODO | evidence: where there is no signal (offline need) | not reviewed | |
+| | Global Findex | World Bank | CC BY 4.0 for the indicator database ([Data Catalog](https://datacatalog.worldbank.org/search/dataset/0039935)); 2021 microdata under the World Bank Research Data License ([Data Catalog](https://datacatalog.worldbank.org/search/dataset/0063277)) | TODO | evidence: mobile money use by gender | not reviewed | |
+| | WorldPop | WorldPop | CC BY 4.0 ([WorldPop licence file](https://worldpop-public-data.soton.ac.uk/GIS/Population/Individual_countries/TZA/United_Republic_of_Tanzania_100m_Population/licence.txt)) | TODO | evidence: clinic catchment size | not reviewed | |
+| | OpenStreetMap | OpenStreetMap contributors | ODbL ([copyright page](https://www.openstreetmap.org/copyright)) | TODO | evidence: facility locations, offline maps | not reviewed | |
+| | VIIRS Nighttime Lights | (named in brief 7.3 C) | CC BY 4.0 for many products; check each product ([Earth Observation Group](https://eogdata.mines.edu/products/vnl/)) | TODO | evidence: electrification proxy (power for the device, RQ6.3) | not reviewed | |
+| | World Bank Data360 | World Bank | CC BY 4.0 unless labelled otherwise; some third-party data may not be reused ([Data360](https://data360.worldbank.org/en/about)) | TODO | evidence: country indicators | not reviewed | |
+| | World Development Indicators | World Bank | CC BY 4.0 ([Data Catalog](https://datacatalog.worldbank.org/search/dataset/0037712/world-development-indicators)) | TODO | evidence: country indicators by year | not reviewed | |
+| | World Bank Microdata Library and Data Catalog | World Bank | Varies per study: Open, Direct, Public Use, Licensed, External or No Access ([terms of use](https://microdata.worldbank.org/index.php/terms-of-use)) | TODO | evidence: survey microdata | not reviewed | |
+| | Humanitarian Data Exchange (HDX) | UN OCHA | Set per dataset by the contributing organisation: CC BY, CC BY-SA, CC BY-IGO, ODbL, ODC-BY, PDDL, CC0, multiple or other ([HDX data licences](https://docs.humdata.org/about/data-licenses)) | TODO | evidence: boundaries, population, infrastructure | not reviewed | |
 
 ## Health layer (brief Annex A.2)
 
 | Priority | Dataset | Source | License | Size | Used for | Status | Card |
 |---|---|---|---|---|---|---|---|
-| ★ | Service Delivery Indicators | World Bank | to verify | TODO | evidence: staffing, absenteeism, caseload (RQ1.1, RQ1.3, RQ2.2) | not reviewed | [card](cards/service-delivery-indicators.md) |
-| | healthsites.io | healthsites.io (OpenStreetMap-based) | to verify | TODO | evidence: facility locations | not reviewed | |
-| | Maina et al., Scientific Data | Maina et al. | to verify | about 98,000 facilities (brief) | evidence: public facility list, sub-Saharan Africa | not reviewed | |
-| ★ | DHS Program and Service Provision Assessments | DHS Program | to verify (free registration) | TODO | evidence: health-seeking, staffing, hours (RQ1.1) | not reviewed | |
-| | Malaria Atlas Project travel-time surfaces | Malaria Atlas Project | to verify | TODO | evidence: travel time to facility | not reviewed | |
-| | AccessMod | WHO | to verify | TODO | evidence: geographic access (only if we touch referral) | not reviewed | |
-| ★ | DHIS2 | DHIS2 (University of Oslo) | to verify | TODO | build: target schema for synced records (RQ1.2) | not reviewed | [card](cards/dhis2.md) |
-| | WHO Global Health Observatory | WHO | to verify | TODO | evidence: workforce density, coverage | not reviewed | |
-| | Global Health Data Exchange | IHME | to verify | TODO | evidence: burden of disease, surveys | not reviewed | |
+| ★ | Service Delivery Indicators | World Bank | Indicators CC BY 4.0 ([Data Catalog](https://datacatalog.worldbank.org/search/dataset/0042030/service-delivery-indicators)); Uganda 2013 health microdata: Public Use (licensed), confidentiality declaration required ([Microdata Library](https://microdata.worldbank.org/index.php/catalog/2750)) | TODO | evidence: staffing, absenteeism, caseload (RQ1.1, RQ1.3, RQ2.2) | not reviewed | [card](cards/service-delivery-indicators.md) |
+| | healthsites.io | healthsites.io (OpenStreetMap-based) | ODbL ([healthsites.io](https://healthsites.io/)) | TODO | evidence: facility locations | not reviewed | |
+| | Maina et al., Scientific Data | Maina et al. | Data CC0 ([figshare](https://doi.org/10.6084/m9.figshare.7725374.v1)); article CC BY 4.0 ([Scientific Data](https://www.nature.com/articles/s41597-019-0142-2)) | about 98,000 facilities (brief) | evidence: public facility list, sub-Saharan Africa | not reviewed | |
+| ★ | DHS Program and Service Provision Assessments | DHS Program | Not an open licence: free registration, use only for the registered study, no sharing without written consent ([terms of use](https://dhsprogram.com/data/terms-of-use.cfm)) | TODO | evidence: health-seeking, staffing, hours (RQ1.1) | not reviewed | |
+| | Malaria Atlas Project travel-time surfaces | Malaria Atlas Project | CC BY 4.0 for the 2019 travel time to healthcare surface (provider terms in the [Earth Engine catalog](https://developers.google.com/earth-engine/datasets/catalog/Oxford_MAP_accessibility_to_healthcare_2019)); MAP maps generally CC BY 3.0 ([open access policy](https://malariaatlas.org/open-access-policy/)) | TODO | evidence: travel time to facility | not reviewed | |
+| | AccessMod | WHO | GNU GPL v3, plus the WHO terms of use and software licence agreement ([AccessMod docs](https://accessmod.atlassian.net/wiki/spaces/EN/pages/4326779/3.1.+License+and+citation)) | TODO | evidence: geographic access (only if we touch referral) | not reviewed | |
+| ★ | DHIS2 | DHIS2 (University of Oslo) | BSD 3-Clause, software ([dhis2-core licence](https://github.com/dhis2/dhis2-core/blob/master/LICENSE)) | TODO | build: target schema for synced records (RQ1.2) | not reviewed | [card](cards/dhis2.md) |
+| | WHO Global Health Observatory | WHO | WHO terms for datasets: royalty-free, non-exclusive use with attribution; not a Creative Commons licence ([WHO terms](https://www.who.int/about/policies/publishing/data-policy/terms-and-conditions)) | TODO | evidence: workforce density, coverage | not reviewed | |
+| | Global Health Data Exchange | IHME | IHME data: Free-of-Charge Non-Commercial User Agreement, no derivative data sets ([IHME](https://www.healthdata.org/data-tools-practices/data-practices/ihme-free-charge-non-commercial-user-agreement)); check each catalogued record's own terms | TODO | evidence: burden of disease, surveys | not reviewed | |
 
 ## Named in our research questions
 
@@ -91,6 +91,6 @@ Full problem statement and what we do not claim: [problem-statement.md](../../do
 | Priority | Source | Publisher | License | Size | Used for | Status | Card |
 |---|---|---|---|---|---|---|---|
 | ★ | HMIS 105: Health Unit Outpatient Monthly Report, print version September 2019 | Ministry of Health, Uganda | to verify (government form; PDF kept out of the repo) | 32-page PDF; 246 rows from section 1.3 used | build: diagnosis pick-list, tally codes and age bands ([config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json)) | reviewed for section 1.3 | |
-| ★ | Connected but not included | FSD Uganda, https://fsduganda.or.ug/connected-but-not-included/ | to verify | TODO | evidence: phone ownership in Uganda (about 79% of adults, team research note) | not reviewed | |
+| ★ | Connected but not included | FSD Uganda, https://fsduganda.or.ug/connected-but-not-included/ | Copyright FSD Uganda, all rights reserved (site notice); no open licence ([report page](https://fsduganda.or.ug/connected-but-not-included/)); cited as evidence only | TODO | evidence: phone ownership in Uganda (about 79% of adults, team research note) | not reviewed | |
 
 What these do not cover: the HMIS 105 form is the monthly summary, not the daily OPD register (HMIS 031), so register column numbers still need the HMIS 031 form (RQ1.2). It does not say which conditions are notifiable. The 2019 print version may have been revised since.

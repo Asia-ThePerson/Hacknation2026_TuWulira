@@ -1,8 +1,8 @@
 # Service Delivery Indicators (SDI)
 
 - **Source:** World Bank
-- **Link:** TODO
-- **License:** to verify
+- **Link:** https://datacatalog.worldbank.org/search/dataset/0042030/service-delivery-indicators
+- **License:** CC BY 4.0 for the indicators ([World Bank Data Catalog](https://datacatalog.worldbank.org/search/dataset/0042030/service-delivery-indicators)). Uganda 2013 health microdata: Public Use (licensed), confidentiality declaration required ([Microdata Library](https://microdata.worldbank.org/index.php/catalog/2750))
 - **Size:** TODO
 - **Layer:** health (brief Annex A.2)
 - **Used for:** evidence: staffing, absenteeism, caseload, equipment

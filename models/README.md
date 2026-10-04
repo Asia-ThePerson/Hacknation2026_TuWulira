@@ -1,6 +1,6 @@
 # Models
 
-Which models ship on the clinic device, why, and how big they are. The brief requires model files small enough to side-load or send over a weak connection (rule 06), so **size, RAM and latency are measured, never estimated** (RQ6.1).
+Which models ship on the intake phone (the clinic device runs no AI, D33), why, and how big they are. Size targets: [data-architecture.md](../docs/product/data-architecture.md) (Ears under ~120 MB int8, labeler under 5 MB, bundle under ~160 MB, peak RAM under ~300 MB). The brief requires model files small enough to side-load or send over a weak connection (rule 06), so **size, RAM and latency are measured, never estimated** (RQ6.1).
 
 ## Current choice
 

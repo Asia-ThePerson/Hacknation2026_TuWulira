@@ -10,8 +10,8 @@ android
 
 ## Users
 
-- Clinic staff on one shared Android in staff mode, behind a staff PIN: clerk (front desk), triage nurse, clinician (clinical officer or nurse), records assistant. Rural Ugandan health centre, overcrowded, bright and busy room, often no signal.
-- Patients and caregivers reach the clinic from their own basic phone (flash call or SMS). They never use the clinic screens described here, but their words appear on them as "patient reported".
+- Clinic staff: clerk (front desk, runs staff-assisted intake on the intake phone), triage nurse, clinician (clinical officer or nurse), records assistant. Staff screens run on the clinic device (no AI), behind a staff PIN; in one-device mode both roles share the intake phone. Rural Ugandan health centre, overcrowded, bright and busy room, often no signal.
+- Patients and caregivers answer the question set at registration, with a clerk or nurse holding the intake phone (main flow); self-intake with earphones is optional, and remote intake from their own basic phone is design only. Their words appear on the staff screens as "patient reported".
 
 ## Product Purpose
 
@@ -19,12 +19,12 @@ Offline, Luganda-first patient intake and record keeping. It gives clinicians ba
 
 ## Positioning
 
-The patient's own words, captured in Luganda before the visit on the phone they already have, become a one-screen "patient reported" card and a pre-filled HMIS 031 register row on a clinic device that works with no internet.
+The patient's own words, captured in Luganda at registration, become a one-screen "patient reported" card and a pre-filled HMIS 031 register row on two clinic devices that work with no internet: an intake phone that runs the AI, and a clinic device that runs none. The card moves between them by QR code.
 
 ## Operating Context
 
 - Paper HMIS 031 OPD register and HMIS 105 monthly tally are the forms staff already know. The register screen mirrors their columns and codes.
-- Queue ordered urgent first, then arrival. Visit code (4 digits) links a phone intake to the desk.
+- Queue ordered urgent first, then arrival. The card reaches the clinic device by an encrypted QR scan, which assigns the register serial number.
 - Roles hand the same device to each other through the day. Screen locks after 2 minutes idle.
 - Store and forward: totals wait on the device until there is signal; only aggregate totals leave the clinic (DHIS2-style export).
 

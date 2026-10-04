@@ -10,7 +10,7 @@ Status: `evaluating`, `adopted`, `rejected` (always give the reason).
 |---|---|---|---|---|---|---|---|
 | MMS (Meta) | TODO | to verify | TODO | On-device speech recognition for Luganda | product | evaluating | Named in the brief and the landscape review (H1). Need measured size, RAM and Luganda WER (RQ3.1, RQ6.1). |
 | Sunbird AI speech models | TODO | to verify | TODO | Luganda speech recognition; Sunbird's published benchmarks (SALT) | product or research | evaluating | Ugandan-language specialist, named in RQ3.1. Check model size: the Sunflower app needs a flagship phone (landscape review), so a smaller model may be needed. |
-| NLLB-200 (Meta) | TODO | to verify | TODO | Luganda to English translation | research | evaluating | Only needed if the clinician view must show English. The extractor works on fixed lists, so translation may not be needed at all. |
+| NLLB-200 (Meta) | TODO | to verify | TODO | Luganda to English translation | research | **dropped** | Dropped from the device for size (D37). The labeler maps Luganda straight to the fixed list with a glossary. |
 | Gemma 4 E2B (Google) | n/a | to verify | TODO | General on-device model | product | **rejected** | Needs about 2.4 GB RAM and a phone with at least 4 GB RAM and 3 GB free storage (landscape review section 1). The target clinic device may not have that. Also generative, which works against a fixed list of answers. |
 
 ## App runtime

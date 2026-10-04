@@ -1,0 +1,72 @@
+{
+  "what": "Raw speech-recognition output only. No TuWulira safety logic applied here.",
+  "model": "allandclive/whisper-tiny-luganda-v2",
+  "revision": "7c130c391d20243f879596898a2b52b308ab87e2",
+  "parameters": 37760640,
+  "weights_mb_on_disk": 151.1,
+  "precision": "float32 (not quantized)",
+  "offline_mode": false,
+  "model_load_seconds": 1.4,
+  "rss_before_load_mb": 274.4,
+  "peak_rss_during_load_mb": 319.5,
+  "decoding": "greedy, max 96 new tokens, no language model",
+  "machine": {
+    "os": "Windows-10-10.0.26200-SP0",
+    "cpu": "Intel64 Family 6 Model 142 Stepping 12, GenuineIntel",
+    "logical_cpus": 8,
+    "ram_gb": 16.9,
+    "torch_threads": 4
+  },
+  "software": {
+    "python": "3.9.7",
+    "torch": "2.8.0+cpu",
+    "transformers": "4.57.6"
+  },
+  "results": [
+    {
+      "clip": "common_voice_lg_23704551.mp3",
+      "kind": "common_voice_test",
+      "audio_seconds": 5.26,
+      "transcript": "Ekirwadde kino kitadde nnyo abantu ku bwenkenge.",
+      "confidence": 0.802,
+      "processing_seconds": 4.673,
+      "peak_rss_mb": 495.6
+    },
+    {
+      "clip": "common_voice_lg_23704504.mp3",
+      "kind": "common_voice_test",
+      "audio_seconds": 4.51,
+      "transcript": "Ekikajjo kino ku birime ebirimu ssente ennaku zino.",
+      "confidence": 0.91,
+      "processing_seconds": 4.264,
+      "peak_rss_mb": 506.3
+    },
+    {
+      "clip": "common_voice_lg_23710054.mp3",
+      "kind": "common_voice_test",
+      "audio_seconds": 5.38,
+      "transcript": "Wano we muleese omulwadde wammwe tewaliiwo ddagala.",
+      "confidence": 0.839,
+      "processing_seconds": 4.863,
+      "peak_rss_mb": 510.0
+    },
+    {
+      "clip": "synthetic_silence_01.wav",
+      "kind": "synthetic_silence",
+      "audio_seconds": 5.0,
+      "transcript": "Abaggwa baggwa mu ggwanga ggwanga.",
+      "confidence": 0.252,
+      "processing_seconds": 2.853,
+      "peak_rss_mb": 505.1
+    },
+    {
+      "clip": "common_voice_lg_23704551.noisy.real.wav",
+      "kind": "real_clip_plus_noise",
+      "audio_seconds": 5.26,
+      "transcript": "Baddukira ssanyu nnyo nnyo.",
+      "confidence": 0.387,
+      "processing_seconds": 2.569,
+      "peak_rss_mb": 504.6
+    }
+  ]
+}

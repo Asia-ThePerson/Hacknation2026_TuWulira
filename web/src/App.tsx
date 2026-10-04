@@ -2,6 +2,7 @@ import { Component, useEffect, type ReactNode } from 'react';
 import { ASK_A_PERSON } from '../../app/safety/index.ts';
 import { CallPage } from './call/CallPage.tsx';
 import { ClinicPage } from './clinic/ClinicPage.tsx';
+import { AudioEvidence } from './pages/AudioEvidence.tsx';
 import { Gallery } from './pages/Gallery.tsx';
 import { Home } from './pages/Home.tsx';
 import { IntakeStart, IntakeStep } from './patient/IntakePage.tsx';
@@ -11,6 +12,7 @@ const ROUTES: [string, (p: Record<string, string>) => ReactNode][] = [
   ['/', () => <Home />],
   ['/components', () => <Gallery />],
   ['/call', () => <CallPage />],
+  ['/evaluation/audio', () => <AudioEvidence />],
   ['/intake', () => <IntakeStart />],
   ['/intake/:step', (p) => <IntakeStep id={p.step} />],
   ['/clinic', () => <ClinicPage view={{}} />],

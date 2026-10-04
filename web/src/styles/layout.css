@@ -100,3 +100,43 @@
   border: 1px dashed var(--outline);
   border-radius: var(--r-lg);
 }
+
+/* Evidence page (#/evaluation/audio) */
+.clip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  padding: var(--s4);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--accent);
+  border-radius: 0 var(--r-lg) var(--r-lg) 0;
+}
+.clip-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s2);
+}
+.clip-title {
+  font-weight: 700;
+  font-size: 18px;
+}
+.clip audio {
+  width: 100%;
+  min-height: var(--touch-min);
+}
+.word-diff {
+  background: var(--flag-bg);
+  color: var(--flag);
+  text-decoration: underline wavy;
+  text-underline-offset: 3px;
+  padding: 0 2px;
+  border-radius: var(--r-sm);
+}
+.evidence-list {
+  margin: 0;
+  padding-left: var(--s5);
+  display: grid;
+  gap: var(--s2);
+}

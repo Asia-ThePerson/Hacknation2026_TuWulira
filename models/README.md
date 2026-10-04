@@ -6,7 +6,7 @@ Which models ship on the intake phone (the clinic device runs no AI, D33), why, 
 
 | Role | Model | Size on disk | RAM | Latency | Card | Status |
 |---|---|---|---|---|---|---|
-| Speech recognition (Luganda) | TODO: pick from MMS / Sunbird AI candidates in [resources/libraries/README.md](../resources/libraries/README.md) | TODO | TODO | TODO | TODO | evaluating |
+| Speech recognition (Luganda) | TODO: pick from MMS / Sunbird AI candidates in [resources/libraries/README.md](../resources/libraries/README.md). Tested so far: whisper-tiny-luganda-v2 | 151 MB float32 (tested candidate) | Phone: TODO | Laptop CPU: 2.6 to 4.9 s per 5 s clip ([smoke test](../evaluation/results/2026-10-04-luganda-asr-smoke.md)) | TODO | evaluating |
 | Extractor | Rule-based, no model weights (decision D2 in [docs/product/prd.md](../docs/product/prd.md)) | under 1 MB of code | n/a | TODO | n/a | adopted |
 | Danger-sign matcher | Rule-based list in [app/safety/danger-signs.ts](../app/safety/danger-signs.ts) | under 1 MB | n/a | TODO | n/a | adopted |
 

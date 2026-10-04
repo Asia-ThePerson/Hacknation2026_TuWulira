@@ -6,7 +6,7 @@ End-to-end journey for the video (part 3 in [video-plan.md](../hackathon/video-p
 
 - [ ] Shared Android device charged, screen recording on, **airplane mode ON** and visible in the status bar
 - [ ] App installed, models side-loaded (`scripts/fetch-models`)
-- [ ] Synthetic clips ready from [eval/test-sets/](../../eval/test-sets/): Luganda intake, clinician dictation, silence, crying child, danger-sign phrase
+- [ ] Synthetic clips ready from [evaluation/test-sets/](../../evaluation/test-sets/): Luganda intake, clinician dictation, silence, crying child, danger-sign phrase
 - [ ] Device queue empty
 
 ## Journey

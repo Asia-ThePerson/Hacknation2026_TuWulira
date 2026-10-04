@@ -2,7 +2,7 @@
 
 Starting tokens for the clinic app. Code mirror: [app/shared/tokens.ts](../../app/shared/tokens.ts); change both together. Run the design skills (impeccable, emil-design-eng, design-taste-frontend, web-design-guidelines) over each screen and log findings in CHECKLIST F (Design).
 
-Figma: none yet. Add the link here and in [docs/links.md](../links.md) when one exists.
+Figma: [TuWulira Project hub](https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1). All design assets, system diagrams and presentations live there; also listed in [docs/links.md](../links.md).
 
 ## Principles
 

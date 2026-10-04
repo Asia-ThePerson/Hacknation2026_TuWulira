@@ -1,0 +1,42 @@
+{
+  "_note": "Danger signs that trigger 'Tell the nurse now' (PR9, RQ4.1). Only from WHO IMCI general danger signs, Uganda Clinical Guidelines and WHO maternal danger signs. NEVER add a sign without a source. 'verified' is true only after a team member has checked the entry against the source document. 'phrasesEn' are English demo phrases for synthetic test clips. 'phrasesLg' stays empty until a native Luganda speaker writes the phrases; do not machine-translate. 'set' says which patient group the question is asked of: newborn (under 2 months), child (2 months to 5 years), pregnancy, adult.",
+  "signs": [
+    {
+      "id": "imci_unable_to_drink",
+      "label": "Child not able to drink or breastfeed",
+      "set": "child",
+      "source": "WHO IMCI general danger signs",
+      "verified": false,
+      "phrasesEn": ["not able to drink", "cannot drink", "not able to breastfeed", "cannot breastfeed", "unable to drink", "unable to breastfeed"],
+      "phrasesLg": []
+    },
+    {
+      "id": "imci_vomits_everything",
+      "label": "Child vomits everything",
+      "set": "child",
+      "source": "WHO IMCI general danger signs",
+      "verified": false,
+      "phrasesEn": ["vomits everything", "vomiting everything", "throws up everything"],
+      "phrasesLg": []
+    },
+    {
+      "id": "imci_convulsions",
+      "label": "Convulsions",
+      "set": "child",
+      "source": "WHO IMCI general danger signs",
+      "verified": false,
+      "phrasesEn": ["convulsion", "convulsions", "fits", "seizure"],
+      "phrasesLg": []
+    },
+    {
+      "id": "imci_lethargic_unconscious",
+      "label": "Child lethargic or unconscious",
+      "set": "child",
+      "source": "WHO IMCI general danger signs",
+      "verified": false,
+      "phrasesEn": ["lethargic", "unconscious", "will not wake", "cannot wake"],
+      "phrasesLg": []
+    }
+  ],
+  "_todo": "RQ4.1: add the newborn (under 2 months), pregnancy (WHO maternal danger signs) and adult (Uganda Clinical Guidelines) sets, each entry with its source. In the pregnancy set, 'not sure' also raises the urgent flag (PRD component 3)."
+}

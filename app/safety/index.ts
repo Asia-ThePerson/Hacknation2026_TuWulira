@@ -5,7 +5,7 @@ import { DANGER_SIGNS } from './danger-signs.ts';
 export const ASK_A_PERSON = 'Not sure. Please ask a person.';
 export const TELL_THE_NURSE = 'Tell the nurse now.';
 
-// ponytail: single global threshold; calibrate per field once eval/results has data (RQ4.2).
+// ponytail: single global threshold; calibrate per field once evaluation/results has data (RQ4.2).
 export const CONFIDENCE_THRESHOLD = 0.8;
 
 export type Turn = { transcript: string; confidence: number };

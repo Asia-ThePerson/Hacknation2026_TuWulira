@@ -2,7 +2,7 @@
 
 Required by brief section 08. **2 to 5 minutes total. No video means no shortlist.** Target: 4:00, which leaves a minute of slack.
 
-Each part links to its item in [CHECKLIST.md](../../CHECKLIST.md) section B. Fill the script slots; do not put a number on screen unless it is in [eval/results/](../../eval/results/).
+Each part links to its item in [CHECKLIST.md](../../CHECKLIST.md) section B. Fill the script slots; do not put a number on screen unless it is in [evaluation/results/](../../evaluation/results/).
 
 | # | Part | Target time | Checklist |
 |---|---|---|---|
@@ -45,7 +45,7 @@ Script slot: TODO
 
 ## 4. Where it sits in the user's day, plus tech stack (B.5)
 
-Morning: staff switch on the shared device. Waiting room: patients do intake. Consult: clinician dictates. End of day or when signal appears: records sync to DHIS2. Show the stack: see [README.md](../../README.md#tech-stack) and measured model size, RAM and latency from [eval/results/](../../eval/results/).
+Morning: staff switch on the shared device. Waiting room: patients do intake. Consult: clinician dictates. End of day or when signal appears: records sync to DHIS2. Show the stack: see [README.md](../../README.md#tech-stack) and measured model size, RAM and latency from [evaluation/results/](../../evaluation/results/).
 
 Script slot: TODO
 
@@ -58,6 +58,6 @@ Script slot: TODO
 ## Before upload (B.8)
 
 - [ ] Runtime between 2:00 and 5:00
-- [ ] Every number on screen matches eval/results
+- [ ] Every number on screen matches evaluation/results
 - [ ] Captions on (low-literacy and non-English-speaking judges)
 - [ ] Link tested from a logged-out browser

@@ -24,7 +24,7 @@ export default function App() {
 
   return (
     <ScrollView contentContainerStyle={s.screen}>
-      <Text style={s.title}>[PRODUCT NAME]</Text>
+      <Text style={s.title}>TuWulira</Text>
       <Text style={s.muted}>Synthetic demo data only. Not a medical device.</Text>
       <View style={s.row}>
         {SAMPLES.map((x, n) => (

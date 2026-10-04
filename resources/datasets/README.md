@@ -53,7 +53,7 @@ Legend. **Used for:** *evidence* = shows the problem is real (cite source, year,
 
 | Dataset | Source | License | Size | Used for | Status |
 |---|---|---|---|---|---|
-| Synthetic test clips and transcripts | This team, [synthetic/](synthetic/) and [eval/test-sets/](../../eval/test-sets/) | MIT (this repo) | TODO | build: evaluation | in progress. Every file labelled synthetic. |
+| Synthetic test clips and transcripts | This team, [synthetic/](synthetic/) and [evaluation/test-sets/](../../evaluation/test-sets/) | MIT (this repo) | TODO | build: evaluation | in progress. Every file labelled synthetic. |
 
 ## What our data does not cover (overall)
 

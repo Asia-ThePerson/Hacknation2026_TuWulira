@@ -114,7 +114,7 @@ def check_skills():
 
 def check_synthetic():
     problems = []
-    for folder in ("resources/datasets/synthetic", "eval/test-sets"):
+    for folder in ("resources/datasets/synthetic", "evaluation/test-sets"):
         for p in Path(folder).rglob("*"):
             if not p.is_file() or p.name in ("README.md", ".gitkeep") or p.name.startswith("synthetic_"):
                 continue

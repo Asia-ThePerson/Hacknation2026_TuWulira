@@ -1,10 +1,10 @@
 # Submission text
 
-Copy and paste from here into the Hack-Nation submission form. Keep it in sync with README.md. Replace every TODO before submitting, and never paste a number that is not in [eval/results/](../../eval/results/).
+Copy and paste from here into the Hack-Nation submission form. Keep it in sync with README.md. Replace every TODO before submitting, and never paste a number that is not in [evaluation/results/](../../evaluation/results/).
 
 ## Project name
 
-[PRODUCT NAME]
+TuWulira
 
 ## Track
 
@@ -12,27 +12,28 @@ Challenge 04, Small AI for Development. Health (Annex A).
 
 ## Team
 
-TODO: team name. Members: Beth A, Asia A.
+Hotline Bling. Members: Beth A and Asia A (both designer and developer).
 
 ## One-sentence problem statement
 
-Because of this tool, [TODO: user] will [TODO: action] by [TODO: when] that they would otherwise [TODO: not do / do late / do worse]; we know because [TODO: evidence].
+Because of TuWulira, patients at rural Ugandan health centres will have their symptoms, danger signs and register details captured in Luganda before they see the clinician, which would otherwise happen late, in a rushed verbal history, or not at all; we know because [TODO: evidence with source, year and country].
 
 ## Short description (about 100 words)
 
-[PRODUCT NAME] gives clinicians at a rural primary care clinic in Uganda back time lost to record keeping, without ever diagnosing. Before the visit, the patient answers a short spoken intake in Luganda on the clinic's shared Android device; the clinician sees a card labelled "patient reported". During the visit, the clinician speaks the encounter; a small on-device speech model transcribes it and a constrained extractor fills the register form, flagging anything it is unsure of. Records are stored on the device and sent when a signal appears. When the tool is unsure, it says "not sure, ask a person".
+TuWulira gives clinicians at rural health centres in Uganda back time lost to history-taking and record keeping, without ever diagnosing. While they wait, patients answer a short fixed question set in Luganda on the clinic's shared Android, by buttons and one spoken answer. Danger signs are flagged at once by rules, not AI. The clinician gets a one-screen card labelled "patient reported", and can dictate the visit so a constrained extractor drafts register fields for confirmation. Answers pre-fill the OPD register and tally; only totals leave the clinic. It runs offline. When unsure, it says "Not sure. Please ask a person."
 
 ## AI and why not SMS
 
-On-device speech recognition and constrained extraction turn unstructured Luganda speech into a structured register record. SMS, a spreadsheet or a search cannot listen or structure speech.
+A keypad survey alone could run on SMS. TuWulira's AI listens to the patient in their own words, in Luganda, offline: on-device speech-to-text, then a step that maps the words onto a fixed symptom list, keeping the original Luganda underneath. The same speech model lets the clinician dictate the visit. Danger signs stay rule-based because a confident wrong answer there is unsafe.
 
 ## Guardrails
 
-Human makes every final call. "Not sure, ask a person" on low confidence and total failure. Danger signs only from WHO / Uganda guidelines. No diagnosis or prescription. Fixed list of answers. Consent is a recorded spoken yes. SMS says only a date and the clinic's name. Synthetic data only.
+Human makes every final call. Danger signs are rules, not AI. Card labelled PATIENT REPORTED. Staff PIN, encrypted storage, voice clips deleted at visit close, aggregate-only export. "Not sure, ask a person" on low confidence and total failure. Danger signs only from WHO / Uganda guidelines. No diagnosis or prescription. Fixed list of answers. Consent is a recorded spoken yes. SMS says only a date and the clinic's name. Synthetic data only.
 
 ## Links
 
-- Prototype / code: https://github.com/Asia-ThePerson/Hacknation2026_WBC4Health (must be public)
+- Prototype / code: https://github.com/Asia-ThePerson/Hacknation2026_TuWulira (must be public)
+- Design hub: https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1
 - Video: TODO
 - Demo: TODO
 

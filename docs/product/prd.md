@@ -1,12 +1,12 @@
 # Product requirements: TuWulira
 
-Status: draft for the Hack-Nation weekend, 3 to 4 October 2026. Last updated 4 October 2026. Every requirement (PR#) cites the finding (R#) or research question (RQ#) it rests on. When an RQ is answered, update the requirement and its CHECKLIST.md item.
+Status: draft for the Hack-Nation weekend, 3 to 4 October 2026. Last updated 4 October 2026. Team: Hotline Bling. Every requirement (PR#) cites the finding (R#) or research question (RQ#) it rests on. When an RQ is answered, update the requirement and its CHECKLIST.md item.
 
 Source of truth for flows: [Figma, TuWulira Project hub, System Diagram page](https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1).
 
 ## 1. Summary
 
-TuWulira is an offline, Luganda-first intake tool for rural primary care clinics in Uganda. It asks a fixed question set, captures one spoken answer, flags danger signs, and produces a patient-reported card for the clinician. The same answers pre-fill the OPD register (HMIS 031) and tally sheet.
+TuWulira is an offline, Luganda-first intake and record-keeping tool for rural primary care clinics in Uganda. Before the visit, it asks a fixed question set, captures one spoken answer, flags danger signs, and produces a patient-reported card for the clinician. During the visit, the clinician can dictate the encounter (scribe) and confirm drafted register fields. The same answers pre-fill the OPD register (HMIS 031) and tally sheet.
 
 ## 2. Problem statement
 
@@ -22,7 +22,7 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 
 1. Patients with danger signs are seen first.
 2. The clinician starts the consultation already knowing the main problem, duration, symptoms, medicines taken and allergies.
-3. Register and tally fields the patient can answer are captured once, not re-written by hand (measure in eval; RQ1.1, RQ1.3).
+3. Register and tally fields the patient can answer are captured once, not re-written by hand (measure in evaluation; RQ1.1, RQ1.3).
 4. The core works offline, in Luganda, on a device the clinic already has.
 5. Nothing appears in a record that nobody said.
 
@@ -84,7 +84,7 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 | PR4 | The intake output is a card labelled "patient reported", never "findings", and appears beside, not instead of, the clinician's own questions. | RQ2.4; R2 | F.3, F.18 |
 | PR5 | The understanding step and register pre-fill fill only fields defined in [register-field-map.md](register-field-map.md), using only values from fixed lists or validated ranges. | Brief glossary "fixed list of answers"; RQ4.3 | D.5 |
 | PR6 | Any AI output below the confidence threshold is marked "not sure" or "unclear, clinician to ask" and is never guessed. | Brief 06 guardrail; RQ4.2 | F.4 |
-| PR7 | TuWulira never asks for, suggests or fills weight, temperature, diagnosis, treatment or referral out. Staff enter them. | RQ4.3; team rule | D.6 |
+| PR7 | Patient intake never asks for weight, temperature, diagnosis, treatment or referral out. These are filled during the in-clinic consultation: the nurse enters weight and temperature (typed, or dictated and confirmed); the clinician enters diagnosis, treatment and referral out. The AI never suggests a diagnosis or treatment. | RQ4.3; team rule | D.6 |
 | PR8 | When the tool understands nothing (silence, crying child, unintelligible audio) or confidence is too low, it says "Not sure. Please ask a person." and hands over. | Brief 09 fail-safe; RQ4.4 | D.2 |
 | PR9 | Danger signs are checked by rules, not AI. Any YES sets an urgent flag immediately and tells the patient "Tell the nurse now". Danger signs come only from WHO IMCI, Uganda Clinical Guidelines and WHO maternal danger signs. | RQ4.1, RQ4.2 | D.3, D.4 |
 | PR10 | No question is asked and nothing is recorded before a recorded spoken yes. | RQ5.1 | D.8 |
@@ -96,6 +96,7 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 | PR16 | The question list is one JSON file per language or country. Changing questions or adding a language needs no code change. | RQ7.3 | F |
 | PR17 | Data is stored encrypted on the device, behind a staff PIN. Voice clips are deleted when the visit closes. | RQ5.1 | D.7 |
 | PR18 | Patient answers pre-fill the OPD register row (HMIS 031) and tally, with CSV export. | RQ1.2; R5 | F |
+| PR19 | The clinician can dictate the encounter. The scribe drafts only register fields from fixed lists or validated ranges; every drafted field is confirmed before save, and diagnosis and treatment are typed or confirmed word for word. | RQ4.3; R2 | F.2, F.4 |
 
 ## 9. Components (Path B prototype)
 
@@ -163,6 +164,14 @@ Numbers match the component table in the [README](../../README.md).
 - Aggregate totals only; no names or patient-level data.
 - "Export totals" produces a DHIS2-style file; optional push to the public DHIS2 demo instance.
 
+### Component 11: Scribe, clinician dictation (AI) (PR5, PR6, PR19)
+
+- Opened from the staff screen during the consultation, beside the patient card and the clinician's own questions.
+- The same on-device speech model as component 4 transcribes the clinician's words.
+- A constrained extractor drafts register fields (for example weight, temperature, new or repeat visit, referral yes or no) only from fixed lists or validated ranges in [register-field-map.md](register-field-map.md).
+- Low-confidence fields are flagged and block save until the clinician confirms or edits them.
+- Diagnosis and treatment are never drafted by the AI: the clinician picks or types them, or dictates and confirms the exact words.
+
 ## 10. Question set (summary)
 
 | Section | Content | Feeds |
@@ -202,15 +211,15 @@ Full account: [responsible-ai.md](responsible-ai.md).
 | Model size | File size on device | Small enough to side-load |
 | End-to-end demo | Full Path B journey on a phone, offline | Works in airplane mode |
 
-Definitions and safety metrics (danger-sign sensitivity, ask-a-person coverage): [eval/metrics.md](../../eval/metrics.md).
+Definitions and safety metrics (danger-sign sensitivity, ask-a-person coverage): [evaluation/metrics.md](../../evaluation/metrics.md).
 
 ## 13. Features
 
 | ID | Feature | Requirements | Components | Code |
 |---|---|---|---|---|
-| F1 | Patient voice intake and patient-reported card | PR3, PR4, PR10, PR15, PR16 | 1, 2, 4, 5, 6 | [app/intake/](../../app/intake/) |
-| F2 | Clinician dictation (scribe) | PR5, PR6, PR7 | Not in the Path B component list (open question 1) | [app/scribe/](../../app/scribe/) |
-| F3 | Safety layer: danger signs, thresholds, "ask a person" | PR8, PR9 | 3 | [app/safety/](../../app/safety/) |
+| F1 | Patient voice intake and patient-reported card | PR3, PR4, PR10, PR15, PR16 | 1, 2, 4, 5, 6 | [app/intake/](../../app/intake/), [config/](../../config/) |
+| F2 | Clinician dictation (scribe) | PR5, PR6, PR7, PR19 | 11 | [app/scribe/](../../app/scribe/) |
+| F3 | Safety layer: danger signs, thresholds, "ask a person" | PR8, PR9 | 3 | [app/safety/](../../app/safety/), [rules/](../../rules/) |
 | F4 | Store-and-forward and DHIS2 export | PR1, PR11, PR13 | 10 | [app/sync/](../../app/sync/) |
 | F5 | Follow-up SMS (date and clinic name only) | PR12 | Path A | [app/sync/](../../app/sync/) |
 | F6 | Staff screen, register and tally | PR7, PR18 | 7, 8 | TODO |
@@ -231,13 +240,15 @@ Record decisions as D# here, one line each, with the PR# they serve. Use the doc
 | D7 | SMS privacy wording: "Please delete these messages from your phone if you are worried about privacy." | PR12 | 2026-10-04 |
 | D8 | Paper form (Path C) comes in two printed versions: Luganda and English. | PR3 | 2026-10-04 |
 | D9 | Assisted mode is run by a clinic volunteer or staff member, not VHTs, because VHTs are village-based. | PR14 | 2026-10-04 |
-| D10 | Speech-to-text and the understanding step (components 4 and 5) use small AI models; the understanding output is limited to the fixed symptom list. Danger signs, routing and register pre-fill stay rule-based. | PR5, PR9 | 2026-10-04 |
+| D10 | Speech-to-text and the understanding step (components 4 and 5) use small AI models; the understanding output is limited to the fixed symptom list. Danger signs, routing and register pre-fill stay rule-based. Confirmed by the team. | PR5, PR9 | 2026-10-04 |
+| D11 | Clinician dictation (scribe) stays core scope, alongside the staff screen pick-lists. | PR19 | 2026-10-04 |
+| D12 | Repo layout follows the team README: question list in `config/`, danger-sign rules in `rules/`, tests and results in `evaluation/`. | PR9, PR16 | 2026-10-04 |
+| D13 | Model choices stay as candidates for now: Meta MMS or a Sunbird AI model for speech-to-text, Meta NLLB-200 or an alternative for understanding. | PR2 | 2026-10-04 |
 
 ## 15. Open questions
 
-1. Is clinician dictation (scribe, F2) still in scope, or replaced by the staff screen pick-lists (component 7)?
-2. The diagnosis pick-list must match HMIS 105 exactly.
-3. Which clinic device is available, and how is it charged? (RQ2.2, RQ6.3)
-4. Native-speaker translation and recording of all Luganda prompts. Do not machine-translate.
-5. Final model choices and licenses (MMS, NLLB-200 or alternatives). (RQ3.1, RQ6.1)
-6. D4's danger-sign SMS includes the clinic address and an urgent message, which goes beyond PR12 ("only a date and the clinic's name"). Agree which rule wins and update PR12, responsible-ai.md and CLAUDE.md together.
+1. The diagnosis pick-list must match HMIS 105 exactly. We do not have a copy of the official list yet.
+2. Which clinic device is available, and how is it charged? (RQ2.2, RQ6.3)
+3. No native Luganda speaker is lined up to translate and record the prompts. Until one is, Luganda text and audio stay empty and the app falls back to English. Do not machine-translate. This puts the brief's Luganda requirement (C.4) at risk.
+4. Final model choices and licenses (D13). (RQ3.1, RQ6.1)
+5. D4's danger-sign SMS includes the clinic address and an urgent message, which goes beyond PR12 ("only a date and the clinic's name"). Agree which rule wins and update PR12, responsible-ai.md and CLAUDE.md together.

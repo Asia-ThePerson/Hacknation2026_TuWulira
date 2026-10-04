@@ -27,4 +27,4 @@ Status: `evaluating`, `adopted`, `rejected` (always give the reason).
 
 ## How to add an entry
 
-One row per candidate. When you reject something, keep the row and write why. Link any measurement to [eval/results/](../../eval/results/).
+One row per candidate. When you reject something, keep the row and write why. Link any measurement to [evaluation/results/](../../evaluation/results/).

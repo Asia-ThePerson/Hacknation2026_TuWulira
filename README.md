@@ -26,12 +26,12 @@ TODO: add a screenshot or GIF of the patient screen and the patient-reported car
 
 ## Team
 
-Team name: TODO.
+Team name: **Hotline Bling**.
 
 | Name | Role | Research owner for |
 |---|---|---|
-| Beth A | TODO | Problem and context (RQ1) |
-| Asia A | TODO | Users and workflow (RQ2) |
+| Beth A | Designer and developer | Problem and context (RQ1) |
+| Asia A | Designer and developer | Users and workflow (RQ2) |
 
 ## The problem
 
@@ -71,6 +71,7 @@ Full flow, device requirements and decisions: the Figma *Final system diagram*, 
 | 8 | **Register and tally** | Pre-fills the OPD register row; counts new vs repeat visits, age 0 to 4 and 5+, diagnoses. Table and CSV export. | Mock |
 | 9 | **Safe storage** | Encrypted on-device storage, staff PIN, voice clips deleted when the visit closes. | Build (simple) |
 | 10 | **Sync to DHIS2** | Sends totals only (no names) when there is signal. "Export totals" button producing a DHIS2-style file. | Mock |
+| 11 | **Scribe: clinician dictation (AI)** | During the consultation the clinician can speak the encounter. The on-device speech model transcribes it and a constrained extractor drafts register fields (for example weight, temperature, new or repeat visit) from fixed lists. Low-confidence fields are flagged and must be confirmed. Diagnosis and treatment stay clinician-entered. | Build (core) |
 
 ## Where AI is used, and where it deliberately is not
 
@@ -78,6 +79,7 @@ Full flow, device requirements and decisions: the Figma *Final system diagram*, 
 |---|---|
 | Luganda speech-to-text (component 4) | Danger-sign detection (component 3) |
 | Transcript to structured English symptom items (component 5) | Question routing and keypad answers |
+| Clinician dictation to draft register fields (component 11) | |
 | | Register pre-fill and tally counts |
 
 A keypad survey alone could run on SMS. TuWulira's AI value is **listening to the patient in their own words, in Luganda, offline**, and turning that into something a busy clinician can read in seconds. Danger signs stay rule-based because a confident wrong answer there is unsafe.
@@ -87,9 +89,9 @@ A keypad survey alone could run on SMS. TuWulira's AI value is **listening to th
 | Measure | Value | Source |
 |---|---|---|
 | Model size on disk | TODO | [models/README.md](models/README.md) |
-| RAM on the cheapest available Android | TODO | [eval/results/](eval/results/) |
-| Latency per 10 s of audio | TODO | [eval/results/](eval/results/) |
-| Works in airplane mode | TODO: verify | [eval/results/](eval/results/) |
+| RAM on the cheapest available Android | TODO | [evaluation/results/](evaluation/results/) |
+| Latency per 10 s of audio | TODO | [evaluation/results/](evaluation/results/) |
+| Works in airplane mode | TODO: verify | [evaluation/results/](evaluation/results/) |
 
 The danger-sign checker, question routing and register pre-fill are rule-based, so they add no model weights. We rejected Gemma 4 E2B because it needs about 2.4 GB RAM and a 4 GB phone ([libraries registry](resources/libraries/README.md)).
 
@@ -118,7 +120,8 @@ Full account, including lost or shared phones and bias: [docs/product/responsibl
 
 - Health-worker availability and time per patient: World Bank Service Delivery Indicators.
 - Workforce density and service coverage: WHO Global Health Observatory.
-- Phone ownership in Uganda: GSMA Mobile Gender Gap Report. TODO: confirm the team research note (about 79% of adults own a mobile phone, mostly basic feature phones) against the source before quoting it.
+- Phone ownership in Uganda: FSD Uganda, [Connected but not included](https://fsduganda.or.ug/connected-but-not-included/). Team research note: about 79% of adults own a mobile phone, mostly basic feature phones. TODO: check the exact figure, survey year and sample against the report before quoting it (we could not open the page from our build environment).
+- Phone vs smartphone ownership by gender: GSMA Mobile Gender Gap Report.
 
 **Data we build with** (TODO: confirm license and size for each)
 
@@ -144,14 +147,14 @@ Full catalogue with source, license, size and use: [resources/datasets/README.md
 | Model size | File size on device | Small enough to side-load |
 | End-to-end demo | Full Path B journey on a phone, offline | Works in airplane mode |
 
-Definitions: [eval/metrics.md](eval/metrics.md). Results, once measured: [eval/results/](eval/results/).
+Definitions: [evaluation/metrics.md](evaluation/metrics.md). Results, once measured: [evaluation/results/](evaluation/results/).
 
 ## Tech stack
 
 - **App:** Expo (React Native, TypeScript) for Android.
 - **Speech-to-text:** small on-device Luganda model, being evaluated: Meta MMS or Sunbird AI models, run with sherpa-onnx or whisper.rn ([registry](resources/libraries/README.md)).
 - **Understanding:** constrained to a fixed symptom list. Meta NLLB-200 is a candidate for Luganda to English.
-- **Danger signs, routing, register pre-fill:** rule-based.
+- **Danger signs, routing, register pre-fill:** rule-based. Danger signs in [rules/](rules/), questions in [config/](config/).
 - **Storage and sync:** encrypted on-device storage and queue (expo-sqlite planned), DHIS2-style aggregate export.
 
 ## Quick start
@@ -174,10 +177,10 @@ To open the app on an Android phone with Expo Go, or an emulator: `npm run andro
 
 | Criterion | Weight | Evidence in this repo |
 |---|---|---|
-| The built solution (Small AI fidelity) | 25% | [app/](app/), [models/](models/), [eval/results/](eval/results/) |
+| The built solution (Small AI fidelity) | 25% | [app/](app/), [models/](models/), [evaluation/results/](evaluation/results/) |
 | Development relevance and impact | 20% | [research/findings.md](research/findings.md), [docs/product/prd.md](docs/product/prd.md) |
 | Data grounding | 15% | [resources/datasets/](resources/datasets/) |
-| Evidence it works | 15% | [eval/metrics.md](eval/metrics.md), [eval/results/](eval/results/) |
+| Evidence it works | 15% | [evaluation/metrics.md](evaluation/metrics.md), [evaluation/results/](evaluation/results/) |
 | Clarity, design and inclusivity; value proposition for AI | 15% | [docs/design/design-system.md](docs/design/design-system.md), [docs/product/user-flows.md](docs/product/user-flows.md), [Figma hub](https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1) |
 | Scalability, replicability and what happens next | 10% | [docs/product/country-pack.md](docs/product/country-pack.md) |
 | **Responsible AI, data and safety (pass/fail)** | gate | [docs/product/responsible-ai.md](docs/product/responsible-ai.md), [CHECKLIST.md](CHECKLIST.md) section D |
@@ -188,7 +191,7 @@ Progress against every deliverable: [CHECKLIST.md](CHECKLIST.md).
 
 - [ ] Working prototype (Path B, end to end) and link
 - [ ] Video, 2 to 5 min: problem statement, AI capabilities and guardrails, demo, where it sits in the user's day and tech stack, our take on localizing AI
-- [ ] Evaluation results in [eval/results/](eval/results/)
+- [ ] Evaluation results in [evaluation/results/](evaluation/results/)
 - [ ] Data sources, licenses, sizes and gaps documented
 
 Full list: [CHECKLIST.md](CHECKLIST.md).
@@ -203,10 +206,11 @@ Full list: [CHECKLIST.md](CHECKLIST.md).
 
 | Folder | What it holds | Components |
 |---|---|---|
-| [app/](app/) | The Expo app: patient screen, card, staff screen, storage, sync | 1, 6, 7, 8, 9, 10 |
-| [app/safety/](app/safety/) | Danger-sign rules and "ask a person" | 3 |
-| [models/](models/) | Model choice, cards, weights (gitignored) | 4, 5 |
-| [eval/](eval/) | Metrics, synthetic test sets, dated results | |
+| [app/](app/) | The Expo app: patient screen, card, staff screen, scribe, storage, sync | 1, 6, 7, 8, 9, 10, 11 |
+| [config/](config/) | Question list JSON (one file per language and country) and audio prompts | 2 |
+| [rules/](rules/) | Danger-sign rules, read by [app/safety/](app/safety/) | 3 |
+| [models/](models/) | Model choice, cards, weights (gitignored) | 4, 5, 11 |
+| [evaluation/](evaluation/) | Test scripts, metrics, synthetic test sets, dated results (WER, symptom-label accuracy, "not sure" rate) | |
 | [resources/](resources/) | Dataset catalogue and cards, library registry | |
 | [research/](research/) | Research questions, findings, landscape review, sources | |
 | [docs/](docs/) | Hackathon requirements, product, design, demo, links | |

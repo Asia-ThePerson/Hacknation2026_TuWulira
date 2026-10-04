@@ -1,15 +1,16 @@
 # Country pack
 
-What changes when [PRODUCT NAME] moves to a new country or language. Answers RQ7.3. The landscape review notes DHIS2 is used in more than 70 countries, so a new country is mostly a schema swap (R5).
+What changes when TuWulira moves to a new country or language. Answers RQ7.3. The landscape review notes DHIS2 is used in more than 70 countries, so a new country is mostly a file swap, not new code (R5, PR16).
 
-## The four parts that change
+## The five parts that change
 
 | Part | Uganda (current) | What to swap | Where in the repo |
 |---|---|---|---|
-| Speech model | Luganda (model TBD, see [models/README.md](../../models/README.md)) | A small speech model for the new language, with a measured WER on a public benchmark (for example FLEURS) and on 20 to 30 local clips | `models/`, `models/cards/` |
-| Prompts and strings | Luganda + English | Recorded intake prompts and on-screen strings, written with native speakers | `app/shared/i18n/` |
-| Form mapping | Uganda HMIS outpatient register (to verify, RQ1.2) | The country's register fields and DHIS2 data elements | `app/shared/field-schemas.ts`, [register-field-map.md](register-field-map.md) |
-| Guideline source and danger-sign list | WHO IMCI, Uganda Clinical Guidelines, WHO maternal danger signs | The country's own clinical guidelines, plus WHO lists. Never invented. | `app/safety/danger-signs.ts` |
+| Question file | Luganda and English question list (draft) | One JSON file per language and country: every question, both texts, audio file, answer type, branching and target register column | [config/questions.lg-UG.json](../../config/questions.lg-UG.json) |
+| Prompts and strings | Luganda and English (Luganda not yet written or recorded) | Recorded audio prompts and on-screen strings, written and recorded by native speakers | `config/audio/`, `app/shared/i18n/` |
+| Speech model | Luganda (candidates: Meta MMS or a Sunbird AI model; see [models/README.md](../../models/README.md)) | A small speech model for the new language, with a measured WER on a public benchmark (for example FLEURS) and on 20 to 30 local clips | `models/`, `models/cards/` |
+| Register map | Uganda HMIS 031 OPD register and HMIS 105 (to verify, RQ1.2) | The country's register columns, diagnosis list and DHIS2 data elements | `app/shared/field-schemas.ts`, [register-field-map.md](register-field-map.md) |
+| Danger-sign list | WHO IMCI, Uganda Clinical Guidelines, WHO maternal danger signs | The country's own clinical guidelines, plus WHO lists. Never invented. | [rules/danger-signs.json](../../rules/danger-signs.json) |
 
 ## What stays the same
 
@@ -17,6 +18,7 @@ The safety layer logic, the "ask a person" path, store-and-forward, the hub-and-
 
 ## Checklist for a new country
 
+- [ ] Question file written, with every question mapped to a register column or "consultation"
 - [ ] Speech model chosen, size and WER measured
 - [ ] Prompts recorded and checked by native speakers
 - [ ] Register fields mapped and each field given a fill level

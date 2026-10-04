@@ -9,6 +9,7 @@ import './styles/layout.css';
 import './patient/intake.css';
 import './clinic/clinic.css';
 import './frame/frame.css';
+import './call/call.css';
 
 ensureFreshData();
 

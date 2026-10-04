@@ -1,5 +1,6 @@
 import { Component, useEffect, type ReactNode } from 'react';
 import { ASK_A_PERSON } from '../../app/safety/index.ts';
+import { CallPage } from './call/CallPage.tsx';
 import { ClinicPage } from './clinic/ClinicPage.tsx';
 import { Gallery } from './pages/Gallery.tsx';
 import { Home } from './pages/Home.tsx';
@@ -9,6 +10,7 @@ import { match, usePath } from './router.ts';
 const ROUTES: [string, (p: Record<string, string>) => ReactNode][] = [
   ['/', () => <Home />],
   ['/components', () => <Gallery />],
+  ['/call', () => <CallPage />],
   ['/intake', () => <IntakeStart />],
   ['/intake/:step', (p) => <IntakeStep id={p.step} />],
   ['/clinic', () => <ClinicPage view={{}} />],

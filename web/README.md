@@ -14,15 +14,20 @@ npm run build      # typecheck, then a static build in dist/
 npm run preview    # serves dist/ at http://localhost:4173, offline after first load
 ```
 
-Open `#/intake` and `#/clinic` in two tabs of the same browser. Any four digits unlock the clinic.
+Open `#/call` (the patient's basic phone) and `#/clinic` in two tabs of the same browser. Any four digits unlock the clinic. `#/intake` is staff-assisted intake on the intake phone, for walk-ins.
+
+### Basic phone (Path A, D38)
+
+`#/call` shows the patient's own basic phone in the Figma patient-screen style: missed call, the clinic line calls back, each question as "You hear", answers on a working keypad (1 Yes, 2 No, 3 Not sure, 0 Ask clinician, # Done, * Not sure or I do not know, OK clears a number). A computer keyboard works too. It runs the same question set, routing and danger-sign rules as the intake phone. Following D4, a danger answer asks permission before anything reaches the clinic; until then, or after a hang-up, nothing is shared. The call and the speech step are simulated: a prototype control picks a synthetic transcript. Code: [src/call/](src/call/).
 
 ### Device frames (desktop)
 
 On a desktop browser (window at least 1024 px wide, with a mouse), each screen shows inside the device it runs on (D33), like the Figma frames:
 
-- `#/intake`: the intake phone, an Android smartphone (360 x 720 screen).
+- `#/call`: the patient's basic phone, which draws its own body and keypad.
+- `#/intake`: the intake phone, an Android smartphone (360 x 720 screen), for staff-assisted walk-ins.
 - `#/clinic`: the clinic device, an Android tablet in landscape (900 x 600 screen).
-- `#/both`: both side by side. Finish an intake on the phone and the card appears in the clinic queue, which suits the demo video.
+- `#/both`: the basic phone and the clinic tablet side by side. Finish the call and the card appears in the clinic queue, which suits the demo video.
 
 Each screen is the real app in an iframe at that size, so the app's own phone and tablet layouts apply. The stage shrinks to fit smaller windows. On phones and tablets the app shows as before, with no frame. Add `?frame=off` to the address (or use "Show without frame") to turn the frames off on desktop. Code: [src/frame/](src/frame/).
 

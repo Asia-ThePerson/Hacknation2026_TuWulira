@@ -22,7 +22,7 @@ Hack-Nation x World Bank Youth Summit, Global AI Hackathon 2026, Challenge 04: S
 
 ## Web prototype
 
-A working browser prototype of the main flow (Path B, in clinic, staff-assisted) lives in [web/](web/). It shows the whole loop on synthetic data: **patient intake → patient-reported card → clinic queue → staff review → visit closed**. It is built from the Figma wireframes and reads the same question list, danger-sign rules, field ranges and HMIS 105 list as the Android app, so there is one source of truth.
+A working browser prototype lives in [web/](web/). It shows the whole loop on synthetic data: **patient answers on their own basic phone → patient-reported card → clinic queue → staff review → visit closed**. The basic phone (Path A, D38) is a simulated call: voice prompts on screen, answers on a working keypad. Staff-assisted intake on the intake phone (Path B) is there too, for walk-ins. It is built from the Figma wireframes and reads the same question list, danger-sign rules, field ranges and HMIS 105 list as the Android app, so there is one source of truth.
 
 ```bash
 cd web
@@ -30,7 +30,7 @@ npm ci
 npm run dev        # http://localhost:5173 (Node 20.19 or newer)
 ```
 
-Open `#/intake` and `#/clinic` in two tabs of the same browser; any four digits unlock the clinic. For an offline test, run `npm run build` then `npm run preview` (http://localhost:4173), load it once, then switch the network off and reload. Details: [web/README.md](web/README.md).
+On a desktop, open `#/both` to see the basic phone and the clinic tablet side by side. Otherwise open `#/call` (basic phone) and `#/clinic` in two tabs of the same browser; any four digits unlock the clinic. For an offline test, run `npm run build` then `npm run preview` (http://localhost:4173), load it once, then switch the network off and reload. Details: [web/README.md](web/README.md).
 
 ### What is functional and what is simulated
 
@@ -92,7 +92,7 @@ One question set, several ways in. Every path produces the same patient-reported
 |---|---|---|---|
 | **B. In clinic, staff-assisted (main flow)** | Clerk or nurse holds the intake phone at registration; patient speaks the main problem in Luganda | Intake phone + clinic device (or one phone in one-device mode) | **Prototype** |
 | B2. In clinic, self-intake | Patient uses the intake phone alone, with earphones | Same | Optional; needs validation in a real clinic |
-| A. Remote | Patient's own basic phone (voice callback / SMS) | Signal + server | Design only |
+| **A. Remote (demo lead)** | Patient's own basic phone: flash call, the clinic line calls back, voice prompts, keypad answers (SMS: design only) | Phone signal (no internet) + clinic line | **Prototype, simulated call** (D38) |
 | C. Paper form | Printed form (Luganda or English), photographed | Paper; phone optional | Design only |
 
 All AI runs on the intake phone. The clinic device runs no AI. The card moves by QR code, offline. See [docs/product/data-architecture.md](docs/product/data-architecture.md).

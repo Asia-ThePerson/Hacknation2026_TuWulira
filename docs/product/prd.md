@@ -69,7 +69,7 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 |---|---|---|---|
 | **B. In clinic, staff-assisted (main flow)** | Clerk or nurse holds the intake phone at registration; patient speaks the main problem in Luganda | Intake phone + clinic device (or one phone in one-device mode) | **Prototype** (D32) |
 | B2. In clinic, self-intake | Patient uses the intake phone alone, with earphones | Same | Optional; needs validation in a real clinic |
-| A. Remote | Patient's own basic phone (voice callback / SMS) | Signal + server | Design only |
+| **A. Remote (demo lead)** | Patient's own basic phone: flash call, the clinic line calls back, voice prompts, keypad answers (SMS: design only) | Phone signal (no internet) + clinic line | **Simulated in the web prototype** (D38) |
 | C. Paper form | Printed form (Luganda or English), photographed | Paper; phone optional | Design only |
 
 All AI runs on the intake phone. The clinic device runs no AI. The card moves by QR code, offline (D33). Data model and devices: [data-architecture.md](data-architecture.md).
@@ -365,12 +365,13 @@ Decisions D16 to D28 come from the HMIS 105 alignment update ([HMIS105_ALIGNMENT
 | D29 | Private questions (alcohol, tobacco, medicines, private matters) are never asked by SMS, because the thread stays on a shared phone. The clinician asks them in person. On a call they are keypad-only. | PR15 | 2026-10-04 |
 | D30 | The closing SMS of a text intake may include the visit code alongside the clinic's name: a code carries no health information. On a call the code is spoken, not texted. | PR12 | 2026-10-04 |
 | D31 | Superseded by D32. Was: Path A (the patient's own basic phone, by flash call or text) is the main patient experience. Path B (in-clinic kiosk) becomes the fallback for walk-ins; Path C stays design only. | PR1, PR3 | 2026-10-04 |
-| D32 | Main flow: staff-assisted capture in clinic (Path B); self-intake (B2) is optional until validated. | PR1, PR3, PR14 | 2026-10-04 |
+| D32 | Main flow: staff-assisted capture in clinic (Path B); self-intake (B2) is optional until validated. The demo now leads with Path A (D38). | PR1, PR3, PR14 | 2026-10-04 |
 | D33 | Devices: intake phone (AI) + clinic device (no AI), QR handoff; one-device fallback. | PR1, PR2, PR23, PR25 | 2026-10-04 |
 | D34 | Serial numbers: assigned on the clinic device only. | PR18, PR23 | 2026-10-04 |
 | D35 | Re-attendance: matched on the clinic device after scan. | PR18 | 2026-10-04 |
 | D36 | Unscanned sessions: wiped at end of clinic day. | PR17, PR23 | 2026-10-04 |
 | D37 | Translation model: dropped from device (size); Sunflower used as benchmark only. | PR2, PR5 | 2026-10-04 |
+| D38 | The demo leads with Path A: the patient answers on their own basic phone (flash call, voice prompts, keypad), simulated in the web prototype with the same question set and danger rules. The basic phone runs nothing; speech-to-text stays on the clinic's intake phone (D33). How call audio reaches it is open question 7. Path B (D32) stays for walk-ins and is the route when there is no phone signal. | PR1, PR3 | 2026-10-04 |
 
 ## 15. Open questions
 

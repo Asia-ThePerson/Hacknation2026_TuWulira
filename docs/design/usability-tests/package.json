@@ -1,0 +1,12 @@
+{
+  "name": "tuwulira-wireframe-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tasks": "node tasks.mjs",
+    "dead-controls": "node deadcontrols.mjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}

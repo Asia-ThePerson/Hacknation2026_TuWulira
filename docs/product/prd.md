@@ -80,7 +80,7 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 7. Clinician reads the card, takes their own history, and records diagnosis, treatment and referral.
 8. Register row and tally update. Totals are exported for DHIS2.
 
-Wireframes of every step: [TuWulira wireframes](https://claude.ai/artifact/ADg875g7jonBCzvqK8pPjV) (private link; ask Asia for access).
+Wireframes of every step: [wireframes.html](../design/wireframes.html), a clickable page you can open in a browser. Automated usability tests for it: [usability-tests/](../design/usability-tests/).
 
 ## 8. Requirements
 

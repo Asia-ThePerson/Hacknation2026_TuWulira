@@ -8,6 +8,8 @@ Every link the team and judges need. Test each from a logged-out browser before 
 |---|---|---|
 | Repo | https://github.com/Asia-ThePerson/Hacknation2026_TuWulira | Must be public before submission. |
 | Figma design hub | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1 | Start with the System Diagram page, then Final system diagram |
+| Figma wireframes: patient screens | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=34-2 | Patient's own basic phone (flash call, SMS). One section per task flow. Built from docs/design/wireframes.html |
+| Figma wireframes: clinic device | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=34-3 | Shared clinic Android: patient card, staff screens, scribe, register and tally. One section per task flow |
 | Demo (build or recording) | TODO | |
 | Video (2 to 5 min) | TODO | |
 | Pitch deck | TODO | Build with the frontend-slides plugin |

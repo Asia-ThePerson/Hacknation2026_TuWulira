@@ -16,6 +16,16 @@ npm run preview    # serves dist/ at http://localhost:4173, offline after first 
 
 Open `#/intake` and `#/clinic` in two tabs of the same browser. Any four digits unlock the clinic.
 
+### Device frames (desktop)
+
+On a desktop browser (window at least 1024 px wide, with a mouse), each screen shows inside the device it runs on (D33), like the Figma frames:
+
+- `#/intake`: the intake phone, an Android smartphone (360 x 720 screen).
+- `#/clinic`: the clinic device, an Android tablet in landscape (900 x 600 screen).
+- `#/both`: both side by side. Finish an intake on the phone and the card appears in the clinic queue, which suits the demo video.
+
+Each screen is the real app in an iframe at that size, so the app's own phone and tablet layouts apply. The stage shrinks to fit smaller windows. On phones and tablets the app shows as before, with no frame. Add `?frame=off` to the address (or use "Show without frame") to turn the frames off on desktop. Code: [src/frame/](src/frame/).
+
 ## What it reads from the repo
 
 | Source | Used for |

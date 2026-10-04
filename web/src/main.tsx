@@ -1,13 +1,14 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './App.tsx';
 import { ensureFreshData } from './demo.ts';
+import { Root } from './frame/DeviceStage.tsx';
 import './styles/tokens.css';
 import './styles/base.css';
 import './styles/components.css';
 import './styles/layout.css';
 import './patient/intake.css';
 import './clinic/clinic.css';
+import './frame/frame.css';
 
 ensureFreshData();
 
@@ -20,6 +21,6 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <Root />
   </StrictMode>,
 );

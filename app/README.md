@@ -5,8 +5,8 @@ Expo (React Native + TypeScript) app for the shared clinic Android device. Hello
 | Folder | Feature | What is in it now |
 |---|---|---|
 | [intake/](intake/) | F1 patient voice intake | `intake-card.ts`: builds the "Patient reported" card |
-| [scribe/](scribe/) | F2 clinician dictation | `extract.ts`: rule-based extractor limited to the field schemas |
-| [safety/](safety/) | F3 safety layer | `index.ts`: "ask a person" and "tell the nurse now"; `danger-signs.ts`: sourced list |
+| [scribe/](scribe/) | F2 clinician dictation (core scope, D11) | `extract.ts`: rule-based extractor limited to the field schemas |
+| [safety/](safety/) | F3 safety layer | `index.ts`: "ask a person" and "tell the nurse now"; `danger-signs.ts`: loads the sourced list from [rules/danger-signs.json](../rules/danger-signs.json) |
 | [sync/](sync/) | F4, F5 store-and-forward | `queue.ts`: queue with no duplicates; SMS with date and clinic name only |
 | [shared/](shared/) | used by all | field schemas, design tokens, Luganda and English strings |
 

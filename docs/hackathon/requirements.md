@@ -31,7 +31,7 @@ By the end of the weekend we need:
 |---|---|---|
 | Runs on a device the user already has | One shared Android device at the clinic (hub); patients reach it in person or by voice/SMS on the phone they already have (spokes). Assumption to verify: RQ2.2. | C |
 | Core feature works offline | Speech model and extractor run on the device. Records queue until a signal appears. | C, F |
-| Model files are small enough to side-load or send over a weak connection | Measured sizes go in [models/README.md](../../models/README.md) and [eval/results/](../../eval/results/). RQ6.1. | C |
+| Model files are small enough to side-load or send over a weak connection | Measured sizes go in [models/README.md](../../models/README.md) and [evaluation/results/](../../evaluation/results/). RQ6.1. | C |
 | At least one interaction is in a named local language | **Luganda** (intake and dictation). Expect to be asked about a less-supported one: **Lusoga** (RQ3.3). | C |
 
 ## AI guardrails (brief 06)
@@ -69,10 +69,10 @@ Plan: [video-plan.md](video-plan.md). Submission text: [submission.md](submissio
 
 | Criterion | Weight | The question judges ask | Our evidence |
 |---|---|---|---|
-| The built solution (Small AI fidelity) | 25% | Does the tool work end to end within the constraints of the sector? | [app/](../../app/), [eval/results/](../../eval/results/), [models/cards/](../../models/cards/) |
+| The built solution (Small AI fidelity) | 25% | Does the tool work end to end within the constraints of the sector? | [app/](../../app/), [evaluation/results/](../../evaluation/results/), [models/cards/](../../models/cards/) |
 | Development relevance and impact | 20% | Is this a real problem from the sector brief, and does the outcome matter to the person it is built for? | [research/findings.md](../../research/findings.md), [docs/product/prd.md](../product/prd.md) |
 | Data grounding | 15% | Does the tool help address an identified gap in the data, and is the data modelling sound? | [resources/datasets/](../../resources/datasets/) |
-| Evidence it works | 15% | Does the solution fit the challenges identified in the sector, and does it add other constraints? | [eval/metrics.md](../../eval/metrics.md), [eval/results/](../../eval/results/) |
+| Evidence it works | 15% | Does the solution fit the challenges identified in the sector, and does it add other constraints? | [evaluation/metrics.md](../../evaluation/metrics.md), [evaluation/results/](../../evaluation/results/) |
 | Clarity, design and inclusivity; value proposition for AI | 15% | What does the tool do with AI, and would a simpler tool (SMS, a spreadsheet, a search) do the same job? | [docs/design/design-system.md](../design/design-system.md), [docs/product/user-flows.md](../product/user-flows.md) |
 | Scalability, replicability and what happens next | 10% | Could another setting reuse this? | [docs/product/country-pack.md](../product/country-pack.md) |
 | **Responsible AI, data and safety** | **Pass/fail** | Are the limits respected, and is the account of privacy, consent, bias and human oversight credible? | [docs/product/responsible-ai.md](../product/responsible-ai.md) |

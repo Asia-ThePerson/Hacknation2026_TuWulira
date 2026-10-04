@@ -4,15 +4,19 @@ Guidance for Claude Code (and humans) working in this repo.
 
 ## Product
 
-[PRODUCT NAME] (placeholder; use it everywhere until the team renames it). A Small AI tool for a rural primary care clinic in Uganda that gives clinicians back time lost to record keeping, without ever diagnosing. Hack-Nation x World Bank Youth Summit, Small AI for Development, Challenge 04, Health track. **Deadline: 4 October 2026, 9:00 AM ET.**
+TuWulira. Offline, Luganda-first patient intake and record keeping for rural primary care clinics in Uganda. It gives clinicians back time lost to history-taking and paperwork, without ever diagnosing. Hack-Nation x World Bank Youth Summit, Small AI for Development, Challenge 04, Health track. **Deadline: 4 October 2026, 9:00 AM ET.**
 
-1. **Intake (before the visit):** spoken Luganda intake on the clinic's shared Android device, or by voice callback to a basic phone. Output: a card labelled "patient reported", never "findings".
-2. **Scribe (during the visit):** clinician speaks the encounter; a small on-device speech model transcribes it; a constrained extractor fills a fixed register form mapped to Uganda HMIS / DHIS2. Low-confidence fields are flagged for confirmation.
-3. **Sync (after the visit):** store-and-forward. SMS to the patient says only a date and the clinic's name.
+Design hub (source of truth for flows): [Figma, TuWulira Project hub](https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1).
+
+1. **Intake (before the visit):** a fixed question set in Luganda, with recorded prompts and Yes / No / Not sure / Ask clinician buttons, plus one spoken answer for the main problem. Rule-based danger-sign questions raise an urgent flag at once. Output: a one-screen card labelled "patient reported", never "findings". One question set, three ways in: A remote (basic phone, callback or SMS; design only), B in clinic on the shared Android (the prototype, fully offline), C paper form (design only).
+2. **Consultation (during the visit):** the staff screen (behind a staff PIN) shows the queue, urgent first. The nurse adds weight and temperature; the clinician records diagnosis (HMIS 105 list), treatment and referral out. The clinician can also speak the encounter (scribe): a small on-device speech model transcribes it and a constrained extractor drafts register fields. Low-confidence fields are flagged for confirmation.
+3. **Records and sync (after the visit):** answers pre-fill the OPD register (HMIS 031) and tally. Store-and-forward; only aggregate totals leave the clinic, as a DHIS2-style export. SMS to the patient says only a date and the clinic's name.
+
+Where AI is used: Luganda speech-to-text, and turning the transcript into items from a fixed symptom list (decision D10). Deliberately rule-based: danger signs, question routing, register pre-fill and tallies.
 
 Device model: hub and spokes. The model runs on one shared clinic device; patients reach it in person or by voice/SMS on the phone they already have.
 
-Team: Beth A, Asia A. Research owners: Beth (problem and context), Asia (users and workflow).
+Team: Hotline Bling. Beth A and Asia A, both designer and developer. Research owners: Beth (problem and context), Asia (users and workflow).
 
 ## Non-negotiables
 
@@ -24,12 +28,12 @@ The brief ([docs/hackathon/requirements.md](docs/hackathon/requirements.md)) is 
 - Fail-safe: when unsure, say "Not sure. Please ask a person." instead of guessing. This covers total failure too: silence, crying child, unintelligible audio.
 - Danger signs trigger "Tell the nurse now". The list comes only from WHO IMCI general danger signs, Uganda Clinical Guidelines and WHO maternal danger signs. **Never invent danger signs.**
 - No diagnosis, no prescription, no image interpretation. Fields that imply either stay clinician-entered or are dictated and confirmed.
-- Fixed list of answers: the extractor outputs only values from the field schemas in `app/shared/field-schemas.ts`.
+- Fixed list of answers: the extractor and the understanding step output only values from the field schemas in `app/shared/field-schemas.ts`.
 - No hallucinations: nothing in an output that the patient or clinician did not say.
 - State where data sits, who can read it, and what happens when the phone is lost or shared ([docs/product/responsible-ai.md](docs/product/responsible-ai.md)). Consent is a recorded spoken yes.
 - Cite every data source with source, license and size, and state what it does not cover. Label all synthetic data.
 - **Never commit secrets, real API keys or any real patient data.** Demo data is synthetic only.
-- **Never invent metrics, benchmarks, quotes or results.** Leave numbers as TODO until a file in `eval/results/` has them. Do not machine-translate Luganda; leave it empty for a native speaker.
+- **Never invent metrics, benchmarks, quotes or results.** Leave numbers as TODO until a file in `evaluation/results/` has them. Do not machine-translate Luganda; leave it empty for a native speaker.
 
 ## Writing rules
 
@@ -40,8 +44,10 @@ Plain language in all docs. No em dashes. Use "patient reported" on anything pat
 | Path | What |
 |---|---|
 | `app/` | Expo (React Native, TypeScript) app: `intake/`, `scribe/`, `safety/`, `sync/`, `shared/` |
+| `config/` | Question list JSON per language and country, and audio prompts (component 2) |
+| `rules/` | Danger-sign rules (component 3), read by `app/safety/` |
 | `models/` | Model choice, cards, weights (gitignored, via `scripts/fetch-models`) |
-| `eval/` | Metrics, synthetic test sets, dated results |
+| `evaluation/` | Metrics, synthetic test sets, dated results |
 | `resources/` | Dataset catalogue and cards; library registry |
 | `research/` | Questions (RQ#), findings (R#), landscape review, sources |
 | `docs/` | Hackathon requirements, video plan, submission text, PRD, field map, responsible AI, flows, country pack, design system, demo script, links |
@@ -71,7 +77,7 @@ npm run typecheck
 npm run android               # needs a device or emulator
 ```
 
-App imports use explicit `.ts` extensions so `npm test` runs with Node's type stripping.
+App imports use explicit `.ts` extensions so `npm test` runs with Node's type stripping. The app reads `rules/` and `config/` from the repo root; `app/metro.config.js` watches them.
 
 ## Skills
 

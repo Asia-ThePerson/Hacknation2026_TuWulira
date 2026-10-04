@@ -17,4 +17,4 @@ One card per model that ships or is seriously evaluated. Copy this outline:
 - What it was not trained on:
 ```
 
-Every number must match a file in [eval/results/](../../eval/results/).
+Every number must match a file in [evaluation/results/](../../evaluation/results/).

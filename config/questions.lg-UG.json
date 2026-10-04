@@ -1,0 +1,46 @@
+{
+  "_note": "DRAFT question list for Luganda, Uganda (component 2). Section summary is in docs/product/prd.md section 10; the full set is in the Figma hub, Reference: Data requirements. textLg is empty on purpose: a native Luganda speaker writes it, never a machine. audio files do not exist yet. Column numbers in 'target' are working values; check against the register field map.",
+  "language": "lg",
+  "country": "UG",
+  "fallbackLanguage": "en",
+  "answerTypes": {
+    "yesNo": ["yes", "no", "not_sure", "ask_clinician"],
+    "choice": "one of options, plus not_sure and ask_clinician",
+    "number": "numeric keypad, plus not_sure",
+    "spoken": "one recorded spoken answer, transcribed on device",
+    "readBack": ["correct", "change"]
+  },
+  "questions": [
+    { "id": "s0_language", "section": 0, "textEn": "Which language would you like?", "textLg": "", "audio": "s0_language.m4a", "type": "choice", "options": ["lg", "en"], "next": "s0_consent", "target": "language" },
+    { "id": "s0_consent", "section": 0, "textEn": "Your answers go only to the clinic staff. May we ask you some questions and record one answer?", "textLg": "", "audio": "s0_consent.m4a", "type": "yesNo", "next": { "yes": "s1_who", "no": "end_no_consent", "not_sure": "end_no_consent", "ask_clinician": "end_no_consent" }, "target": "consent" },
+
+    { "id": "s1_who", "section": 1, "textEn": "Is this visit for you, or for a child?", "textLg": "", "audio": "s1_who.m4a", "type": "choice", "options": ["self", "child"], "next": { "self": "s1_pregnant", "child": "s1_child_age" }, "target": "dangerSet" },
+    { "id": "s1_child_age", "section": 1, "textEn": "How old is the child?", "textLg": "", "audio": "s1_child_age.m4a", "type": "choice", "options": ["under_2_months", "2_months_to_5_years", "over_5_years"], "next": "s2_danger", "target": "dangerSet" },
+    { "id": "s1_pregnant", "section": 1, "textEn": "Are you pregnant?", "textLg": "", "audio": "s1_pregnant.m4a", "type": "yesNo", "next": "s2_danger", "target": "dangerSet" },
+
+    { "id": "s2_danger", "section": 2, "textEn": "Danger-sign questions for the matching set (newborn, child, pregnancy, adult). The list comes from rules/danger-signs.json, one yes/no question per sign. Any yes, or not_sure in the pregnancy set, raises the urgent flag immediately.", "textLg": "", "audio": null, "type": "yesNo", "fromRules": "danger-signs", "next": "s3_name", "target": "urgent" },
+
+    { "id": "s3_name", "section": 3, "textEn": "What is your name? The clerk will check the spelling.", "textLg": "", "audio": "s3_name.m4a", "type": "spoken", "next": "s3_village", "target": "hmis031:col2" },
+    { "id": "s3_village", "section": 3, "textEn": "Which village and parish do you live in?", "textLg": "", "audio": "s3_village.m4a", "type": "spoken", "next": "s3_age", "target": "hmis031:col3-5" },
+    { "id": "s3_age", "section": 3, "textEn": "How old are you?", "textLg": "", "audio": "s3_age.m4a", "type": "number", "next": "s3_sex", "target": "hmis031:col3-5" },
+    { "id": "s3_sex", "section": 3, "textEn": "Are you female or male?", "textLg": "", "audio": "s3_sex.m4a", "type": "choice", "options": ["female", "male"], "next": "s3_next_of_kin", "target": "hmis031:col3-5" },
+    { "id": "s3_next_of_kin", "section": 3, "textEn": "Who should we contact if needed, and what is their phone number?", "textLg": "", "audio": "s3_next_of_kin.m4a", "type": "spoken", "next": "s3_repeat", "target": "hmis031:col7" },
+    { "id": "s3_repeat", "section": 3, "textEn": "Have you been to this clinic before for this problem?", "textLg": "", "audio": "s3_repeat.m4a", "type": "yesNo", "next": "s3_referral", "target": "hmis031:col8" },
+    { "id": "s3_referral", "section": 3, "textEn": "Were you sent here by another clinic or health worker?", "textLg": "", "audio": "s3_referral.m4a", "type": "yesNo", "next": "s4_main", "target": "hmis031:col11" },
+
+    { "id": "s4_main", "section": 4, "textEn": "Tell us in your own words what brings you here today.", "textLg": "", "audio": "s4_main.m4a", "type": "spoken", "retryOnLowConfidence": 1, "next": "s5_duration", "target": "consultation" },
+
+    { "id": "s5_duration", "section": 5, "textEn": "How many days have you had this problem?", "textLg": "", "audio": "s5_duration.m4a", "type": "number", "next": "s5_trend", "target": "consultation" },
+    { "id": "s5_trend", "section": 5, "textEn": "Is it getting better, worse, or staying the same?", "textLg": "", "audio": "s5_trend.m4a", "type": "choice", "options": ["better", "worse", "same"], "next": "s5_symptoms", "target": "consultation" },
+    { "id": "s5_symptoms", "section": 5, "textEn": "Common symptom questions, one yes/no each, from the fixed symptom list in app/shared/field-schemas.ts.", "textLg": "", "audio": null, "type": "yesNo", "fromSchema": "patient_reported_symptoms", "next": "s6_medicines", "target": "consultation" },
+
+    { "id": "s6_medicines", "section": 6, "private": true, "textEn": "Have you taken any medicine for this problem?", "textLg": "", "audio": "s6_medicines.m4a", "type": "yesNo", "next": "s6_daily", "target": "consultation" },
+    { "id": "s6_daily", "section": 6, "private": true, "textEn": "Do you take any medicine every day?", "textLg": "", "audio": "s6_daily.m4a", "type": "yesNo", "next": "s6_allergies", "target": "consultation" },
+    { "id": "s6_allergies", "section": 6, "private": true, "textEn": "Are you allergic to any medicine?", "textLg": "", "audio": "s6_allergies.m4a", "type": "yesNo", "next": "s6_private", "target": "consultation" },
+    { "id": "s6_private", "section": 6, "private": true, "textEn": "Is there something private you would rather tell the clinician alone?", "textLg": "", "audio": "s6_private.m4a", "type": "yesNo", "next": "s7_readback", "target": "consultation" },
+
+    { "id": "s7_readback", "section": 7, "textEn": "Here is what we noted. Is it correct?", "textLg": "", "audio": "s7_readback.m4a", "type": "readBack", "next": { "correct": "end", "change": "s4_main" }, "target": null },
+    { "id": "end", "section": 7, "textEn": "Thank you. Please wait to be called.", "textLg": "", "audio": "end.m4a", "type": null, "next": null, "target": null },
+    { "id": "end_no_consent", "section": 0, "textEn": "That is fine. Please wait to be called.", "textLg": "", "audio": "end_no_consent.m4a", "type": null, "next": null, "target": null }
+  ]
+}

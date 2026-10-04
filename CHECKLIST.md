@@ -9,11 +9,11 @@ Each item: **ID**, the item, then *owner*, *evidence* (file, result or URL), *so
 | | |
 |---|---|
 | Deadline | **4 October 2026, 9:00 AM ET** (confirm on Hack-Nation's site; the brief says "end of the weekend") |
-| Overall | **5 of 67 done (7%)** |
+| Overall | **5 of 71 done (7%)** |
 | Responsible AI gate | **At risk.** 0 of 10 done. Design is written in [docs/product/responsible-ai.md](docs/product/responsible-ai.md); nothing is verified yet. |
 | Next three open items | 1. A.4 make the repo public. 2. B.1 problem statement (needs RQ1.1). 3. D.3 verify the danger-sign list against its sources (RQ4.1). |
 
-Last updated: 2026-10-03.
+Last updated: 2026-10-04.
 
 ## A. Required deliverables (brief 08)
 
@@ -23,7 +23,7 @@ Last updated: 2026-10-03.
 - [ ] **A.4** Repo set to public and linked from the submission. *Owner:* Asia. *Evidence:* TODO. *Source:* team check (brief asks for "the code, or a link to it").
 - [ ] **A.5** Submission form completed before the deadline. *Owner:* TBD. *Evidence:* TODO screenshot in [docs/links.md](docs/links.md). *Source:* brief 08.
 - [ ] **A.6** Every team member is aged 18 to 35. *Owner:* Beth, Asia. *Evidence:* TODO confirm. *Source:* brief 04. **(Added from the brief.)**
-- [ ] **A.7** Proof it works: at least one measured example (for example a Luganda conversation transcribed and filled into the form). *Owner:* TBD. *Evidence:* TODO file in [eval/results/](eval/results/). *Source:* brief 05. **(Added from the brief.)**
+- [ ] **A.7** Proof it works: at least one measured example (for example a Luganda conversation transcribed and filled into the form). *Owner:* TBD. *Evidence:* TODO file in [evaluation/results/](evaluation/results/). *Source:* brief 05. **(Added from the brief.)**
 
 ## B. Video contents (brief 08)
 
@@ -43,7 +43,7 @@ Plan: [docs/hackathon/video-plan.md](docs/hackathon/video-plan.md).
 - [ ] **C.1** Runs on a device the user already has (assumption stated). *Owner:* Asia. *Evidence:* TODO answer in [research/questions.md](research/questions.md). *Source:* brief 06; RQ2.2.
 - [ ] **C.2** Core feature works with airplane mode on. *Owner:* TBD. *Evidence:* TODO recording or results file. *Source:* brief 06.
 - [ ] **C.3** Model file sizes measured and listed. *Owner:* TBD. *Evidence:* TODO [models/README.md](models/README.md). *Source:* brief 06; RQ6.1.
-- [ ] **C.4** At least one interaction in Luganda. *Owner:* TBD. *Evidence:* TODO. *Source:* brief 06.
+- [ ] **C.4** At least one interaction in Luganda. *Owner:* TBD. *Evidence:* TODO. Plan (D14): transcribe real Luganda speech from Common Voice test clips in the demo, and say so on screen. *Source:* brief 06.
 - [ ] **C.5** Lusoga answer prepared: measured result or a reasoned estimate. *Owner:* TBD. *Evidence:* TODO. *Source:* brief 06; RQ3.3.
 
 ## D. Responsible AI gate (pass/fail, brief 09)
@@ -53,7 +53,7 @@ Failing any one of these fails the entry. Details: [docs/product/responsible-ai.
 - [ ] **D.1** Human makes every final call; no action taken on the user's behalf. *Owner:* TBD. *Evidence:* TODO. *Source:* brief 06, 09.
 - [ ] **D.2** "Ask a person" path covers low confidence and total failure. *Owner:* TBD. *Evidence:* logic in [app/safety/index.ts](app/safety/index.ts); TODO edge-case clip results. *Source:* brief 09; RQ4.4.
 - [ ] **D.3** Danger-sign list sourced from WHO / Uganda guidelines, with citation. *Owner:* TBD. *Evidence:* draft in [app/safety/danger-signs.ts](app/safety/danger-signs.ts); TODO verify each entry. *Source:* RQ4.1.
-- [ ] **D.4** Danger-sign sensitivity reported separately from overall accuracy. *Owner:* TBD. *Evidence:* TODO [eval/results/](eval/results/). *Source:* RQ4.2.
+- [ ] **D.4** Danger-sign sensitivity reported separately from overall accuracy. *Owner:* TBD. *Evidence:* TODO [evaluation/results/](evaluation/results/). *Source:* RQ4.2.
 - [ ] **D.5** Register field map done: AI fill, AI draft plus confirm, clinician only. *Owner:* Beth. *Evidence:* draft in [docs/product/register-field-map.md](docs/product/register-field-map.md); TODO check against HMIS. *Source:* RQ4.3.
 - [ ] **D.6** No diagnosis or prescription in any output. *Owner:* TBD. *Evidence:* TODO results file; logic check in [app/check.test.ts](app/check.test.ts). *Source:* team rule.
 - [ ] **D.7** Data location, access, and lost or shared phone answered in responsible-ai.md. *Owner:* TBD. *Evidence:* draft in [docs/product/responsible-ai.md](docs/product/responsible-ai.md); TODO items still open. *Source:* brief Annex A.1.
@@ -65,7 +65,7 @@ Failing any one of these fails the entry. Details: [docs/product/responsible-ai.
 
 - [ ] **E.1** Every dataset has a card with source, license, size and "What this does not cover". *Owner:* TBD. *Evidence:* [resources/datasets/cards/](resources/datasets/cards/) (6 of the datasets we use so far). *Source:* brief 7.2.
 - [ ] **E.2** Every license verified; none left as "to verify". *Owner:* TBD. *Evidence:* TODO `scripts/check` pass. *Source:* brief 07.
-- [x] **E.3** All synthetic data labelled. *Owner:* Asia. *Evidence:* `scripts/check` "synthetic labels" passed on 2026-10-03; see [eval/test-sets/README.md](eval/test-sets/README.md). *Source:* brief 7.2; RQ5.3.
+- [x] **E.3** All synthetic data labelled. *Owner:* Asia. *Evidence:* `scripts/check` "synthetic labels" passed on 2026-10-03; see [evaluation/test-sets/README.md](evaluation/test-sets/README.md). *Source:* brief 7.2; RQ5.3.
 - [ ] **E.4** Problem evidence cited with source, year and country. *Owner:* Beth. *Evidence:* TODO [research/findings.md](research/findings.md). *Source:* brief 7.2; RQ1.1, RQ1.2.
 - [ ] **E.5** Problem evidence notes when the closest figures come from modelled or synthetic data. *Owner:* Beth. *Evidence:* TODO. *Source:* brief 7.2. **(Added from the brief.)**
 
@@ -73,9 +73,14 @@ Failing any one of these fails the entry. Details: [docs/product/responsible-ai.
 
 Function
 - [ ] **F.1** Intake works end to end in Luganda. *Owner:* TBD. *Evidence:* TODO. *Source:* team check.
-- [ ] **F.2** Scribe works end to end. *Owner:* TBD. *Evidence:* TODO. *Source:* team check.
+- [ ] **F.2** Scribe (clinician dictation, component 11, core scope per D11) works end to end: dictation drafts register fields, flagged fields block save, diagnosis and treatment stay clinician-entered. *Owner:* TBD. *Evidence:* TODO. *Source:* team check.
 - [ ] **F.3** Intake card says "patient reported". *Owner:* TBD. *Evidence:* TODO screenshot; logic in [app/intake/intake-card.ts](app/intake/intake-card.ts). *Source:* RQ2.4.
 - [ ] **F.4** Flagged fields require confirmation before saving. *Owner:* TBD. *Evidence:* TODO screen recording; logic check in [app/check.test.ts](app/check.test.ts). *Source:* team check.
+
+- [ ] **F.21** Question list is one JSON file per language and country, and changing a question needs no code change. *Owner:* TBD. *Evidence:* draft in [config/questions.lg-UG.json](config/questions.lg-UG.json); TODO app reads it. *Source:* PR16; RQ7.3.
+- [ ] **F.22** Staff screen behind a staff PIN; storage encrypted; voice clips deleted when the visit closes. *Owner:* TBD. *Evidence:* TODO. *Source:* PR17; RQ5.1.
+- [ ] **F.23** OPD register row (HMIS 031) and tally pre-filled from intake, with CSV export. Tally uses HMIS 105 codes and age bands ([config/hmis105-diagnoses.json](config/hmis105-diagnoses.json)). *Owner:* TBD. *Evidence:* TODO. *Source:* PR18; RQ1.2.
+- [ ] **F.24** "Export totals" produces a DHIS2-style file with aggregate totals only, no names. *Owner:* TBD. *Evidence:* TODO. *Source:* PR13; R5.
 
 Offline and sync
 - [ ] **F.5** Full flow works in airplane mode. *Owner:* TBD. *Evidence:* TODO. *Source:* team check.
@@ -85,7 +90,7 @@ Offline and sync
 Device
 - [ ] **F.8** Size, RAM, latency and battery measured on the cheapest available Android. *Owner:* TBD. *Evidence:* TODO. *Source:* RQ6.1, RQ6.3.
 
-Safety edge cases (each tested with a clip in [eval/test-sets/](eval/test-sets/))
+Safety edge cases (each tested with a clip in [evaluation/test-sets/](evaluation/test-sets/))
 - [ ] **F.9** Silence. *Owner:* TBD. *Evidence:* TODO. *Source:* RQ4.4.
 - [ ] **F.10** Crying child. *Owner:* TBD. *Evidence:* TODO. *Source:* RQ4.4.
 - [ ] **F.11** Code-switching between Luganda and English. *Owner:* TBD. *Evidence:* TODO. *Source:* RQ3.2.
@@ -120,7 +125,7 @@ Design
 ## H. Final hour
 
 - [ ] **H.1** Every Tier 1 research question answered or marked as a stated assumption. *Owner:* Beth, Asia. *Evidence:* [research/questions.md](research/questions.md). *Source:* team check.
-- [ ] **H.2** Every measured number in the README matches eval/results. *Owner:* TBD. *Evidence:* TODO. *Source:* team check.
+- [ ] **H.2** Every measured number in the README matches evaluation/results. *Owner:* TBD. *Evidence:* TODO. *Source:* team check.
 - [ ] **H.3** Video, demo and repo links tested from a logged-out browser. *Owner:* TBD. *Evidence:* TODO. *Source:* team check.
 - [ ] **H.4** Submission text copied from [docs/hackathon/submission.md](docs/hackathon/submission.md). *Owner:* TBD. *Evidence:* TODO. *Source:* team check.
 - [ ] **H.5** Submitted, with a screenshot of the confirmation added to [docs/links.md](docs/links.md). *Owner:* TBD. *Evidence:* TODO. *Source:* team check.

@@ -9,7 +9,7 @@
 
 - [ ] `scripts/check` run (paste PASS/FAIL lines below)
 - [ ] `cd app && npm test && npm run typecheck` pass (if app/ changed)
-- [ ] Numbers in README or docs match a file in eval/results/
+- [ ] Numbers in README or docs match a file in evaluation/results/
 
 ## Responsible AI
 

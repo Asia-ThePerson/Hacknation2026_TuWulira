@@ -64,7 +64,7 @@ function DemoControls() {
         <Button variant={confirm === 'demo' ? 'primary' : 'outline'} icon="sync" onClick={() => run('demo')}>
           {confirm === 'demo' ? 'Tap again to reset' : 'Reset demo (4 sample patients)'}
         </Button>
-        <Button variant={confirm === 'empty' ? 'danger' : 'outline'} icon="x" onClick={() => run('empty')}>
+        <Button variant={confirm === 'empty' ? 'primary' : 'outline'} icon="x" onClick={() => run('empty')}>
           {confirm === 'empty' ? 'Tap again to clear' : 'Clear everything'}
         </Button>
       </div>

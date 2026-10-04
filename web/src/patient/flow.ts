@@ -207,6 +207,39 @@ const LABELS: Record<string, string> = {
 };
 export const answerLabel = (v: string | undefined) => (v ? (LABELS[v] ?? v) : '');
 
+// ---------- urgent reasons, derived from the stored answers ----------
+
+export const PENDING_NURSE_REASON = 'Asked to see the nurse now (safety questions pending validation)';
+export const STALE_SUFFIX = ' (reported before answers changed)';
+
+// Same wording the intake shows on "Tell the nurse now".
+export const dangerReason = (label: string, value: string) => (value === 'yes' ? label : `${label}: ${answerLabel(value)}`);
+
+// Every danger answer currently stored for this patient's set that raises "Tell the nurse now".
+export function currentDangerReasons(d: Draft): string[] {
+  const setId = dangerSetFor(d);
+  if (!setId) return [];
+  const set = DANGER_SETS[setId];
+  const out = set.questions.filter((q) => set.urgentAnswers.includes(d.answers[`d_${q.id}`])).map((q) => dangerReason(q.label, d.answers[`d_${q.id}`]));
+  if (d.answers.d_pending === 'asked_for_nurse') out.push(PENDING_NURSE_REASON);
+  return out;
+}
+
+// True for a reason that came from a tapped danger answer (not from speech), so it can be re-checked.
+const ALL_LABELS = Object.values(DANGER_SETS).flatMap((s) => s.questions.map((q) => q.label));
+const fromDangerAnswer = (r: string) => r === PENDING_NURSE_REASON || ALL_LABELS.some((l) => r === l || r.startsWith(`${l}: `));
+
+// Urgent reasons for the card: stored reasons plus any danger answer on file, deduped. A stored reason whose
+// answer was later changed is never dropped; it is kept and marked so the clinician can ask.
+export function urgentReasons(d: Draft): string[] {
+  const now = currentDangerReasons(d);
+  const stored = (d.urgent?.reasons ?? []).map((r) => {
+    const base = r.endsWith(STALE_SUFFIX) ? r.slice(0, -STALE_SUFFIX.length) : r;
+    return fromDangerAnswer(base) && !now.includes(base) ? base + STALE_SUFFIX : base;
+  });
+  return [...new Set([...stored, ...now])];
+}
+
 // ---------- new record ----------
 
 export function newDraft(): Draft {

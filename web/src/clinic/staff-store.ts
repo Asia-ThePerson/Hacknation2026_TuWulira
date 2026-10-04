@@ -1,5 +1,6 @@
 // Staff and clinician entries, kept apart from the patient's answers so the original stays as reported.
 // Keyed by intake id. Lives on the clinic device (localStorage in the prototype).
+import { useEffect, useRef, useState } from 'react';
 import { read, useStored, write } from '../store.ts';
 
 export const STAFF_KEY = 'tuwulira.staff';
@@ -45,4 +46,36 @@ export function updateStaff(id: string, by: Role, what: string, fn: (r: StaffRec
   const all = read<Record<string, StaffRecord>>(STAFF_KEY, {});
   const next = fn(all[id] ?? empty());
   write(STAFF_KEY, { ...all, [id]: { ...next, log: [...next.log, { at: new Date().toISOString(), by, what }] } });
+}
+
+// ---------- unsaved form drafts ----------
+// What staff typed but did not save yet. Kept on every change, so nothing is lost when the screen locks or
+// someone taps away. A draft is never shown as a saved entry; it only refills the form.
+export const DRAFTS_KEY = 'tuwulira.staff.drafts';
+
+export function clearFormDraft(id: string, screen: string) {
+  const all = read<Record<string, unknown>>(DRAFTS_KEY, {});
+  const key = `${id}/${screen}`;
+  if (!(key in all)) return;
+  const { [key]: _gone, ...rest } = all;
+  write(DRAFTS_KEY, rest);
+}
+
+export function useFormDraft<T>(id: string, screen: string, initial: () => T): [T, (fn: (x: T) => T) => void, boolean] {
+  const key = `${id}/${screen}`;
+  const [start] = useState(() => {
+    const d = read<Record<string, T>>(DRAFTS_KEY, {})[key];
+    return { value: d ?? initial(), restored: d !== undefined };
+  });
+  const [value, setValue] = useState<T>(start.value);
+  const changed = useRef(false);
+  useEffect(() => {
+    if (!changed.current) return; // nothing typed yet: no draft
+    write(DRAFTS_KEY, { ...read<Record<string, T>>(DRAFTS_KEY, {}), [key]: value });
+  }, [key, value]);
+  const update = (fn: (x: T) => T) => {
+    changed.current = true;
+    setValue(fn);
+  };
+  return [value, update, start.restored];
 }

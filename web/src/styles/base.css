@@ -43,6 +43,12 @@ button {
   outline: none;
   box-shadow: var(--focus);
 }
+/* Headings get focus on each screen change for screen readers only; no visible ring. */
+h1[tabindex='-1']:focus,
+h2[tabindex='-1']:focus {
+  outline: none;
+  box-shadow: none;
+}
 
 .visually-hidden {
   position: absolute;

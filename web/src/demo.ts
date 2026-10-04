@@ -3,7 +3,7 @@
 // Every record is rebuilt relative to "now", so a reset always gives the same four queue states.
 import type { Draft } from './patient/flow.ts';
 import { CARDS_KEY } from './patient/intake-store.ts';
-import { STAFF_KEY } from './clinic/staff-store.ts';
+import { DRAFTS_KEY, STAFF_KEY } from './clinic/staff-store.ts';
 import { lock } from './clinic/session.ts';
 import { read, write } from './store.ts';
 
@@ -143,6 +143,7 @@ export function demoCards(): Record<string, Draft> {
 export function resetDemo(withPatients: boolean) {
   write(DRAFT_KEY, null);
   write(STAFF_KEY, null);
+  write(DRAFTS_KEY, null);
   write(CARDS_KEY, withPatients ? demoCards() : null);
   write(VERSION_KEY, DATA_VERSION);
   lock();

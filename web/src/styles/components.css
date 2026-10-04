@@ -65,10 +65,11 @@
   padding: 2px var(--s2);
   border-radius: var(--r-sm);
   border: 1.5px solid transparent;
-  font-size: 13px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 20px;
   font-weight: 600;
-  white-space: nowrap;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .tag-urgent {
   background: var(--danger);
@@ -177,8 +178,8 @@
   justify-content: space-between;
   gap: var(--s3);
   color: var(--on-primary-muted);
-  font-size: 13px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 20px;
 }
 .appbar-main {
   display: flex;

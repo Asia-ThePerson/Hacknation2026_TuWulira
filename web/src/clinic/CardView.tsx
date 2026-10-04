@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { TELL_THE_NURSE } from '../../../app/safety/index.ts';
 import { Icon } from '../components/Icon.tsx';
 import { Banner, Button, SectionLabel, Tag } from '../components/ui.tsx';
+import { STALE_SUFFIX } from '../patient/flow.ts';
 import { navigate } from '../router.ts';
 import type { AnswerRow } from './card-model.ts';
 import { time, useRow, type QueueRow } from './queue.ts';
@@ -53,7 +54,13 @@ export function UrgentBanner({ row }: { row: QueueRow }) {
       <ul className="plain-list">
         {reasons.map((r) => (
           <li key={r}>
-            <b>Danger sign reported:</b> {r}
+            <b>Danger sign reported:</b> {r.endsWith(STALE_SUFFIX) ? r.slice(0, -STALE_SUFFIX.length) : r}
+            {r.endsWith(STALE_SUFFIX) && (
+              <>
+                {' '}
+                <Tag kind="flag">Reported before answers changed</Tag>
+              </>
+            )}
           </li>
         ))}
       </ul>
@@ -191,8 +198,8 @@ function AnswerList({ id, rows, staff }: { id: string; rows: AnswerRow[]; staff:
                   Ask and record
                 </Button>
               )}
+              {open === r.key && <CheckEditor id={id} r={r} onDone={() => setOpen(null)} />}
             </dd>
-            {open === r.key && <CheckEditor id={id} r={r} onDone={() => setOpen(null)} />}
           </div>
         );
       })}

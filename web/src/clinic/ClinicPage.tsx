@@ -123,7 +123,10 @@ const TAG: Record<RowState, ReactNode> = {
 
 function subline(r: QueueRow): string {
   const parts: string[] = [];
-  if (r.urgent) parts.push(r.card.urgentReasons[0] ?? r.staff.urgentByStaff?.reason ?? 'Urgent');
+  if (r.urgent) {
+    const reason = r.card.urgentReasons[0];
+    parts.push(reason ? `Reported: ${reason}` : r.staff.urgentByStaff ? `Staff: ${r.staff.urgentByStaff.reason}` : 'Urgent');
+  }
   else if (r.state === 'ask') parts.push(r.card.mainProblem === null ? 'Main problem unclear' : `${r.openChecks} to ask or confirm`);
   if (r.safetyToAsk && r.state !== 'closed') parts.push('Nurse to ask safety questions');
   parts.push(`Intake phone · code ${r.card.visitCode} · ${time(r.card.arrivedAt)}`);

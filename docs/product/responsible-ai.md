@@ -30,8 +30,7 @@ Status: design stated; items marked TODO are not yet built or verified.
 | Consent | | Consent | Before any intake, the patient (or parent/guardian for a child) hears a consent script in their language explaining that health information is collected, why, who can see it, how long it is kept, and that they can say no or withdraw at any time. The spoken yes is stored as `consent_recorded: yes` with a timestamp, the script version, the language, and who consented (patient or guardian). If consent is refused or withdrawn, no intake data is collected, or existing data is deleted. The consent audio itself follows the audio rule above. Aligns with Uganda's [Data Protection and Privacy Act 2019](https://ulii.org/en/akn/ug/act/2019/9/eng@2023-12-31), ss.7–9 and 13.|
 | Model files | Device | Not personal data |
 
-Nothing goes to a cloud AI service. Storage is encrypted on the device and opened with a staff PIN (PR17). TODO: pick and build the encryption method (see [resources/libraries/README.md](../../resources/libraries/README.md)).
-
+Nothing goes to a cloud AI service. Patient records on the clinic device are stored in an encrypted database ([expo-sqlite with SQLCipher](https://docs.expo.dev/versions/latest/sdk/sqlite/), AES-256). The database key is randomly generated on the device and held in Android Keystore-backed storage (expo-secure-store), so copying files off a lost phone does not expose the data. Staff unlock the app with a PIN (PR17), checked against a salted hash kept in the same protected storage; the app locks after 5 wrong attempts and after inactivity. Known limit: a short PIN is the weakest link, so short retention (records leave the device within 7 days at most) is the second line of defence.
 ## Who can read it
 
 - **Clinic staff** who unlock the staff screen with the staff PIN, by role (clerk, triage nurse, clinician, records assistant). Every view, edit and export is written to the audit log with the staff ID (PR24).
@@ -41,7 +40,7 @@ Nothing goes to a cloud AI service. Storage is encrypted on the device and opene
 
 ## When the phone is lost or shared
 
-- **Lost intake phone:** exposes at most the current day's waiting patients, encrypted. **Lost clinic device:** records are encrypted and the staff screen is behind a staff PIN, on top of the Android screen lock. Voice clips are already deleted at visit close. Remote wipe is in the full design, not the prototype. TODO: state the maximum backlog of records kept on the device.
+- **Lost intake phone:** exposes at most the current day's waiting patients, encrypted. **Lost clinic device:** records are encrypted and the staff screen is behind a staff PIN, on top of the Android screen lock. Voice clips are already deleted at visit close. Remote wipe is in the full design, not the prototype. The clinic device holds at most 1,000 patient records or 7 days of records, whichever comes first, sized to about a week of outpatient visits at a busy small Ugandan facility ([Daily Monitor](https://www.monitor.co.ug/uganda/special-reports/health-centre-iis-to-phase-them-out-or-not-1673720) reports HC IIs seeing 50–130 patients a day). Staff are warned at 800 records or when a record reaches 5 days old; at 1,000 the device stops accepting new scans and staff use the paper register as usual. Records are deleted only after they are marked as transcribed; untranscribed records are flagged to staff, never silently deleted.
 - **Shared with patients:** intake mode is locked to a single patient session and shows nothing from earlier patients.
 - **Patient's own household phone:** it never receives health details. SMS says only a date and the clinic's name, for example "[Clinic name]: your next visit is 12 Oct." (RQ5.2).
 

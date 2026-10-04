@@ -8,6 +8,11 @@ Every link the team and judges need. Test each from a logged-out browser before 
 |---|---|---|
 | Repo | https://github.com/Asia-ThePerson/Hacknation2026_TuWulira | Must be public before submission. |
 | Figma design hub | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1 | Start with the System Diagram page, then Final system diagram |
+| Figma wireframes: patient screens | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=34-2 | Patient's own basic phone (flash call, SMS). One section per task flow. Built from docs/design/wireframes.html |
+| Figma wireframes: clinic device | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=34-3 | Shared clinic Android: patient card, staff screens, scribe, register and tally. One section per task flow |
+| Figma data architecture (two-device, v2) | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=99-2 | Intake phone (AI) + clinic device (no AI), QR handoff. Text version: docs/product/data-architecture.md |
+| Figma design system | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=87-2 | Guidelines handbook style: principles, colour, type, spacing, components, accessibility, content. Tokens also as Figma variables "TuWulira tokens" |
+| Figma design style proposals | https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=63-2 | Five candidate styles for the clinic device, each shown on queue, full card, clerk, nurse, diagnoses and register and tally |
 | Demo (build or recording) | TODO | |
 | Video (2 to 5 min) | TODO | |
 | Pitch deck | TODO | Build with the frontend-slides plugin |

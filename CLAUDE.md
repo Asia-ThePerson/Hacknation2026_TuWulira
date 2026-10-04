@@ -8,13 +8,13 @@ TuWulira. Offline, Luganda-first patient intake and record keeping for rural pri
 
 Design hub (source of truth for flows): [Figma, TuWulira Project hub](https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1).
 
-1. **Intake (before the visit):** a fixed question set in Luganda, with recorded prompts and Yes / No / Not sure / Ask clinician buttons, plus one spoken answer for the main problem. Rule-based danger-sign questions raise an urgent flag at once. Output: a one-screen card labelled "patient reported", never "findings". One question set, three ways in: A remote (basic phone, callback or SMS; design only), B in clinic on the shared Android (the prototype, fully offline), C paper form (design only).
+1. **Intake (before the visit):** a fixed question set in Luganda, with recorded prompts and Yes / No / Not sure / Ask clinician buttons, plus one spoken answer for the main problem. Rule-based danger-sign questions raise an urgent flag at once. Output: a one-screen card labelled "patient reported", never "findings". One question set, several ways in: B in clinic, staff-assisted on the intake phone (the main flow and the prototype, fully offline), B2 self-intake with earphones (optional, needs validation), A remote (basic phone, callback or SMS; design only), C paper form (design only).
 2. **Consultation (during the visit):** the staff screen (behind a staff PIN) shows the queue, urgent first. The nurse adds weight and temperature; the clinician records diagnosis (HMIS 105 list), treatment and referral out. The clinician can also speak the encounter (scribe): a small on-device speech model transcribes it and a constrained extractor drafts register fields. Low-confidence fields are flagged for confirmation.
 3. **Records and sync (after the visit):** answers pre-fill the OPD register (HMIS 031) and tally. Store-and-forward; only aggregate totals leave the clinic, as a DHIS2-style export. SMS to the patient says only a date and the clinic's name.
 
 Where AI is used: Luganda speech-to-text, and turning the transcript into items from a fixed symptom list (decision D10). Deliberately rule-based: danger signs, question routing, register pre-fill and tallies.
 
-Device model: hub and spokes. The model runs on one shared clinic device; patients reach it in person or by voice/SMS on the phone they already have.
+Device model: two devices (decision D33). All AI runs on the **intake phone** (floor itel A50 2 GB, typical Galaxy A06). The **clinic device** (any Android 8+, typical Galaxy Tab A9) runs no AI and holds the queue, staff entries, register and tally. The card moves by encrypted on-screen QR code, offline; the clinic device assigns register serial numbers. One-device mode puts both roles on the intake phone behind a staff PIN. Data model: [docs/product/data-architecture.md](docs/product/data-architecture.md).
 
 Team: Hotline Bling. Beth A and Asia A, both designer and developer. Research owners: Beth (problem and context), Asia (users and workflow).
 

@@ -47,13 +47,25 @@ TODO (RQ1.1, RQ1.2): add documentation-burden evidence with source, year and cou
 
 ## How it works
 
-One question set, three ways in. All three paths produce the same patient-reported card.
+One question set, several ways in. Every path produces the same patient-reported card.
 
 | Path | Where | Needs | Status this weekend |
 |---|---|---|---|
-| **A. Remote** | Patient's own basic phone (callback voice line or SMS) | Signal, plus an online IVR or SMS gateway | Design only |
-| **B. In clinic: kiosk or shared clinic phone** | Clinic Android, runs fully offline | A charged device | **Prototype** |
-| **C. In clinic: paper form** | Printed form (Luganda or English), photographed | Paper; phone optional | Design only |
+| **B. In clinic, staff-assisted (main flow)** | Clerk or nurse holds the intake phone at registration; patient speaks the main problem in Luganda | Intake phone + clinic device (or one phone in one-device mode) | **Prototype** |
+| B2. In clinic, self-intake | Patient uses the intake phone alone, with earphones | Same | Optional; needs validation in a real clinic |
+| A. Remote | Patient's own basic phone (voice callback / SMS) | Signal + server | Design only |
+| C. Paper form | Printed form (Luganda or English), photographed | Paper; phone optional | Design only |
+
+All AI runs on the intake phone. The clinic device runs no AI. The card moves by QR code, offline. See [docs/product/data-architecture.md](docs/product/data-architecture.md).
+
+## Devices
+
+| Role | Floor | Typical |
+|---|---|---|
+| Intake phone (AI) | itel A50, 2 GB, Android 14 Go | Samsung Galaxy A06, 4 GB |
+| Clinic device (no AI) | Any Android 8+ already at the facility | Samsung Galaxy Tab A9 8.7" |
+
+Assumption: no source confirms a shared device pool inside HC II/III facilities; eCHIS Android phones exist at VHT level. We target the same entry-level, offline-first profile. In one-device mode the intake phone holds both roles, with staff screens behind a PIN.
 
 Full flow, device requirements and decisions: the Figma *Final system diagram*, and [docs/product/user-flows.md](docs/product/user-flows.md). Requirements: [docs/product/prd.md](docs/product/prd.md).
 
@@ -65,7 +77,7 @@ Full flow, device requirements and decisions: the Figma *Final system diagram*, 
 | 2 | **Question list** | One JSON file: every question, Luganda and English text, audio file, branching, and which register column it fills. A new country is a new file, not new code. | Build |
 | 3 | **Danger-sign checker** | Rule-based (no AI, on purpose). Any YES raises an urgent flag immediately: "Tell the nurse now." | Build |
 | 4 | **Ears: Luganda speech-to-text (AI)** | Transcribes the spoken main problem offline. Low confidence: asks once more, then marks "unclear, clinician to ask". | Build |
-| 5 | **Understanding: words to card (AI)** | Turns the transcript into structured items in English (for example *headache, 3 days*), keeping the original Luganda underneath. Picks only from a fixed symptom list; never a diagnosis; writes "not sure" when unsure. | Build |
+| 5 | **Labeler: words to card (AI)** | Maps the Luganda transcript directly to items from a fixed symptom list (for example *headache, 3 days*), using a glossary that includes English loanwords, and keeps the original Luganda underneath. No translation model on the device. Never a diagnosis; writes "not sure" when unsure. | Build |
 | 6 | **Patient card** | One screen: urgent flags on top, "not sure" items marked, labelled PATIENT REPORTED. | Build |
 | 7 | **Staff screen** | Queue (urgent first) and card. Nurse adds weight and temperature; clinician picks diagnosis from the official HMIS 105 list ([config/hmis105-diagnoses.json](config/hmis105-diagnoses.json)), treatment and referral out. Behind a staff PIN. | Simple or mock |
 | 8 | **Register and tally** | Pre-fills the OPD register row; counts new vs repeat visits, referrals, and diagnoses by the HMIS 105 age bands (0 to 28 days, 29 days to 4 years, 5 to 9, 10 to 19, 20+) and sex. Table and CSV export. | Mock |
@@ -75,12 +87,11 @@ Full flow, device requirements and decisions: the Figma *Final system diagram*, 
 
 ## Where AI is used, and where it deliberately is not
 
-| Uses AI | Deliberately rule-based |
+| Uses AI (intake phone only) | Deliberately rule-based |
 |---|---|
-| Luganda speech-to-text (component 4) | Danger-sign detection (component 3) |
-| Transcript to structured English symptom items (component 5) | Question routing and keypad answers |
-| Clinician dictation to draft register fields (component 11) | |
-| | Register pre-fill and tally counts |
+| Luganda speech-to-text (Ears) | Danger-sign detection (buttons; transcript can only *add* a flag) |
+| Transcript → fixed symptom labels (Labeler) | Question routing, register pre-fill, tallies |
+| | Everything on the clinic device |
 
 A keypad survey alone could run on SMS. TuWulira's AI value is **listening to the patient in their own words, in Luganda, offline**, and turning that into something a busy clinician can read in seconds. Danger signs stay rule-based because a confident wrong answer there is unsafe.
 
@@ -111,7 +122,7 @@ The danger-sign checker, question routing and register pre-fill are rule-based, 
 - **Fixed answer lists:** the understanding model can only output labels from an allowed list. Nothing appears that nobody said.
 - **PATIENT REPORTED label:** reduces clinician over-reliance on the card.
 - **Consent first:** a recorded spoken yes before any question. Remote danger alerts are shared with the clinic only if the patient says yes.
-- **Privacy:** data stays on the clinic device, encrypted, behind a staff PIN. Voice clips are deleted at visit close. Only aggregate counts leave the clinic.
+- **Privacy:** the intake phone keeps an encrypted, temporary session that is wiped after an intact QR handoff or at the end of the clinic day; voice clips never leave it. The clinic device keeps records encrypted behind a staff PIN, with every view, edit and export logged. Only aggregate counts leave the clinic.
 
 Full account, including lost or shared phones and bias: [docs/product/responsible-ai.md](docs/product/responsible-ai.md).
 
@@ -126,17 +137,21 @@ Full account, including lost or shared phones and bias: [docs/product/responsibl
 
 **Data we build with** (TODO: confirm license and size for each)
 
-| Dataset or model | Use | License | Size |
+| Dataset / model | Use | Licence | Size |
 |---|---|---|---|
-| Mozilla Common Voice, Luganda | Test or fine-tune speech-to-text | CC0 | TODO |
-| Google FLEURS, Luganda | Benchmark speech-to-text | TODO | TODO |
-| Meta MMS (candidate) | On-device Luganda speech recognition | TODO | TODO |
-| Meta NLLB-200 (candidate) | Luganda to English for the card | TODO | TODO |
-| Synthetic patient complaints (team-written, labelled synthetic) | Test component 5 | n/a | TODO |
+| Mozilla Common Voice, Luganda | Fine-tune / test ASR | CC0 | ~560 h recorded, ~437 h validated (read speech) |
+| Google FLEURS, Luganda | Held-out WER benchmark only | CC BY 4.0 | TODO |
+| Sunbird SALT | Luganda speech + Luganda–English text | TODO (check card) | 25,000+ sentences, 6 languages |
+| Luganda radio corpus (Mukiibi et al., 2022) | Natural speech, some code-switching | TODO | 155 h |
+| Dialogs of Delivery (Kimera et al., 2026) | Glossary + labeler test (text, maternal health) | TODO | 3,640 Q/A pairs |
+| Small Luganda CTC ASR (candidate) | On-device Ears model | TODO | Target under ~120 MB int8 |
+| Sunflower ASR (Sunbird) | Benchmark only (~3.8 GB, too large for device) | TODO | n/a |
+| Team role-play recordings | Code-switched clinical test clips | Ours | TODO |
+| Synthetic patient complaints (labelled synthetic) | Labeler test set | Ours | TODO |
 
 Full catalogue with source, license, size and use: [resources/datasets/README.md](resources/datasets/README.md), with one card per dataset in [resources/datasets/cards/](resources/datasets/cards/).
 
-**What our data does not cover:** older and rural voices, regional accents, Luganda and English code-switching, medical vocabulary, noisy waiting rooms, real clinic recordings, and languages other than Luganda and English. There is no open local-language clinical conversation corpus, so our test complaints are synthetic. All synthetic data is labelled as synthetic.
+**What our data does not cover:** no public code-switched *clinical* Luganda–English speech exists; Common Voice is read speech, not people describing symptoms; few older and rural voices; regional accents; noisy waiting rooms; clinical vocabulary; languages other than Luganda and English. Our own role-play recordings are the only code-switched clinical speech we have, and we report WER separately for pure-Luganda and mixed clips. All synthetic data is labelled as synthetic.
 
 ## Evaluation
 
@@ -154,9 +169,9 @@ Definitions: [evaluation/metrics.md](evaluation/metrics.md). Results, once measu
 
 - **App:** Expo (React Native, TypeScript) for Android.
 - **Speech-to-text:** small on-device Luganda model, being evaluated: Meta MMS or Sunbird AI models, run with sherpa-onnx or whisper.rn ([registry](resources/libraries/README.md)).
-- **Understanding:** constrained to a fixed symptom list. Meta NLLB-200 is a candidate for Luganda to English.
+- **Labeler:** maps the Luganda transcript straight to a fixed symptom list with a glossary (English loanwords included). No translation model on the device (size); Sunflower (Sunbird) is used as a benchmark only.
 - **Danger signs, routing, register pre-fill:** rule-based. Danger signs in [rules/](rules/), questions in [config/](config/).
-- **Storage and sync:** encrypted on-device storage and queue (expo-sqlite planned), DHIS2-style aggregate export.
+- **Storage, handoff and sync:** temporary encrypted intake store on the intake phone; encrypted SQLite (SQLCipher) behind a staff PIN on the clinic device, with an audit log; card handoff by encrypted on-screen QR code, offline; DHIS2-style aggregate export. Data model: [docs/product/data-architecture.md](docs/product/data-architecture.md).
 
 ## Quick start
 

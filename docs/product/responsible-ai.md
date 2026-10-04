@@ -6,8 +6,8 @@ Status: design stated; items marked TODO are not yet built or verified.
 
 ## Non-negotiables
 
-1. **Runs on a device the user already has.** One shared clinic Android device (hub). Patients use the phone they already have, or come in person (spokes). Assumption to verify: RQ2.2.
-2. **Core feature works offline.** Intake, speech recognition, understanding, extraction and saving run on the device (Path B). Path A (remote phone) needs signal and is design only.
+1. **Runs on a device the user already has.** Two entry-level Androids (D33): an intake phone that runs all the AI, and a clinic device that runs none; one-device mode puts both roles on the intake phone. Assumption to state: no source confirms a shared device pool inside HC II/III facilities; eCHIS Android phones exist at VHT level (RQ2.2). Details: [data-architecture.md](data-architecture.md).
+2. **Core feature works offline.** Intake, speech recognition and the labeler run on the intake phone; the queue, register and tally run on the clinic device; the card moves by QR code (Path B). Path A (remote phone) needs signal and is design only.
 3. **Model files are small enough to side-load** or send over a weak connection. Measured in [models/README.md](../../models/README.md) (RQ6.1).
 4. **Local language:** Luganda. Less-supported language to report on: Lusoga (RQ3.3).
 5. **Human in the loop.** A person makes the final call. The tool informs and flags uncertainty. It never acts on anyone's behalf.
@@ -23,9 +23,9 @@ Status: design stated; items marked TODO are not yet built or verified.
 
 | Data | Where | How long |
 |---|---|---|
-| Audio recordings (voice clips) | Device app storage only, encrypted | Deleted when the visit is closed. Never synced. TODO: build and test. |
-| Transcripts, patient cards and drafts | Device app storage only, encrypted, behind the staff PIN | Until the record is confirmed |
-| Confirmed records (OPD register rows, tallies) | Device only, encrypted, behind the staff PIN. CSV export for the clinic's own register. | Patient-level records never leave the clinic device. TODO: set how long they stay (RQ6.2). |
+| Audio recordings (voice clips) | Intake phone only, encrypted | Deleted at visit close. Never in the QR, never synced. TODO: build and test. |
+| Answers, danger flags, card items, patient draft (cols 2 to 5, 7) | Intake phone, encrypted and temporary; then the clinic device after the QR scan | Intake copy wiped after an intact receipt; unscanned sessions wiped at the end of the clinic day. |
+| Staff entries, register rows, tallies, export log, audit log | Clinic device only, encrypted SQLite (SQLCipher) behind the staff PIN. CSV export for the clinic's own register. | Patient-level records never leave the clinic device. TODO: set how long they stay (RQ6.2). |
 | Aggregate totals | Device, then the clinic's DHIS2 ("Export totals") | Totals only: no names or patient-level data. |
 | Consent | The spoken yes is stored as a `consent_recorded: yes` flag with a timestamp. The consent audio itself follows the audio rule above. TODO: check against Uganda's Data Protection and Privacy Act 2019 (RQ5.1). |
 | Model files | Device | Not personal data |
@@ -34,20 +34,20 @@ Nothing goes to a cloud AI service. Storage is encrypted on the device and opene
 
 ## Who can read it
 
-- **Clinic staff** who unlock the staff screen with the staff PIN (clerk, triage nurse, clinician, records assistant).
+- **Clinic staff** who unlock the staff screen with the staff PIN, by role (clerk, triage nurse, clinician, records assistant). Every view, edit and export is written to the audit log with the staff ID (PR24).
 - **The patient** sees only their own intake while doing it. Intake mode cannot open other records. TODO: build.
 - **DHIS2 users** with the clinic's normal permissions see aggregate totals only, never names.
 - **Nobody else.** No analytics, no third-party SDKs that send data.
 
 ## When the phone is lost or shared
 
-- **Lost:** records are encrypted and the staff screen is behind a staff PIN, on top of the Android screen lock. Voice clips are already deleted at visit close. Remote wipe is in the full design, not the prototype. TODO: state the maximum backlog of records kept on the device.
+- **Lost intake phone:** exposes at most the current day's waiting patients, encrypted. **Lost clinic device:** records are encrypted and the staff screen is behind a staff PIN, on top of the Android screen lock. Voice clips are already deleted at visit close. Remote wipe is in the full design, not the prototype. TODO: state the maximum backlog of records kept on the device.
 - **Shared with patients:** intake mode is locked to a single patient session and shows nothing from earlier patients.
 - **Patient's own household phone:** it never receives health details. SMS says only a date and the clinic's name, for example "[Clinic name]: your next visit is 12 Oct." (RQ5.2).
 
 ## Consent
 
-A recorded spoken yes, in Luganda, before any question is asked or anything is recorded. If the patient says no or says nothing, the tool asks nothing more and the visit goes on as normal on paper. TODO: write the consent prompt with a native speaker (RQ5.1); none is lined up yet.
+A recorded spoken yes (or a consent button in staff-assisted mode), in Luganda, before any question is asked or anything is recorded. Stored as `consent_at` and `consent_method` on the intake session. If the patient says no or says nothing, the tool asks nothing more and the visit goes on as normal on paper. TODO: write the consent prompt with a native speaker (RQ5.1); none is lined up yet.
 
 **Remote danger alerts (Path A, design only, decision D4):** if a patient answering on their own phone reports a danger sign, they get the SMS "[Clinic name]: please come in today." (only a date and the clinic's name, per PR12), then are asked whether the clinic may be notified and see their answers. Yes: the clinic gets the alert and the card. No: nothing is shared with the clinic.
 
@@ -57,7 +57,7 @@ A recorded spoken yes, in Luganda, before any question is asked or anything is r
 |---|---|
 | Silence, crying, unintelligible audio, no speech detected | Says "Not sure. Please ask a person." Saves nothing from that turn. |
 | Any field below the confidence threshold | Flags the field. It cannot be saved until a person confirms it. |
-| A danger-sign phrase is detected, at any confidence | Says "Tell the nurse now." Flags the record. Only a person can clear it. |
+| A danger-sign phrase is detected, at any confidence | Says "Tell the nurse now." Flags the record. Only a person can clear it. Transcript scanning can only add a danger flag, never remove one. |
 | The patient talks about something outside the intake questions | Records nothing new; shows "Patient wants to discuss something else. Please ask them." |
 
 Code: [app/safety/](../../app/safety/).

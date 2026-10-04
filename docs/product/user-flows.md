@@ -4,32 +4,34 @@ Each flow maps to features and components in [prd.md](prd.md). Wording on screen
 
 ## 1. Three paths, one card
 
-One question set, three ways in. All three produce the same patient-reported card.
+One question set, several ways in. Every path produces the same patient-reported card. Devices and data: [data-architecture.md](data-architecture.md).
 
 ```mermaid
 flowchart LR
   A[Path A: remote. Patient's own basic phone, callback voice line or SMS. Design only] --> Q[Same question set]
-  B[Path B: in clinic. Kiosk or shared clinic Android, fully offline. PROTOTYPE] --> Q
+  B[Path B: in clinic, staff-assisted on the intake phone, fully offline. MAIN FLOW, PROTOTYPE] --> Q
+  B2[Path B2: self-intake on the intake phone with earphones. Optional] --> Q
   C[Path C: in clinic. Paper form in Luganda or English, photographed. Design only] --> Q
-  Q --> K[Patient-reported card]
-  K --> S[Staff screen queue, urgent first]
+  Q --> K[Patient-reported card on the intake phone]
+  K --> H[Encrypted QR handoff, offline]
+  H --> S[Clinic device: serial number, queue urgent first]
 ```
 
-## 2. Patient journey (Path B, the prototype)
+## 2. Patient journey (Path B, staff-assisted, main flow)
 
-1. Patient arrives. The clerk checks for a visit code (Path A) or starts TuWulira on the clinic device.
-2. Patient answers the question set with buttons and Luganda audio prompts. The main problem is one spoken answer.
-3. Any danger-sign YES sends an urgent flag to triage immediately.
-4. Card saved. Patient waits to be called.
-5. Nurse sees urgent patients first and adds weight and temperature.
-6. Clinician reads the card, takes their own history, and records diagnosis, treatment and referral (typed, picked, or dictated and confirmed).
-7. Register row and tally update. Totals are exported for DHIS2.
+1. Patient arrives; clerk opens a session on the intake phone and records consent (spoken yes or button).
+2. Question order: consent → danger signs → main problem (spoken, Luganda) → registration → follow-ups → medicines → read-back (on screen or earphones only).
+3. Any danger YES → urgent alert on the intake phone immediately.
+4. Intake phone shows an encrypted QR; clinic device scans it, assigns the register serial number, and adds the patient to the queue (urgent first).
+5. Intake copy is wiped after an intact receipt; unscanned sessions are wiped at the end of the day.
+6. Nurse adds weight + temperature; clinician verifies each card item, takes own history, records diagnosis (HMIS 105, multiple allowed), treatment, referral out.
+7. Register row and tallies update on the clinic device; totals export to DHIS2 when there is signal.
 
 ## 3. Intake (before the visit, F1, components 1 to 6)
 
 ```mermaid
 flowchart TD
-  A[Clerk starts TuWulira on the shared device] --> L[Section 0: language]
+  A[Clerk opens a session on the intake phone] --> L[Section 0: language]
   L --> B[Consent prompt]
   B -->|Spoken yes| W[Section 1: who is the visit for, child age, pregnancy]
   B -->|No or silence| X[Nothing asked or recorded. Visit goes on as normal]
@@ -46,7 +48,8 @@ flowchart TD
   U --> F[Sections 5 and 6: duration, trend, symptoms, medicines, allergies, private matter. Section 6 is button-only]
   N --> F
   F --> RB[Section 7: read-back. Correct or change]
-  RB --> K[Card saved: PATIENT REPORTED. Patient waits]
+  RB --> K[Card ready: PATIENT REPORTED. Encrypted QR shown]
+  K --> QR[Clinic device scans QR, assigns serial number. Intake copy wiped after intact receipt]
 ```
 
 Every question also accepts **Not sure** and **Ask clinician**.

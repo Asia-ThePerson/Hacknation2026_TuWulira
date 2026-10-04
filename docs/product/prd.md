@@ -34,7 +34,9 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 - Replacing the clinician's own questions or examination.
 - Replacing DHIS2 or the paper register where it is still required.
 - Sending health details by SMS.
-- Running the model on the patient's own basic phone. The patient's phone only makes and receives ordinary calls and texts; the models run on the clinic device.
+- Running the model on the patient's own basic phone. The patient's phone only makes and receives ordinary calls and texts; the models run on the clinic's intake phone.
+- Mandatory patient self-intake (staff-assisted is the main flow until validated).
+- Any AI on the clinic device.
 - Asking private questions (alcohol, tobacco, medicines, private matters) by SMS (D29).
 - Path C (paper form) as a working build this weekend; it is design only.
 - HMIS 105 sections 2 to 11 (maternal and child health, immunization, HIV testing, circumcision, stock, lab, finance). They come from other registers. TuWulira covers section 1 only ([HMIS105_ALIGNMENT.md](../HMIS105_ALIGNMENT.md)).
@@ -56,29 +58,31 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 ## 5. Constraints (from the challenge brief)
 
 - Runs on a device the user already has: the patient's own basic phone, and the clinic's Android.
-- Core feature works offline: speech-to-text, understanding, danger-sign rules, the card, the register and the tally all run on the clinic Android with no internet connection. The patient channel uses ordinary voice calls and SMS, which need mobile signal but no internet data. The brief names "SMS and voice" as the common interfaces Small AI should centre on (section 02).
+- Core feature works offline: speech-to-text, the labeler, danger-sign rules and the card run on the intake phone; the queue, register and tally run on the clinic device; the card moves between them by QR code. None of it needs an internet connection. The patient channel uses ordinary voice calls and SMS, which need mobile signal but no internet data. The brief names "SMS and voice" as the common interfaces Small AI should centre on (section 02).
 - Model files small enough to side-load or send over a weak connection.
 - At least one interaction in a local language: **Luganda**.
 - A person makes the final call; the tool flags what it is unsure of.
 
-## 6. Three paths, one card
+## 6. Paths, one card
 
 | Path | Where | Needs | Status this weekend |
 |---|---|---|---|
-| A. Remote: flash call or text | Patient's own basic phone | Mobile signal at both ends; a way for the clinic line to call back and send SMS (open question 7) | **Main patient experience** (D31) |
-| B. In clinic: kiosk or shared clinic phone | Clinic Android | A charged device | Fallback for walk-ins without a phone or signal |
-| C. In clinic: paper form | Printed form (Luganda or English), photographed | Paper; phone optional | Design only |
+| **B. In clinic, staff-assisted (main flow)** | Clerk or nurse holds the intake phone at registration; patient speaks the main problem in Luganda | Intake phone + clinic device (or one phone in one-device mode) | **Prototype** (D32) |
+| B2. In clinic, self-intake | Patient uses the intake phone alone, with earphones | Same | Optional; needs validation in a real clinic |
+| A. Remote | Patient's own basic phone (voice callback / SMS) | Signal + server | Design only |
+| C. Paper form | Printed form (Luganda or English), photographed | Paper; phone optional | Design only |
 
-## 7. User journey (Path A, main patient experience)
+All AI runs on the intake phone. The clinic device runs no AI. The card moves by QR code, offline (D33). Data model and devices: [data-architecture.md](data-architecture.md).
 
-1. **Start.** The patient gives the clinic line a flash call (rings once and hangs up, which is free), or texts the clinic number.
-2. **Questions.** By flash call: the clinic line calls back and plays a recorded Luganda prompt for each question; the patient answers on the keypad (1 Yes, 2 No, 3 Not sure, 0 Ask clinician) and speaks only where asked (consent, name, village, main problem). By text: the same questions as numbered replies, with the main problem written in their own words. Private questions are keypad-only on a call and never asked by text (D29).
-3. **Danger signs.** Any danger-sign YES: the patient is told to come to the clinic today and asked whether the clinic may be told now (D4). The only SMS is "[Clinic name]: please come in today."
-4. **Visit code.** The card is saved on the clinic device. The patient gets a visit code: spoken on the call, or in the closing text (D30).
-5. **Arrival.** The clerk enters the visit code to find the card. A walk-in without a code uses Path B or registers on paper.
-6. Nurse sees urgent patients first and adds measurements.
-7. Clinician reads the card, takes their own history, and records diagnosis, treatment and referral.
-8. Register row and tally update. Totals are exported for DHIS2.
+## 7. User journey (Path B, staff-assisted, main flow)
+
+1. Patient arrives; clerk opens a session on the intake phone and records consent (spoken yes or button).
+2. Question order: consent → danger signs → main problem (spoken, Luganda) → registration → follow-ups → medicines → read-back (on screen or earphones only).
+3. Any danger YES → urgent alert on the intake phone immediately.
+4. Intake phone shows an encrypted QR; clinic device scans it, assigns the register serial number, and adds the patient to the queue (urgent first).
+5. Intake copy is wiped after an intact receipt; unscanned sessions are wiped at the end of the day.
+6. Nurse adds weight + temperature; clinician verifies each card item, takes own history, records diagnosis (HMIS 105, multiple allowed), treatment, referral out.
+7. Register row and tallies update on the clinic device; totals export to DHIS2 when there is signal.
 
 Wireframes of every step: [wireframes.html](../design/wireframes.html), a clickable page you can open in a browser. Automated usability tests for it: [usability-tests/](../design/usability-tests/).
 
@@ -86,21 +90,21 @@ Wireframes of every step: [wireframes.html](../design/wireframes.html), a clicka
 
 | ID | Requirement | Based on | Checklist |
 |---|---|---|---|
-| PR1 | The AI core (speech-to-text, understanding, danger-sign rules, card, save) works on the clinic Android with mobile data and Wi-Fi off. The patient channel uses ordinary calls and SMS, which need signal but no internet (D31). | Brief 02, 06; R3, R4 | C.2, F.5 |
+| PR1 | The AI core (speech-to-text, understanding, danger-sign rules, card, save) works on the intake phone with mobile data and Wi-Fi off; the clinic device runs no AI (D33). Remote channels (Path A) use ordinary calls and SMS, which need signal but no internet. | Brief 02, 06; R3, R4 | C.2, F.5 |
 | PR2 | All models together are small enough to side-load; size, RAM and latency are measured on the cheapest Android we have. | Brief 06; RQ6.1; R3 | C.3, F.8 |
 | PR3 | Intake runs in Luganda with a recorded prompt for every question, English text available, and one spoken answer for the main problem. | Brief 06; RQ3.1, RQ3.2 | C.4, F.1 |
-| PR4 | The intake output is a card labelled "patient reported", never "findings", and appears beside, not instead of, the clinician's own questions. | RQ2.4; R2 | F.3, F.18 |
-| PR5 | The understanding step and register pre-fill fill only fields defined in [register-field-map.md](register-field-map.md), using only values from fixed lists or validated ranges. | Brief glossary "fixed list of answers"; RQ4.3 | D.5 |
+| PR4 | The intake output is a card labelled "patient reported", never "findings", and appears beside, not instead of, the clinician's own questions. Every item is labelled "PATIENT REPORTED: verify", and the card ends with the footer "Now ask your own questions" (FR-6). | RQ2.4; R2 | F.3, F.18 |
+| PR5 | The understanding step and register pre-fill fill only fields defined in [register-field-map.md](register-field-map.md), using only values from fixed lists or validated ranges. The labeler maps the Luganda transcript directly to the fixed list using the glossary (with English loanwords). No translation model on the device (FR-5, D37). | Brief glossary "fixed list of answers"; RQ4.3 | D.5 |
 | PR6 | Any AI output below the confidence threshold is marked "not sure" or "unclear, clinician to ask" and is never guessed. | Brief 06 guardrail; RQ4.2 | F.4 |
 | PR7 | Patient intake never asks for measurements, diagnosis, treatment, test results, referral out or visit outcome. These are filled during the in-clinic consultation: the nurse enters weight and temperature, plus height or length and MUAC for children under 5 (typed, or dictated and confirmed); the clinician enters diagnoses, malaria test and treatment details, the presumptive TB tick, treatment, referral out and outcome. The AI never suggests a diagnosis, treatment or classification. | RQ4.3; team rule; D19, D21, D22, D24 | D.6 |
-| PR8 | When the tool understands nothing (silence, crying child, unintelligible audio) or confidence is too low, it says "Not sure. Please ask a person." and hands over. | Brief 09 fail-safe; RQ4.4 | D.2 |
+| PR8 | When the tool understands nothing (silence, crying child, unintelligible audio) or confidence is too low, it says "Not sure. Please ask a person." and hands over. Low confidence: ask once more, then keypad fallback, then "unclear: clinician to ask". Silence or no usable speech goes straight to "unclear" (FR-4). | Brief 09 fail-safe; RQ4.4 | D.2 |
 | PR9 | Danger signs are checked by rules, not AI. Any YES sets an urgent flag immediately and tells the patient "Tell the nurse now". Danger signs come only from WHO IMCI, Uganda Clinical Guidelines and WHO maternal danger signs. | RQ4.1, RQ4.2 | D.3, D.4 |
 | PR10 | No question is asked and nothing is recorded before a recorded spoken yes. | RQ5.1 | D.8 |
 | PR11 | Records queue on the device and sync when a signal appears, with no duplicates and no lost records. | Brief glossary "store-and-forward"; RQ6.2; R5 | F.6, F.7 |
 | PR12 | Any SMS to a patient contains only a date and the clinic's name. One exception: the closing message of a text intake may also hold the visit code, which carries no health information (D30). (Danger-sign SMS: see D4.) | RQ5.2 | D.9 |
 | PR13 | Only aggregate totals leave the clinic, mapped to DHIS2 data elements. No names or patient-level data. Every total is labelled with its HMIS 105 code, age band and sex; totals that include estimated ages are marked "estimated". | R5; RQ1.2; RQ5.1; D27 | F |
 | PR14 | Every screen meets the inclusivity rules in [design-system.md](../design/design-system.md) (older users, low literacy, privacy in a crowded room). | RQ2.1, RQ2.3 | F.15, F.17 |
-| PR15 | Private questions are answered on the keypad or buttons only, never spoken, and offer "Prefer not to say". This includes alcohol, tobacco and second-hand smoke (not asked for children aged 0 to 4). They are never asked by SMS, because the thread stays on a shared phone; the clinician asks them in person. | RQ2.1; RQ5.2; D23, D29 | F.16 |
+| PR15 | Private questions are answered on the keypad or buttons only, never spoken, and offer "Prefer not to say". This includes alcohol, tobacco and second-hand smoke (not asked for children aged 0 to 4). They are never asked by SMS, because the thread stays on a shared phone; the clinician asks them in person. In clinic, sensitive items use keypad plus earphones (`channel = private_keypad`); every prompt is under about 10 s and has an icon; the read-back never plays aloud (FR-1). | RQ2.1; RQ5.2; D23, D29 | F.16 |
 | PR16 | The question list is one JSON file per language or country. Changing questions or adding a language needs no code change. | RQ7.3 | F |
 | PR17 | Data is stored encrypted on the device, behind a staff PIN. Voice clips are deleted when the visit closes. | RQ5.1 | D.7 |
 | PR18 | Patient answers pre-fill the OPD register row (HMIS 031, 2010 version) and tally, with CSV export. Each diagnosis is its own register line; extra lines fill only the diagnosis columns. The tally produces the HMIS 105 (September 2019) section 1 totals. | RQ1.2; R5; D20, D28 | F |
@@ -108,6 +112,9 @@ Wireframes of every step: [wireframes.html](../design/wireframes.html), a clicka
 | PR20 | Age is captured as date of birth, or as days old for babies under 2 months. If the patient does not know, an estimate (number plus days, months or years) is accepted and marked "estimated" on the card and in the export. The system calculates every HMIS 105 age band; the patient is never asked for a band. | RQ1.2; D16 | F |
 | PR21 | Intake flags describe only what the patient reported: "fever reported" from the fever question, and "TB symptoms reported: clinician to assess" from any YES to the TB symptom questions. Only the clinician records a diagnosis, test result or presumptive TB. | RQ4.3; D19, D21 | D.6, F.3 |
 | PR22 | The patient screen never asks about origin or status (report type is clerk-entered), gender-based violence or attempted self-harm. Those HMIS 105 rows are recorded only by the clinician. | RQ2.1; RQ5.1; D17, D26 | D.1, D.10 |
+| PR23 | QR handoff: the intake phone shows an encrypted payload (card items, flags, answers, patient draft; no audio, no confidence scores) on screen only, never printed. The clinic device scans it, assigns the register serial number and confirms an intact receipt before the intake copy is wiped (FR-11). | RQ5.1; RQ2.2 | D.7 |
+| PR24 | Audit: every view, edit and export on the clinic device is logged with the staff ID (FR-12). | RQ5.1 | D.7 |
+| PR25 | One-device mode: the intake phone holds both roles behind a staff PIN when the clinic has only one device (FR-13). | RQ2.2; RQ6.1 | C.2 |
 
 ## 9. Components
 
@@ -172,8 +179,8 @@ TB question wording and cough duration must be checked against Uganda's national
 
 ### Component 5: Understanding (AI) (PR5, PR6)
 
-- Input: Luganda transcript. Output: English items from a fixed symptom list, plus duration if mentioned.
-- The original Luganda transcript is always shown under the English.
+- Input: Luganda transcript. Output: items from a fixed symptom list, plus duration if mentioned. The labeler maps Luganda directly to the list with a glossary that includes English loanwords; there is no translation model on the device (D37). Runs on the intake phone, under 5 MB.
+- The original Luganda transcript is always shown under the item.
 - Cannot output a diagnosis or any label outside the allowed list.
 - Low confidence: "not sure".
 
@@ -282,7 +289,10 @@ Full field-by-field mapping: Figma, *Reference: Data requirements*, and [registe
 - Report type is clerk-entered, so the patient screen never asks about origin or status.
 - Estimated ages are marked, never presented as exact.
 - Bias: models are tested on Luganda speech; known gaps (older voices, accents, code-switching, noise) are documented and reported with results.
-- Privacy: on-device encryption, staff PIN, voice clips deleted at visit close, aggregate-only export. If the phone is lost: PIN protection now; remote wipe in the full design.
+- Danger-sign rules each cite a source (WHO IMCI, Uganda Clinical Guidelines, WHO maternal danger signs).
+- Transcript scanning can only add a danger flag, never remove one.
+- Clinician onboarding + week-one check planned for deployment.
+- Privacy: the intake phone keeps an encrypted, temporary session, wiped after an intact handoff or at the end of the clinic day; voice clips never leave it. The clinic device is encrypted (SQLCipher) behind a staff PIN with an audit log. Aggregate-only export. If a phone is lost: PIN protection and encryption now; remote wipe in the full design. See [data-architecture.md](data-architecture.md).
 
 Full account: [responsible-ai.md](responsible-ai.md).
 
@@ -294,7 +304,10 @@ Full account: [responsible-ai.md](responsible-ai.md).
 | Symptom-label accuracy | 20 to 30 labelled synthetic complaints | Report correct, wrong and "not sure" |
 | Safe-failure rate | Share of wrong outputs caught as "not sure" | Higher is better |
 | Model size | File size on device | Small enough to side-load |
-| End-to-end demo | Full Path A journey: flash call or text from a basic phone, card on the clinic device, visit code at the desk | Clinic device has mobile data off and Wi-Fi off; AI and records still work |
+| End-to-end demo | Full Path B journey: staff-assisted intake on the intake phone, QR handoff, card and register on the clinic device | Both devices have mobile data off and Wi-Fi off; AI and records still work |
+| WER, pure Luganda vs code-mixed | FLEURS + own role-play clips, reported separately | Report honestly; no fixed target |
+| Device fit | Bundle size, peak RAM, seconds per transcription on a real low-end phone | Targets in [data-architecture.md](data-architecture.md); measured, never estimated |
+| Battery | Drain over a morning of sessions | Report measured value |
 
 Definitions and safety metrics (danger-sign sensitivity, ask-a-person coverage): [evaluation/metrics.md](../../evaluation/metrics.md).
 
@@ -316,11 +329,11 @@ Record decisions as D# here, one line each, with the PR# they serve. Use the doc
 
 | ID | Decision | Serves | Date |
 |---|---|---|---|
-| D1 | Hub and spokes: the model runs on one shared clinic device; patients reach it in person or by voice or SMS on their own phone. | PR1, PR2 | 2026-10-03 |
+| D1 | Superseded by D33. Was: hub and spokes, the model runs on one shared clinic device; patients reach it in person or by voice or SMS on their own phone. | PR1, PR2 | 2026-10-03 |
 | D2 | Rule-based constrained extractor instead of a generative model, so outputs can only come from fixed lists. Narrowed by D10. | PR5 | 2026-10-03 |
 | D3 | Danger-sign matching runs before, and independently of, the confidence threshold. | PR9 | 2026-10-03 |
 | D4 | Remote danger-sign response (Path A): SMS "[Clinic name]: please come in today.", which keeps to PR12 (only a date and the clinic's name, no address, no symptoms, no word like "urgent"), then ask permission to notify the clinic and share answers. Yes: alert and card shared. No: nothing shared. The strict rule wins because household phones are shared, and any hint of illness or urgency on a shared phone can disclose a condition (RQ5.2). | PR9, PR12 | 2026-10-04 |
-| D5 | Danger alerts go to the clinic: the clinic Android at the triage desk, then the nurse or in-charge. | PR9 | 2026-10-04 |
+| D5 | Danger alerts go to the clinic: the clinic Android at the triage desk, then the nurse or in-charge. In clinic (Path B) the alert shows on the intake phone at once (D32). | PR9 | 2026-10-04 |
 | D6 | Pre-filling the OPD register is acceptable because the data is patient-provided; clinician-only columns are still entered by staff. | PR7, PR18 | 2026-10-04 |
 | D7 | SMS privacy wording: "Please delete these messages from your phone if you are worried about privacy." | PR12 | 2026-10-04 |
 | D8 | Paper form (Path C) comes in two printed versions: Luganda and English. | PR3 | 2026-10-04 |
@@ -328,7 +341,7 @@ Record decisions as D# here, one line each, with the PR# they serve. Use the doc
 | D10 | Speech-to-text and the understanding step (components 4 and 5) use small AI models; the understanding output is limited to the fixed symptom list. Danger signs, routing and register pre-fill stay rule-based. Confirmed by the team. | PR5, PR9 | 2026-10-04 |
 | D11 | Clinician dictation (scribe) stays core scope, alongside the staff screen pick-lists. | PR19 | 2026-10-04 |
 | D12 | Repo layout follows the team README: question list in `config/`, danger-sign rules in `rules/`, tests and results in `evaluation/`. | PR9, PR16 | 2026-10-04 |
-| D13 | Model choices stay as candidates for now: Meta MMS or a Sunbird AI model for speech-to-text, Meta NLLB-200 or an alternative for understanding. | PR2 | 2026-10-04 |
+| D13 | Model choices stay as candidates for now: a small Luganda CTC model (Meta MMS or Sunbird AI) for speech-to-text. The translation candidate (NLLB-200) is dropped by D37. | PR2 | 2026-10-04 |
 | D14 | No native Luganda speaker is available, so the demo uses real Luganda speech from Mozilla Common Voice test clips as the spoken input, and says so openly in the video and README. Luganda prompt text and audio stay empty (no machine translation) and the app falls back to English prompts. | PR3 | 2026-10-04 |
 | D15 | The diagnosis pick-list and tally follow the official HMIS 105 form (print version September 2019): section 1.3 codes and labels as printed, the form's five age bands by sex, and the OA and OR codes for attendance and referrals. | PR7, PR18 | 2026-10-04 |
 
@@ -351,11 +364,17 @@ Decisions D16 to D28 come from the HMIS 105 alignment update ([HMIS105_ALIGNMENT
 | D28 | Form versions: use the 2010 HMIS 031 register as is, map it to the 2019 HMIS 105, and state the version gap in the submission (text in [HMIS105_ALIGNMENT.md](../HMIS105_ALIGNMENT.md) section 7). | PR18 | 2026-10-04 |
 | D29 | Private questions (alcohol, tobacco, medicines, private matters) are never asked by SMS, because the thread stays on a shared phone. The clinician asks them in person. On a call they are keypad-only. | PR15 | 2026-10-04 |
 | D30 | The closing SMS of a text intake may include the visit code alongside the clinic's name: a code carries no health information. On a call the code is spoken, not texted. | PR12 | 2026-10-04 |
-| D31 | Path A (the patient's own basic phone, by flash call or text) is the main patient experience. Path B (in-clinic kiosk) becomes the fallback for walk-ins; Path C stays design only. | PR1, PR3 | 2026-10-04 |
+| D31 | Superseded by D32. Was: Path A (the patient's own basic phone, by flash call or text) is the main patient experience. Path B (in-clinic kiosk) becomes the fallback for walk-ins; Path C stays design only. | PR1, PR3 | 2026-10-04 |
+| D32 | Main flow: staff-assisted capture in clinic (Path B); self-intake (B2) is optional until validated. | PR1, PR3, PR14 | 2026-10-04 |
+| D33 | Devices: intake phone (AI) + clinic device (no AI), QR handoff; one-device fallback. | PR1, PR2, PR23, PR25 | 2026-10-04 |
+| D34 | Serial numbers: assigned on the clinic device only. | PR18, PR23 | 2026-10-04 |
+| D35 | Re-attendance: matched on the clinic device after scan. | PR18 | 2026-10-04 |
+| D36 | Unscanned sessions: wiped at end of clinic day. | PR17, PR23 | 2026-10-04 |
+| D37 | Translation model: dropped from device (size); Sunflower used as benchmark only. | PR2, PR5 | 2026-10-04 |
 
 ## 15. Open questions
 
-1. Which device will the demo run on (model and RAM), and how is it charged at the clinic? (RQ2.2, RQ6.3)
+1. Reference devices are set (intake phone floor itel A50 2 GB, typical Galaxy A06; clinic device any Android 8+, typical Galaxy Tab A9; [data-architecture.md](data-architecture.md)). Still open: does the Ears model fit the 2 GB floor (if not, state the floor as itel A50 3 GB), and how are the devices charged at the clinic? (RQ2.2, RQ6.1, RQ6.3)
 2. Final model choices and licenses (D13). (RQ3.1, RQ6.1)
 3. Native Luganda prompts: still needed for a real clinic, even though the demo uses Common Voice clips (D14). Do not machine-translate. This now includes text and audio for every new HMIS 105 question.
 4. TB question wording and cough duration: check against Uganda's national TB screening guidance. Do not settle it from memory. (D21)
@@ -363,3 +382,4 @@ Decisions D16 to D28 come from the HMIS 105 alignment update ([HMIS105_ALIGNMENT
 6. Notifiable diagnoses: the alignment update says to mark notifiable diagnoses with ★, but the official HMIS 105 form, as transcribed in [config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json), marks none. Until the team checks the form again, the pick-list marks none.
 7. How does the clinic line call back and send texts (D31)? SMS can probably be sent and received through the clinic Android's own SIM with no internet. The voice callback is harder: Android generally stops ordinary apps from playing audio into a phone call or recording one (to verify), so the call may need an online voice-line (IVR) service that passes recordings to the clinic device. That would add a data connection for the voice path only. Decide before the demo, and say which in the video.
 8. Mobile signal: Path A needs signal at the patient's end. Patients with no signal use Path B on arrival. (RQ2.2)
+9. Scribe (component 11, D11) uses the speech model during the consultation, but D33 says the clinic device runs no AI. Decide: run the scribe on the intake phone (for example in one-device mode, or by handing the intake phone to the clinician), or move it out of this build. Until decided, component 11 stays as written.

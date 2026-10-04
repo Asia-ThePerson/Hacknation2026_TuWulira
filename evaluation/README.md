@@ -4,7 +4,7 @@ What we measure, on what, and where the results go. Proof it works is a brief re
 
 ## What we measure
 
-See [metrics.md](metrics.md). In short: speech accuracy (WER), field accuracy, flag rate, danger-sign sensitivity (reported on its own), "ask a person" coverage on failure clips, model size, RAM, latency and battery.
+See [metrics.md](metrics.md). In short: speech accuracy (WER), symptom-label accuracy, safe-failure rate, field accuracy, flag rate, danger-sign sensitivity (reported on its own), "ask a person" coverage on failure clips, model size, RAM, latency and battery.
 
 ## Test sets
 

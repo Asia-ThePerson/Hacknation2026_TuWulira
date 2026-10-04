@@ -5,6 +5,7 @@
 // layouts apply. Phones, small windows and ?frame=off get the plain app, unchanged.
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { App } from '../App.tsx';
+import { CallConsole } from '../call/CallConsole.tsx';
 import { navigate, usePath } from '../router.ts';
 
 type Kind = 'basic' | 'phone' | 'tablet' | 'both';
@@ -56,31 +57,15 @@ export function Root() {
   const desktop = useMedia(DESKTOP);
   const kind = kindOf(path);
   if (embedded || frameOff || !desktop || !kind) return <App />;
+  // The basic phone draws itself, so on desktop it gets the full walkthrough console instead of a frame.
+  if (kind === 'basic') return <StageShell kind={kind} path={path}><CallConsole /></StageShell>;
   return <DeviceStage kind={kind} path={path} />;
 }
 
 // Called from Home: the side-by-side view exists on desktop only.
 export const canFrame = () => !embedded && !frameOff && window.matchMedia(DESKTOP).matches;
 
-function DeviceStage({ kind, path }: { kind: Kind; path: string }) {
-  const area = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
-  const shown: DeviceKind[] = kind === 'both' ? ['basic', 'tablet'] : [kind];
-  const pad = (k: DeviceKind) => (DEVICES[k].bare ? 0 : BEZEL * 2);
-  const needW = shown.reduce((w, k) => w + DEVICES[k].w + pad(k), 0) + GAP * (shown.length - 1);
-  const needH = Math.max(...shown.map((k) => DEVICES[k].h + pad(k))) + LABEL_H;
-
-  // Shrink the whole stage to fit the window; the screens keep their real size inside.
-  useLayoutEffect(() => {
-    const el = area.current;
-    if (!el) return;
-    const fit = () => setScale(Math.min(1, (el.clientWidth - 32) / needW, (el.clientHeight - 32) / needH));
-    fit();
-    const ro = new ResizeObserver(fit);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [needW, needH]);
-
+function StageShell({ kind, path, children }: { kind: Kind; path: string; children: ReactNode }) {
   const plain = `?frame=off#${kind === 'both' ? '/' : path}`;
   return (
     <div className="stage-page">
@@ -103,6 +88,32 @@ function DeviceStage({ kind, path }: { kind: Kind; path: string }) {
           Show without frame
         </a>
       </header>
+      {children}
+    </div>
+  );
+}
+
+function DeviceStage({ kind, path }: { kind: Kind; path: string }) {
+  const area = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const shown: DeviceKind[] = kind === 'both' ? ['basic', 'tablet'] : [kind];
+  const pad = (k: DeviceKind) => (DEVICES[k].bare ? 0 : BEZEL * 2);
+  const needW = shown.reduce((w, k) => w + DEVICES[k].w + pad(k), 0) + GAP * (shown.length - 1);
+  const needH = Math.max(...shown.map((k) => DEVICES[k].h + pad(k))) + LABEL_H;
+
+  // Shrink the whole stage to fit the window; the screens keep their real size inside.
+  useLayoutEffect(() => {
+    const el = area.current;
+    if (!el) return;
+    const fit = () => setScale(Math.min(1, (el.clientWidth - 32) / needW, (el.clientHeight - 32) / needH));
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [needW, needH]);
+
+  return (
+    <StageShell kind={kind} path={path}>
       <div className="stage-area" ref={area}>
         <div className="stage-fit" style={{ width: needW * scale, height: needH * scale }}>
           <div className="stage-row" style={{ width: needW, gap: GAP, transform: `scale(${scale})` }}>
@@ -118,7 +129,7 @@ function DeviceStage({ kind, path }: { kind: Kind; path: string }) {
           the clinic's intake phone runs the speech step (open question 7); here both screens share this browser's storage.
         </p>
       )}
-    </div>
+    </StageShell>
   );
 }
 

@@ -6,7 +6,7 @@ Source of truth for flows: [Figma, TuWulira Project hub, System Diagram page](ht
 
 ## 1. Summary
 
-TuWulira is an offline, Luganda-first intake and record-keeping tool for rural primary care clinics in Uganda. Before the visit, it asks a fixed question set, captures one spoken answer, flags danger signs, and produces a patient-reported card for the clinician. During the visit, the clinician can dictate the encounter (scribe) and confirm drafted register fields. The same answers pre-fill the OPD register (HMIS 031) and tally sheet.
+TuWulira is a Luganda-first intake and record-keeping tool for rural primary care clinics in Uganda. Before the visit, the patient answers a fixed question set from the basic phone they already have, by flash call (the clinic line calls back) or by text. TuWulira captures one spoken or written answer for the main problem, flags danger signs, and produces a patient-reported card for the clinician, with a visit code the patient shows at the desk. The AI and the records run on the clinic's Android with no internet connection. During the visit, the clinician can dictate the encounter (scribe) and confirm drafted register fields. The same answers pre-fill the OPD register (HMIS 031) and tally sheet.
 
 ## 2. Problem statement
 
@@ -23,7 +23,7 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 1. Patients with danger signs are seen first.
 2. The clinician starts the consultation already knowing the main problem, duration, symptoms, medicines taken and allergies.
 3. Register and tally fields the patient can answer are captured once, not re-written by hand (measure in evaluation; RQ1.1, RQ1.3).
-4. The core works offline, in Luganda, on a device the clinic already has.
+4. Patients use the phone they already have. The AI core works in Luganda on a device the clinic already has, with no internet connection.
 5. Nothing appears in a record that nobody said.
 
 **Non-goals**
@@ -34,8 +34,9 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 - Replacing the clinician's own questions or examination.
 - Replacing DHIS2 or the paper register where it is still required.
 - Sending health details by SMS.
-- Running the model on the patient's own basic phone (the patient reaches the clinic by voice callback, SMS or in person).
-- Paths A (remote phone) and C (paper form) as working builds this weekend; they are design only.
+- Running the model on the patient's own basic phone. The patient's phone only makes and receives ordinary calls and texts; the models run on the clinic device.
+- Asking private questions (alcohol, tobacco, medicines, private matters) by SMS (D29).
+- Path C (paper form) as a working build this weekend; it is design only.
 - HMIS 105 sections 2 to 11 (maternal and child health, immunization, HIV testing, circumcision, stock, lab, finance). They come from other registers. TuWulira covers section 1 only ([HMIS105_ALIGNMENT.md](../HMIS105_ALIGNMENT.md)).
 - Capturing arrival by ambulance (D25).
 - Asking about gender-based violence or attempted self-harm (D26).
@@ -45,8 +46,8 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 
 | User | Context | Needs from TuWulira |
 |---|---|---|
-| Patient or caregiver (Noor) | Speaks Luganda; owns a basic phone shared with the household; low digital literacy | Answer in Luganda, by voice or buttons, without reading; privacy in a crowded room; know answers stay with clinic staff; no health details on a shared phone |
-| Clerk | Front desk | Start a session, confirm name spelling, pull up cards, check the register row |
+| Patient or caregiver (Noor) | Speaks Luganda; owns a basic phone shared with the household; low digital literacy | Answer in Luganda from their own phone, by voice or keypad, without reading; a free way to start (flash call); know answers stay with clinic staff; no health details on a shared phone |
+| Clerk | Front desk | Find the card from the visit code, confirm name spelling, register walk-ins without a code, check the register row |
 | Triage nurse | Sees patients before the clinician | Urgent patients first; add weight and temperature |
 | Clinician (clinical officer or nurse) | Overcrowded rural clinic, many patients, paper or DHIS2 registers (RQ1.2 open) | Readable card in seconds; record diagnosis, treatment and referral out; never lose control of the record |
 | Records assistant | Compiles registers and reports | Accurate tallies; monthly HMIS 105 totals |
@@ -54,8 +55,8 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 
 ## 5. Constraints (from the challenge brief)
 
-- Runs on a device the user already has (clinic Android).
-- Core feature works offline.
+- Runs on a device the user already has: the patient's own basic phone, and the clinic's Android.
+- Core feature works offline: speech-to-text, understanding, danger-sign rules, the card, the register and the tally all run on the clinic Android with no internet connection. The patient channel uses ordinary voice calls and SMS, which need mobile signal but no internet data. The brief names "SMS and voice" as the common interfaces Small AI should centre on (section 02).
 - Model files small enough to side-load or send over a weak connection.
 - At least one interaction in a local language: **Luganda**.
 - A person makes the final call; the tool flags what it is unsure of.
@@ -64,25 +65,28 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 
 | Path | Where | Needs | Status this weekend |
 |---|---|---|---|
-| A. Remote | Patient's own basic phone (callback voice line or SMS) | Signal, plus an online IVR or SMS gateway | Design only |
-| B. In clinic: kiosk or shared clinic phone | Clinic Android, runs fully offline | A charged device | **Prototype** |
+| A. Remote: flash call or text | Patient's own basic phone | Mobile signal at both ends; a way for the clinic line to call back and send SMS (open question 7) | **Main patient experience** (D31) |
+| B. In clinic: kiosk or shared clinic phone | Clinic Android | A charged device | Fallback for walk-ins without a phone or signal |
 | C. In clinic: paper form | Printed form (Luganda or English), photographed | Paper; phone optional | Design only |
 
-## 7. User journey (Path B, prototype)
+## 7. User journey (Path A, main patient experience)
 
-1. Patient arrives. The clerk checks for a visit code (Path A) or starts TuWulira on the clinic device.
-2. Patient answers the question set with buttons and Luganda audio prompts. The main problem is one spoken answer.
-3. Any danger-sign YES sends an urgent flag to triage immediately.
-4. Card saved. Patient waits to be called.
-5. Nurse sees urgent patients first and adds weight and temperature.
-6. Clinician reads the card, takes their own history, and records diagnosis, treatment and referral.
-7. Register row and tally update. Totals are exported for DHIS2.
+1. **Start.** The patient gives the clinic line a flash call (rings once and hangs up, which is free), or texts the clinic number.
+2. **Questions.** By flash call: the clinic line calls back and plays a recorded Luganda prompt for each question; the patient answers on the keypad (1 Yes, 2 No, 3 Not sure, 0 Ask clinician) and speaks only where asked (consent, name, village, main problem). By text: the same questions as numbered replies, with the main problem written in their own words. Private questions are keypad-only on a call and never asked by text (D29).
+3. **Danger signs.** Any danger-sign YES: the patient is told to come to the clinic today and asked whether the clinic may be told now (D4). The only SMS is "[Clinic name]: please come in today."
+4. **Visit code.** The card is saved on the clinic device. The patient gets a visit code: spoken on the call, or in the closing text (D30).
+5. **Arrival.** The clerk enters the visit code to find the card. A walk-in without a code uses Path B or registers on paper.
+6. Nurse sees urgent patients first and adds measurements.
+7. Clinician reads the card, takes their own history, and records diagnosis, treatment and referral.
+8. Register row and tally update. Totals are exported for DHIS2.
+
+Wireframes of every step: [TuWulira wireframes](https://claude.ai/artifact/ADg875g7jonBCzvqK8pPjV) (private link; ask Asia for access).
 
 ## 8. Requirements
 
 | ID | Requirement | Based on | Checklist |
 |---|---|---|---|
-| PR1 | The core flow (intake, card, save) works with airplane mode on. | Brief 06; R3, R4 | C.2, F.5 |
+| PR1 | The AI core (speech-to-text, understanding, danger-sign rules, card, save) works on the clinic Android with mobile data and Wi-Fi off. The patient channel uses ordinary calls and SMS, which need signal but no internet (D31). | Brief 02, 06; R3, R4 | C.2, F.5 |
 | PR2 | All models together are small enough to side-load; size, RAM and latency are measured on the cheapest Android we have. | Brief 06; RQ6.1; R3 | C.3, F.8 |
 | PR3 | Intake runs in Luganda with a recorded prompt for every question, English text available, and one spoken answer for the main problem. | Brief 06; RQ3.1, RQ3.2 | C.4, F.1 |
 | PR4 | The intake output is a card labelled "patient reported", never "findings", and appears beside, not instead of, the clinician's own questions. | RQ2.4; R2 | F.3, F.18 |
@@ -93,10 +97,10 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 | PR9 | Danger signs are checked by rules, not AI. Any YES sets an urgent flag immediately and tells the patient "Tell the nurse now". Danger signs come only from WHO IMCI, Uganda Clinical Guidelines and WHO maternal danger signs. | RQ4.1, RQ4.2 | D.3, D.4 |
 | PR10 | No question is asked and nothing is recorded before a recorded spoken yes. | RQ5.1 | D.8 |
 | PR11 | Records queue on the device and sync when a signal appears, with no duplicates and no lost records. | Brief glossary "store-and-forward"; RQ6.2; R5 | F.6, F.7 |
-| PR12 | Any SMS to a patient contains only a date and the clinic's name. (Path A danger-sign SMS: see D4.) | RQ5.2 | D.9 |
+| PR12 | Any SMS to a patient contains only a date and the clinic's name. One exception: the closing message of a text intake may also hold the visit code, which carries no health information (D30). (Danger-sign SMS: see D4.) | RQ5.2 | D.9 |
 | PR13 | Only aggregate totals leave the clinic, mapped to DHIS2 data elements. No names or patient-level data. Every total is labelled with its HMIS 105 code, age band and sex; totals that include estimated ages are marked "estimated". | R5; RQ1.2; RQ5.1; D27 | F |
 | PR14 | Every screen meets the inclusivity rules in [design-system.md](../design/design-system.md) (older users, low literacy, privacy in a crowded room). | RQ2.1, RQ2.3 | F.15, F.17 |
-| PR15 | Private questions are button-only, never spoken, and offer "Prefer not to say". This includes alcohol, tobacco and second-hand smoke (not asked for children aged 0 to 4). | RQ2.1; D23 | F.16 |
+| PR15 | Private questions are answered on the keypad or buttons only, never spoken, and offer "Prefer not to say". This includes alcohol, tobacco and second-hand smoke (not asked for children aged 0 to 4). They are never asked by SMS, because the thread stays on a shared phone; the clinician asks them in person. | RQ2.1; RQ5.2; D23, D29 | F.16 |
 | PR16 | The question list is one JSON file per language or country. Changing questions or adding a language needs no code change. | RQ7.3 | F |
 | PR17 | Data is stored encrypted on the device, behind a staff PIN. Voice clips are deleted when the visit closes. | RQ5.1 | D.7 |
 | PR18 | Patient answers pre-fill the OPD register row (HMIS 031, 2010 version) and tally, with CSV export. Each diagnosis is its own register line; extra lines fill only the diagnosis columns. The tally produces the HMIS 105 (September 2019) section 1 totals. | RQ1.2; R5; D20, D28 | F |
@@ -105,17 +109,28 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 | PR21 | Intake flags describe only what the patient reported: "fever reported" from the fever question, and "TB symptoms reported: clinician to assess" from any YES to the TB symptom questions. Only the clinician records a diagnosis, test result or presumptive TB. | RQ4.3; D19, D21 | D.6, F.3 |
 | PR22 | The patient screen never asks about origin or status (report type is clerk-entered), gender-based violence or attempted self-harm. Those HMIS 105 rows are recorded only by the clinician. | RQ2.1; RQ5.1; D17, D26 | D.1, D.10 |
 
-## 9. Components (Path B prototype)
+## 9. Components
 
 Numbers match the component table in the [README](../../README.md).
 
-### Component 1: Patient screen (PR3, PR10, PR14, PR15)
+### Component 1: Patient channels: flash call and text (PR3, PR10, PR12, PR14, PR15)
 
+**Flash call (voice callback)**
+- The patient rings the clinic line once and hangs up. The clinic line calls back.
 - Plays a recorded Luganda prompt for every question; English available.
-- Answer buttons: Yes / No / Not sure / Ask clinician, plus numeric entry for phone, date entry (day, month, year, or "Don't know") for date of birth, and number plus unit (days, months, years) for an estimated age.
-- Records one spoken answer for the main problem.
-- Ends with a read-back: correct or change.
-- Private questions (section 6 of the question set) are button-only, never spoken, with "Prefer not to say".
+- Keypad answers: 1 Yes, 2 No, 3 Not sure, 0 Ask clinician. Date of birth is typed as day, month, year then #, or * for "Don't know"; an estimated age is a number then 1 days, 2 months or 3 years.
+- Spoken answers after a beep, ended with #: consent, name, village and parish, next of kin, and the main problem. The recordings go to the clinic device for on-device speech-to-text.
+- Private questions are heard in the patient's ear and answered on the keypad only, with "Prefer not to say".
+- Ends with a read-back (1 correct, 2 change) and a spoken visit code (9 to repeat).
+
+**Text (SMS)**
+- The patient texts the clinic number. Every question is a numbered reply; the main problem is written in the patient's own words (Luganda or English) and goes straight to the understanding step (component 5).
+- The consent message carries the privacy line (D7).
+- Private questions are not asked; the message says the clinician will ask in person (D29).
+- Ends with the visit code and the privacy line (D30).
+
+**In clinic (Path B fallback)**
+- The same question set on the clinic Android, with buttons and audio prompts, for walk-ins without a phone or signal.
 
 ### Component 2: Question list (PR16, PR20, PR21)
 
@@ -279,7 +294,7 @@ Full account: [responsible-ai.md](responsible-ai.md).
 | Symptom-label accuracy | 20 to 30 labelled synthetic complaints | Report correct, wrong and "not sure" |
 | Safe-failure rate | Share of wrong outputs caught as "not sure" | Higher is better |
 | Model size | File size on device | Small enough to side-load |
-| End-to-end demo | Full Path B journey on a phone, offline | Works in airplane mode |
+| End-to-end demo | Full Path A journey: flash call or text from a basic phone, card on the clinic device, visit code at the desk | Clinic device has mobile data off and Wi-Fi off; AI and records still work |
 
 Definitions and safety metrics (danger-sign sensitivity, ask-a-person coverage): [evaluation/metrics.md](../../evaluation/metrics.md).
 
@@ -287,11 +302,11 @@ Definitions and safety metrics (danger-sign sensitivity, ask-a-person coverage):
 
 | ID | Feature | Requirements | Components | Code |
 |---|---|---|---|---|
-| F1 | Patient voice intake and patient-reported card | PR3, PR4, PR10, PR15, PR16, PR20, PR21, PR22 | 1, 2, 4, 5, 6 | [app/intake/](../../app/intake/), [config/](../../config/) |
+| F1 | Patient intake by flash call or text, and patient-reported card | PR3, PR4, PR10, PR12, PR15, PR16, PR20, PR21, PR22 | 1, 2, 4, 5, 6 | [app/intake/](../../app/intake/), [config/](../../config/) |
 | F2 | Clinician dictation (scribe) | PR5, PR6, PR7, PR19 | 11 | [app/scribe/](../../app/scribe/) |
 | F3 | Safety layer: danger signs, thresholds, "ask a person" | PR8, PR9 | 3 | [app/safety/](../../app/safety/), [rules/](../../rules/) |
 | F4 | Store-and-forward and DHIS2 export | PR1, PR11, PR13 | 10 | [app/sync/](../../app/sync/) |
-| F5 | Follow-up SMS (date and clinic name only) | PR12 | Path A | [app/sync/](../../app/sync/) |
+| F5 | SMS: follow-up date, danger-sign "come in today", visit code (clinic name always; no health details) | PR12 | Path A | [app/sync/](../../app/sync/) |
 | F6 | Staff screen, register and tally | PR7, PR18, PR20, PR22 | 7, 8 | TODO |
 | F7 | Safe storage | PR17 | 9 | TODO |
 
@@ -334,6 +349,9 @@ Decisions D16 to D28 come from the HMIS 105 alignment update ([HMIS105_ALIGNMENT
 | D26 | Gender-based violence and attempted self-harm rows are never asked by the tool; only the clinician records them. Stated in the video as a Responsible AI choice. | PR22 | 2026-10-04 |
 | D27 | DHIS2 export: every total labelled with its HMIS 105 code, by age band and sex. | PR13 | 2026-10-04 |
 | D28 | Form versions: use the 2010 HMIS 031 register as is, map it to the 2019 HMIS 105, and state the version gap in the submission (text in [HMIS105_ALIGNMENT.md](../HMIS105_ALIGNMENT.md) section 7). | PR18 | 2026-10-04 |
+| D29 | Private questions (alcohol, tobacco, medicines, private matters) are never asked by SMS, because the thread stays on a shared phone. The clinician asks them in person. On a call they are keypad-only. | PR15 | 2026-10-04 |
+| D30 | The closing SMS of a text intake may include the visit code alongside the clinic's name: a code carries no health information. On a call the code is spoken, not texted. | PR12 | 2026-10-04 |
+| D31 | Path A (the patient's own basic phone, by flash call or text) is the main patient experience. Path B (in-clinic kiosk) becomes the fallback for walk-ins; Path C stays design only. | PR1, PR3 | 2026-10-04 |
 
 ## 15. Open questions
 
@@ -343,3 +361,5 @@ Decisions D16 to D28 come from the HMIS 105 alignment update ([HMIS105_ALIGNMENT
 4. TB question wording and cough duration: check against Uganda's national TB screening guidance. Do not settle it from memory. (D21)
 5. Are each clinic's devices shared by MUAC-trained staff? (D22)
 6. Notifiable diagnoses: the alignment update says to mark notifiable diagnoses with ★, but the official HMIS 105 form, as transcribed in [config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json), marks none. Until the team checks the form again, the pick-list marks none.
+7. How does the clinic line call back and send texts (D31)? SMS can probably be sent and received through the clinic Android's own SIM with no internet. The voice callback is harder: Android generally stops ordinary apps from playing audio into a phone call or recording one (to verify), so the call may need an online voice-line (IVR) service that passes recordings to the clinic device. That would add a data connection for the voice path only. Decide before the demo, and say which in the video.
+8. Mobile signal: Path A needs signal at the patient's end. Patients with no signal use Path B on arrival. (RQ2.2)

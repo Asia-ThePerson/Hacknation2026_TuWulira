@@ -1,0 +1,394 @@
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: var(--touch);
+  padding: 0 var(--s5);
+  border-radius: var(--r-md);
+  border: 2px solid transparent;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  transition: background-color 120ms ease, transform 120ms ease;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  transform: none;
+}
+.btn-block {
+  width: 100%;
+}
+.btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.btn-primary:not(:disabled):active {
+  background: var(--primary-pressed);
+}
+.btn-outline {
+  background: var(--bg);
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.btn-danger {
+  background: var(--danger);
+  color: var(--on-primary);
+}
+.btn-quiet {
+  background: transparent;
+  color: var(--primary);
+  min-height: var(--touch-min);
+  padding: 0 var(--s3);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (hover: hover) {
+  .btn-primary:not(:disabled):hover {
+    background: var(--primary-pressed);
+  }
+  .btn-outline:not(:disabled):hover {
+    background: var(--surface);
+  }
+}
+
+/* ---------- Tags ---------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: 2px var(--s2);
+  border-radius: var(--r-sm);
+  border: 1.5px solid transparent;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tag-urgent {
+  background: var(--danger);
+  color: var(--on-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+.tag-card {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.tag-flag {
+  background: var(--flag-bg);
+  color: var(--flag);
+  border: 1.5px dashed var(--flag);
+}
+.tag-outline {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--outline);
+}
+.tag-confirmed {
+  background: var(--confirmed-bg);
+  color: var(--confirmed);
+  border-color: var(--confirmed);
+}
+.tag-reported {
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+
+/* ---------- Banners ---------- */
+.banner {
+  display: flex;
+  gap: var(--s3);
+  align-items: flex-start;
+  padding: var(--s4);
+  border-radius: var(--r-lg);
+  border: 2px solid;
+}
+.banner-title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+}
+.banner-body {
+  margin-top: var(--s1);
+}
+.banner-danger {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-color: var(--danger);
+  border-left-width: 8px;
+}
+.banner-danger .banner-body {
+  color: var(--text);
+}
+.banner-ask {
+  background: var(--flag-bg);
+  color: var(--flag);
+  border-style: dashed;
+}
+.banner-ask .banner-body {
+  color: var(--text);
+}
+.banner-info {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--line);
+}
+
+/* ---------- Section label ---------- */
+.section-label {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ---------- Chips ---------- */
+.chip {
+  min-height: var(--touch-min);
+  padding: 0 var(--s4);
+  border-radius: var(--r-md);
+  border: 2px solid transparent;
+  background: var(--chip);
+  font-weight: 500;
+}
+.chip[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--on-primary);
+  font-weight: 700;
+}
+
+/* ---------- App bar ---------- */
+.appbar {
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: var(--s2) var(--s4) var(--s4);
+}
+.appbar-status {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s3);
+  color: var(--on-primary-muted);
+  font-size: 13px;
+  line-height: 18px;
+}
+.appbar-main {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  margin-top: var(--s2);
+}
+.appbar-back {
+  display: grid;
+  place-items: center;
+  width: var(--touch-min);
+  height: var(--touch-min);
+  margin-left: calc(-1 * var(--s2));
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--on-primary);
+}
+.appbar-back:focus-visible {
+  box-shadow: 0 0 0 3px var(--accent-on-dark);
+}
+.appbar-titles {
+  flex: 1;
+  min-width: 0;
+}
+.appbar-eyebrow {
+  color: var(--on-primary-muted);
+  font-size: 14px;
+  line-height: 20px;
+}
+.appbar-title {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 500;
+}
+.appbar-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--s1);
+  color: var(--on-primary-muted);
+  font-size: 14px;
+}
+
+/* ---------- Answer buttons ---------- */
+.answers {
+  display: grid;
+  gap: var(--s3);
+}
+@media (min-width: 600px) {
+  .answers {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.answer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  min-height: 80px;
+  padding: var(--s4) var(--s5);
+  border-radius: var(--r-lg);
+  border: 2px solid var(--outline);
+  background: var(--bg);
+  color: var(--text);
+  text-align: left;
+  transition: background-color 120ms ease, transform 120ms ease;
+}
+.answer:active {
+  transform: scale(0.98);
+}
+.answer-uncertain {
+  border-style: dashed;
+}
+.answer-label {
+  flex: 1;
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 700;
+}
+.answer[aria-checked='true'] {
+  background: var(--primary);
+  border-color: var(--primary);
+  border-style: solid;
+  color: var(--on-primary);
+}
+.answer-tick {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--on-primary);
+  color: var(--primary);
+}
+@media (hover: hover) {
+  .answer[aria-checked='false']:hover {
+    background: var(--surface);
+  }
+}
+
+.answers-compact {
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+}
+.answers-compact .answer {
+  min-height: var(--touch);
+  padding: var(--s2) var(--s3);
+  justify-content: center;
+}
+.answers-compact .answer-label {
+  flex: none;
+  font-size: 18px;
+}
+.answers-compact .answer-tick {
+  display: none; /* fill and border carry the selected state; the label stays readable */
+}
+
+/* ---------- Progress ---------- */
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s3);
+  margin-bottom: var(--s2);
+}
+.progress-bar {
+  display: flex;
+  gap: 4px;
+}
+.progress-bar span {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--line);
+}
+.progress-bar span.done {
+  background: var(--accent);
+}
+
+/* ---------- Number field ---------- */
+.field-label {
+  display: block;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  margin-bottom: var(--s2);
+}
+.field-box {
+  display: flex;
+  align-items: center;
+  min-height: var(--touch);
+  border: 2px solid var(--outline);
+  border-radius: var(--r-md);
+  background: var(--bg);
+}
+.field-box:focus-within {
+  box-shadow: var(--focus);
+}
+.field-box input:focus-visible {
+  box-shadow: none; /* the box carries the ring */
+}
+.field-box input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0 var(--s4);
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+.field-unit {
+  padding: 0 var(--s4);
+  color: var(--text-muted);
+  font-size: 18px;
+}
+.field-hint {
+  margin-top: var(--s1);
+  color: var(--text-muted);
+}
+.field-flag .field-box {
+  border-style: dashed;
+  border-color: var(--flag);
+  background: var(--flag-bg);
+}
+.field-flag .field-hint {
+  color: var(--flag);
+  font-weight: 600;
+}
+
+/* ---------- Disclosure (details/summary) ----------
+   Flex summaries lose the native marker, so draw one: it turns when open. */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details > summary::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin: 0 6px 0 2px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 120ms ease;
+}
+details[open] > summary::before {
+  transform: rotate(45deg);
+}

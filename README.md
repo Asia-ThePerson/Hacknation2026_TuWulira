@@ -16,9 +16,48 @@ Hack-Nation x World Bank Youth Summit, Global AI Hackathon 2026, Challenge 04: S
 | | |
 |---|---|
 | Video (2 to 5 min) | TODO |
-| Demo | TODO |
+| Web prototype | [web/](web/): runs locally in a browser, offline after first load. Not deployed yet. See [Web prototype](#web-prototype) |
 | Figma design hub | [TuWulira Project hub](https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1) |
 | All links | [docs/links.md](docs/links.md) |
+
+## Web prototype
+
+A working browser prototype of the main flow (Path B, in clinic, staff-assisted) lives in [web/](web/). It shows the whole loop on synthetic data: **patient intake → patient-reported card → clinic queue → staff review → visit closed**. It is built from the Figma wireframes and reads the same question list, danger-sign rules, field ranges and HMIS 105 list as the Android app, so there is one source of truth.
+
+```bash
+cd web
+npm ci
+npm run dev        # http://localhost:5173 (Node 20.19 or newer)
+```
+
+Open `#/intake` and `#/clinic` in two tabs of the same browser; any four digits unlock the clinic. For an offline test, run `npm run build` then `npm run preview` (http://localhost:4173), load it once, then switch the network off and reload. Details: [web/README.md](web/README.md).
+
+### What is functional and what is simulated
+
+| Functional (real logic, works offline) | Simulated or not built |
+|---|---|
+| Fixed question set and routing from [config/questions.lg-UG.json](config/questions.lg-UG.json) | **Speech-to-text:** a labelled prototype control picks a synthetic English transcript (clear, unclear, silence, danger phrase) |
+| Danger signs from [rules/danger-signs.json](rules/danger-signs.json): any Yes (or Not sure in pregnancy) shows "Tell the nurse now" and puts the card at the top of the queue | **Device handoff:** both "devices" share the browser's localStorage instead of the encrypted QR code; tabs update live |
+| "Not sure. Please ask a person." fail-safe: one retry on an unclear answer, then "unclear, clinician to ask" | **Security:** data is not encrypted and the PIN accepts any four digits (it does lock after 2 minutes idle) |
+| Clinic queue, urgent first; states Urgent, Ask, Not finished, Card ready, Closed | **Luganda:** text and audio are empty until a native speaker writes them; screens show English with a notice |
+| Card that keeps "Patient reported" apart from "Staff and clinician entered"; staff can ask and record an answer, and the original stays | **Not built:** scribe, register, tally, DHIS2 export, paper form, SMS and remote paths |
+| Clerk, nurse (ranges from [app/shared/field-schemas.ts](app/shared/field-schemas.ts)) and clinician entries (HMIS 105 list); close visit; change history | |
+| Offline after first load (service worker); demo reset to four synthetic patients | |
+
+### Known limitations
+
+- Synthetic data only. No real patients, no real speech. Not a medical device.
+- Data lives in one browser on one machine; the two tabs stand in for two devices.
+- The first visit needs a connection; offline reload works only in the production build.
+- Adult danger signs are disabled in the rules until a clinician confirms them, so the adult path shows the standing prompt and the card tells the nurse to ask in person. The step is never skipped.
+
+### Unvalidated clinical wording is marked
+
+Anything not yet validated carries a visible marker: newborn and pregnancy danger questions show **"pending page check"** (source known, page to confirm), and items marked **`*`** on the card are either such rules or symptom questions written for this prototype (fever, cough, weight loss; to check against national TB guidance). No diagnosis, treatment or referral is ever suggested.
+
+### One intentional change from Figma
+
+Figma (Flash call 1, step 6) asks "Are you pregnant?" before sex, so men would be asked it. The prototype asks sex first for "Me" and asks pregnancy and breastfeeding only when the answer is not Male. This is a deliberate correction; Figma will be updated later. Other differences are listed in [web/README.md](web/README.md#differences-from-figma).
 
 ## Screenshot
 
@@ -168,6 +207,7 @@ Definitions: [evaluation/metrics.md](evaluation/metrics.md). Results, once measu
 ## Tech stack
 
 - **App:** Expo (React Native, TypeScript) for Android.
+- **Web prototype:** React, TypeScript and Vite in [web/](web/). No backend, no runtime network calls, no extra libraries beyond React.
 - **Speech-to-text:** small on-device Luganda model, being evaluated: Meta MMS or Sunbird AI models, run with sherpa-onnx or whisper.rn ([registry](resources/libraries/README.md)).
 - **Labeler:** maps the Luganda transcript straight to a fixed symptom list with a glossary (English loanwords included). No translation model on the device (size); Sunflower (Sunbird) is used as a benchmark only.
 - **Danger signs, routing, register pre-fill:** rule-based. Danger signs in [rules/](rules/), questions in [config/](config/).
@@ -186,6 +226,8 @@ npm ci
 npm test                 # logic checks for the safety-critical paths
 npm run typecheck
 ```
+
+Web prototype: `cd web && npm ci && npm run dev`, then open http://localhost:5173 ([details](web/README.md)).
 
 To open the app on an Android phone with Expo Go, or an emulator: `npm run android` from `app/` (not verified in the clean-clone run because it needs a device).
 
@@ -223,6 +265,7 @@ Full list: [CHECKLIST.md](CHECKLIST.md).
 | Folder | What it holds | Components |
 |---|---|---|
 | [app/](app/) | The Expo app: patient screen, card, staff screen, scribe, storage, sync | 1, 6, 7, 8, 9, 10, 11 |
+| [web/](web/) | Browser prototype of Path B: intake, card, queue, staff screens (synthetic data, offline) | 1, 3, 6, 7 |
 | [config/](config/) | Question list JSON (one file per language and country) and audio prompts | 2 |
 | [rules/](rules/) | Danger-sign rules, read by [app/safety/](app/safety/) | 3 |
 | [models/](models/) | Model choice, cards, weights (gitignored) | 4, 5, 11 |

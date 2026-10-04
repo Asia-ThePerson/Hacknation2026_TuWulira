@@ -1,0 +1,44 @@
+/* Design tokens: Guidelines handbook style.
+   Mirrors app/shared/tokens.ts and docs/design/design-system.md; change all three together. */
+:root {
+  --bg: #ffffff;
+  --surface: #f6f9fb;
+  --chip: #eaf1f6;
+  --line: #dce5ec;
+  --outline: #6f86a0;
+  --text: #14263d;
+  --text-muted: #4d5f75;
+  --primary: #12355b;
+  --primary-pressed: #0c2541;
+  --on-primary: #ffffff;
+  --on-primary-muted: #afc3da;
+  --accent: #24747d;
+  --accent-on-dark: #5fc1c9;
+  --accent-tint: #e3f1f2;
+  --flag: #7a5300;
+  --flag-bg: #fff3d1;
+  --danger: #a1121a;
+  --danger-bg: #fcebec;
+  --confirmed: #1e6b3a;
+  --confirmed-bg: #e6f2ea;
+
+  /* Roboto ships with Android; fall back to the system face. Nothing is downloaded. */
+  --font: Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, Consolas, monospace;
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 24px;
+  --s6: 32px;
+  --s7: 48px;
+
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+
+  --touch: 56px; /* primary actions */
+  --touch-min: 48px; /* floor for anything tappable */
+  --focus: 0 0 0 3px var(--bg), 0 0 0 6px var(--accent);
+}

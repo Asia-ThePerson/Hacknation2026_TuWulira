@@ -1,0 +1,220 @@
+/* Patient intake. Readable at arm's length: one question, big answers, one action. */
+
+/* The question block echoes the Figma "You hear" card: a quiet surface with a strong left edge. */
+.prompt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  padding: var(--s4) var(--s4) var(--s4) var(--s5);
+  border-left: 6px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--r-lg) var(--r-lg) 0;
+}
+.prompt-safety {
+  border-left-color: var(--primary);
+}
+.prompt-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.prompt-eyebrow .t-muted {
+  font-weight: 400;
+}
+.lg-note {
+  color: var(--flag);
+}
+.private-note {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Recording */
+.record-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s3);
+  min-height: 160px;
+  border: 2px solid var(--primary);
+  border-radius: var(--r-lg);
+  background: var(--bg);
+  color: var(--primary);
+}
+.record-btn.is-live {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.record-btn.is-live svg,
+.listen.is-live svg {
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+.listen {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s4);
+  border: 2px solid var(--outline);
+  border-radius: var(--r-lg);
+}
+.listen.is-live {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.heard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  padding: var(--s4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--bg);
+}
+
+.demo-controls {
+  border: 1px dashed var(--outline);
+  border-radius: var(--r-md);
+  padding: var(--s2) var(--s3);
+  color: var(--text-muted);
+}
+.demo-controls summary {
+  min-height: var(--touch-min);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+.demo-options {
+  display: grid;
+  gap: var(--s1);
+  padding: var(--s2) 0;
+}
+.demo-options label {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  min-height: 40px;
+  color: var(--text);
+}
+
+/* Text inputs */
+.text-input {
+  width: 100%;
+  min-height: var(--touch);
+  padding: 0 var(--s4);
+  border: 2px solid var(--outline);
+  border-radius: var(--r-md);
+  background: var(--bg);
+  font-size: 22px;
+}
+.text-input:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+}
+.t-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-align: center;
+}
+.dob {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.5fr;
+  gap: var(--s3);
+}
+.dob-part {
+  display: flex;
+  flex-direction: column;
+}
+.flag-text {
+  color: var(--flag);
+  font-weight: 600;
+}
+
+/* Actions inside a step */
+.page-intake .row > .btn {
+  flex: 1 1 auto;
+  white-space: nowrap;
+}
+.page-actions-stack {
+  flex-direction: column;
+}
+
+/* Tell the nurse now: shape, icon, words and colour all say it, not colour alone. */
+.alert {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s3);
+  padding: var(--s5);
+  border: 3px solid var(--danger);
+  border-left-width: 12px;
+  border-radius: var(--r-lg);
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.alert .t-body-lg {
+  color: var(--text);
+}
+.alert-title {
+  font-size: 40px;
+  line-height: 46px;
+  font-weight: 700;
+}
+.reason-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--s2);
+}
+.reason-list li {
+  display: flex;
+  gap: var(--s2);
+  align-items: center;
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--danger);
+  border-radius: var(--r-md);
+  font-size: 18px;
+  font-weight: 600;
+}
+.reason-list svg {
+  color: var(--danger);
+}
+
+/* Visit code */
+.code-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s2);
+  padding: var(--s5);
+  border: 2px solid var(--primary);
+  border-radius: var(--r-lg);
+  text-align: center;
+}
+.visit-code {
+  font: 700 64px/72px var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--primary);
+}
+.sync-line {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  color: var(--confirmed);
+  font-weight: 600;
+}

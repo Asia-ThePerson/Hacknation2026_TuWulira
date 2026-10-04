@@ -36,6 +36,10 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 - Sending health details by SMS.
 - Running the model on the patient's own basic phone (the patient reaches the clinic by voice callback, SMS or in person).
 - Paths A (remote phone) and C (paper form) as working builds this weekend; they are design only.
+- HMIS 105 sections 2 to 11 (maternal and child health, immunization, HIV testing, circumcision, stock, lab, finance). They come from other registers. TuWulira covers section 1 only ([HMIS105_ALIGNMENT.md](../HMIS105_ALIGNMENT.md)).
+- Capturing arrival by ambulance (D25).
+- Asking about gender-based violence or attempted self-harm (D26).
+- Assigning a malnutrition category, a TB classification or any other classification. The tool records what was said or measured; staff classify.
 
 ## 4. Users
 
@@ -84,19 +88,22 @@ What we know so far: the brief names "burdensome record-keeping" as a reason cli
 | PR4 | The intake output is a card labelled "patient reported", never "findings", and appears beside, not instead of, the clinician's own questions. | RQ2.4; R2 | F.3, F.18 |
 | PR5 | The understanding step and register pre-fill fill only fields defined in [register-field-map.md](register-field-map.md), using only values from fixed lists or validated ranges. | Brief glossary "fixed list of answers"; RQ4.3 | D.5 |
 | PR6 | Any AI output below the confidence threshold is marked "not sure" or "unclear, clinician to ask" and is never guessed. | Brief 06 guardrail; RQ4.2 | F.4 |
-| PR7 | Patient intake never asks for weight, temperature, diagnosis, treatment or referral out. These are filled during the in-clinic consultation: the nurse enters weight and temperature (typed, or dictated and confirmed); the clinician enters diagnosis, treatment and referral out. The AI never suggests a diagnosis or treatment. | RQ4.3; team rule | D.6 |
+| PR7 | Patient intake never asks for measurements, diagnosis, treatment, test results, referral out or visit outcome. These are filled during the in-clinic consultation: the nurse enters weight and temperature, plus height or length and MUAC for children under 5 (typed, or dictated and confirmed); the clinician enters diagnoses, malaria test and treatment details, the presumptive TB tick, treatment, referral out and outcome. The AI never suggests a diagnosis, treatment or classification. | RQ4.3; team rule; D19, D21, D22, D24 | D.6 |
 | PR8 | When the tool understands nothing (silence, crying child, unintelligible audio) or confidence is too low, it says "Not sure. Please ask a person." and hands over. | Brief 09 fail-safe; RQ4.4 | D.2 |
 | PR9 | Danger signs are checked by rules, not AI. Any YES sets an urgent flag immediately and tells the patient "Tell the nurse now". Danger signs come only from WHO IMCI, Uganda Clinical Guidelines and WHO maternal danger signs. | RQ4.1, RQ4.2 | D.3, D.4 |
 | PR10 | No question is asked and nothing is recorded before a recorded spoken yes. | RQ5.1 | D.8 |
 | PR11 | Records queue on the device and sync when a signal appears, with no duplicates and no lost records. | Brief glossary "store-and-forward"; RQ6.2; R5 | F.6, F.7 |
-| PR12 | Any SMS to a patient contains only a date and the clinic's name. (See open question 6 on the Path A danger-sign SMS.) | RQ5.2 | D.9 |
-| PR13 | Only aggregate totals leave the clinic, mapped to DHIS2 data elements. No names or patient-level data. | R5; RQ1.2; RQ5.1 | F |
+| PR12 | Any SMS to a patient contains only a date and the clinic's name. (Path A danger-sign SMS: see D4.) | RQ5.2 | D.9 |
+| PR13 | Only aggregate totals leave the clinic, mapped to DHIS2 data elements. No names or patient-level data. Every total is labelled with its HMIS 105 code, age band and sex; totals that include estimated ages are marked "estimated". | R5; RQ1.2; RQ5.1; D27 | F |
 | PR14 | Every screen meets the inclusivity rules in [design-system.md](../design/design-system.md) (older users, low literacy, privacy in a crowded room). | RQ2.1, RQ2.3 | F.15, F.17 |
-| PR15 | Private questions are button-only, never spoken. | RQ2.1 | F.16 |
+| PR15 | Private questions are button-only, never spoken, and offer "Prefer not to say". This includes alcohol, tobacco and second-hand smoke (not asked for children aged 0 to 4). | RQ2.1; D23 | F.16 |
 | PR16 | The question list is one JSON file per language or country. Changing questions or adding a language needs no code change. | RQ7.3 | F |
 | PR17 | Data is stored encrypted on the device, behind a staff PIN. Voice clips are deleted when the visit closes. | RQ5.1 | D.7 |
-| PR18 | Patient answers pre-fill the OPD register row (HMIS 031) and tally, with CSV export. | RQ1.2; R5 | F |
+| PR18 | Patient answers pre-fill the OPD register row (HMIS 031, 2010 version) and tally, with CSV export. Each diagnosis is its own register line; extra lines fill only the diagnosis columns. The tally produces the HMIS 105 (September 2019) section 1 totals. | RQ1.2; R5; D20, D28 | F |
 | PR19 | The clinician can dictate the encounter. The scribe drafts only register fields from fixed lists or validated ranges; every drafted field is confirmed before save, and diagnosis and treatment are typed or confirmed word for word. | RQ4.3; R2 | F.2, F.4 |
+| PR20 | Age is captured as date of birth, or as days old for babies under 2 months. If the patient does not know, an estimate (number plus days, months or years) is accepted and marked "estimated" on the card and in the export. The system calculates every HMIS 105 age band; the patient is never asked for a band. | RQ1.2; D16 | F |
+| PR21 | Intake flags describe only what the patient reported: "fever reported" from the fever question, and "TB symptoms reported: clinician to assess" from any YES to the TB symptom questions. Only the clinician records a diagnosis, test result or presumptive TB. | RQ4.3; D19, D21 | D.6, F.3 |
+| PR22 | The patient screen never asks about origin or status (report type is clerk-entered), gender-based violence or attempted self-harm. Those HMIS 105 rows are recorded only by the clinician. | RQ2.1; RQ5.1; D17, D26 | D.1, D.10 |
 
 ## 9. Components (Path B prototype)
 
@@ -105,16 +112,36 @@ Numbers match the component table in the [README](../../README.md).
 ### Component 1: Patient screen (PR3, PR10, PR14, PR15)
 
 - Plays a recorded Luganda prompt for every question; English available.
-- Answer buttons: Yes / No / Not sure / Ask clinician, plus numeric entry for age and phone.
+- Answer buttons: Yes / No / Not sure / Ask clinician, plus numeric entry for phone, date entry (day, month, year, or "Don't know") for date of birth, and number plus unit (days, months, years) for an estimated age.
 - Records one spoken answer for the main problem.
 - Ends with a read-back: correct or change.
-- Private questions (section 6 of the question set) are button-only, never spoken.
+- Private questions (section 6 of the question set) are button-only, never spoken, with "Prefer not to say".
 
-### Component 2: Question list (PR16)
+### Component 2: Question list (PR16, PR20, PR21)
 
 - Single JSON file per language or country.
-- Each question has: id, section, Luganda text, English text, audio file, answer type, next-question rule, and target field (HMIS 031 column or "consultation").
+- Each question has: id, section, Luganda text, English text, audio file, answer type, next-question rule, and target field (HMIS 031 column, HMIS 105 code, or "consultation").
 - Changing questions or adding a language requires no code change.
+
+New questions for HMIS 105 section 1 (full detail in [HMIS105_ALIGNMENT.md](../HMIS105_ALIGNMENT.md)). Luganda text and audio for each still need a native speaker (D14).
+
+| id | Question (English) | Answers | Rule | Feeds |
+|---|---|---|---|---|
+| REG-DOB | What is the date of birth? | Date, or "Don't know" | "Don't know" goes to REG-AGE-EST | Age (HMIS 031 column 4); age bands |
+| REG-AGE-EST | About how old? | Number plus days, months or years | Age marked "estimated" | Age; age bands |
+| REG-NEWBORN | Is the baby under 2 months old? How many days old? | Yes / No, then days | Shown when the visit is for a baby | Neonatal 0 to 7 and 8 to 28 day split |
+| REG-REFIN | Did a health worker send you here? | Yes / No / Not sure | Yes prompts the clerk for the referral note number | HMIS 031 column 11; OR01. Same question as the existing `s3_referral`. |
+| SYM-FEVER | Have you had a fever or felt hot? | Yes / No / Not sure / Ask clinician | Yes puts "fever reported" on the card | Pre-flag for EP01a (clinician confirms) |
+| TB-1 | Have you been coughing? | Yes / No / Not sure / Ask clinician | Any TB YES: "TB symptoms reported: clinician to assess" | TP01; TP02 candidate |
+| TB-2 | Have you had a fever? | Reuses the SYM-FEVER answer, not asked twice | As above | As above |
+| TB-3 | Do you sweat a lot at night? | Yes / No / Not sure / Ask clinician | As above | As above |
+| TB-4 | Have you lost weight without trying? | Yes / No / Not sure / Ask clinician | As above | As above |
+| PREG-BF | Are you breastfeeding? | Yes / No / Prefer not to say | Asked with the existing pregnancy question | Nutrition pregnant or lactating columns |
+| RB-ALC | Do you drink alcohol? | Yes / No / Prefer not to say | Private, button-only; not asked for ages 0 to 4 | RB01 |
+| RB-TOB | Do you smoke or use tobacco? | Yes / No / Prefer not to say | Private, button-only; not asked for ages 0 to 4 | RB02 |
+| RB-EXP | Does anyone smoke near you at home? | Yes / No / Prefer not to say | Private, button-only | RB03 |
+
+TB question wording and cough duration must be checked against Uganda's national TB screening guidance before they are final (open question 4).
 
 ### Component 3: Danger-sign checker (PR9)
 
@@ -140,18 +167,39 @@ Numbers match the component table in the [README](../../README.md).
 - Order: urgent flags, main problem (English and Luganda), follow-ups, medicines and allergies, registration details.
 - Header label: **PATIENT REPORTED**.
 - "Not sure" and "unclear" items visibly marked.
+- Patient-reported flags ("fever reported", "TB symptoms reported: clinician to assess") shown as reported, never as findings (PR21).
+- An estimated age is marked "estimated" (PR20).
 
-### Component 7: Staff screen (PR7, PR17)
+### Component 7: Staff screen (PR7, PR17, PR22)
 
 - Behind a staff PIN.
 - Queue sorted urgent first, then by arrival time.
-- Nurse: enters weight (kg) and temperature.
-- Clinician: picks a diagnosis from the HMIS 105 section 1.3 list ([config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json), print version September 2019), enters treatment as units x doses per day x days, and the referral-out number. The form marks no condition as notifiable, so the pick-list does not either.
+- Clerk: enters report type (National / Refugee / Foreigner), required before the record closes, so the patient screen never asks about origin or status. Enters the referral note number when the patient said a health worker sent them.
+- Nurse: enters weight (kg) and temperature. For children under 5, also height or length (cm) and MUAC (cm). The tool records the measurements; the nurse confirms any malnutrition category, and the tool never assigns one.
+- Clinician:
+  - Diagnoses: multi-select from the HMIS 105 section 1.3 list ([config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json), print version September 2019). The form marks no condition as notifiable, so the pick-list does not either (see open question 6).
+  - Malaria, shown when fever was reported or a malaria diagnosis is picked: test done (RDT / blood slide / none), result (positive / negative), and a "treated" tick.
+  - TB: a "presumptive TB" tick. This is the clinician's decision, separate from the intake flag.
+  - Treatment as units x doses per day x days, and the referral-out number.
+  - Outcome: went home / referred out / admitted / died.
+  - Gender-based violence and attempted self-harm rows, if relevant. The tool never asks about these (PR22).
 
-### Component 8: Register and tally (PR18)
+### Component 8: Register and tally (PR18, PR20)
 
 - Pre-fills the OPD register row: serial number (automatic, restarts monthly); columns 2 to 5, 7, 8 and 11 from the card; columns 6, 9, 10 and 12 from staff.
-- Tally, using the HMIS 105 codes and bands: new attendance (OA01) vs re-attendance (OA02), referrals to unit (OR01) and from unit (OR02), and diagnoses by the form's five age bands (0 to 28 days, 29 days to 4 years, 5 to 9, 10 to 19, 20 and above), each split by male and female.
+- Each diagnosis is its own register line; extra lines fill only the diagnosis columns, per the HMIS 031 instructions (D20).
+- Register version: HMIS 031 from the Ministry of Health's 2010 Health Unit Procedure Manual, used as is and mapped to the September 2019 HMIS 105. The version gap is stated in the submission (D28).
+- Tally, using the HMIS 105 codes: new attendance (OA01) vs re-attendance (OA02), referrals to unit (OR01) and from unit (OR02), and diagnoses, each split by male and female.
+- Age bands (PR20). Age in days = visit date minus date of birth, or from the estimate. Each HMIS 105 section uses its own bands:
+
+| HMIS 105 section | Bands |
+|---|---|
+| 1.1 to 1.3 OPD attendance, referrals, diagnoses | 0 to 28 days; 29 days to 4 years; 5 to 9; 10 to 19; 20 and above |
+| 1.3.3 Neonatal rows | 0 to 7 days; 8 to 28 days |
+| 1.4 TB | under 5; 5 to 9; 10 to 14; 15 to 19; 20 and above |
+| 1.5 Nutrition | 0 to 5 months; 6 to 23 months; 24 to 59 months; 5 to 9; 10 to 19; 20 to 24; 25 and above (women split non-pregnant and pregnant or lactating) |
+
+- Estimated ages are counted in their band and marked "estimated".
 - CSV export.
 
 ### Component 9: Safe storage (PR17)
@@ -162,7 +210,22 @@ Numbers match the component table in the [README](../../README.md).
 ### Component 10: DHIS2 export (PR11, PR13)
 
 - Aggregate totals only; no names or patient-level data.
+- One row per HMIS 105 code x age band x sex (D27).
 - "Export totals" produces a DHIS2-style file; optional push to the public DHIS2 demo instance.
+
+| HMIS 105 code | Source in TuWulira |
+|---|---|
+| OA01 / OA02 | New vs re-attendance (`s3_repeat`) |
+| OR01 | Referral in (`s3_referral` / REG-REFIN, plus the clerk's note number) |
+| OR02 | Referral out (clinician) |
+| EP01a | Fever reported and confirmed by the clinician |
+| EP01b to EP01d | Malaria diagnosis, test result, treated tick (clinician) |
+| All section 1.3 diagnosis codes | Clinician multi-select |
+| TP01 | Patients who completed the TB symptom questions |
+| TP02 | Clinician "presumptive TB" tick |
+| NA01a / NA01b | MUAC / weight-for-height recorded (nurse) |
+| RB01 to RB03 | Private alcohol and tobacco questions |
+| DT01 | Outcome = died (clinician) |
 
 ### Component 11: Scribe, clinician dictation (AI) (PR5, PR6, PR19)
 
@@ -177,15 +240,17 @@ Numbers match the component table in the [README](../../README.md).
 | Section | Content | Feeds |
 |---|---|---|
 | 0 | Language and consent | Consent flag |
-| 1 | Who the visit is for; child age band; pregnancy | Danger-sign set; tally age group |
+| 1 | Who the visit is for; child age band; pregnancy and breastfeeding; for babies, under 2 months and days old | Danger-sign set; neonatal split; nutrition columns |
 | 2 | Danger signs (4 sets) | Urgent flag |
-| 3 | Name, village and parish, age, sex, next of kin and phone, repeat visit, referral note | HMIS 031 columns 2 to 5, 7, 8, 11 |
+| 3 | Name, village and parish, date of birth (or estimated age), sex, next of kin and phone, repeat visit, referral in | HMIS 031 columns 2 to 5, 7, 8, 11; HMIS 105 age bands, OA01/OA02, OR01 |
 | 4 | Main problem: one spoken answer | Consultation |
-| 5 | Duration, trend, common symptoms | Consultation |
-| 6 | Medicines taken, daily medicines, allergies, private matter | Consultation; safer prescribing |
+| 5 | Duration, trend, common symptoms, fever, TB symptom screen | Consultation; "fever reported" and "TB symptoms reported" flags; TP01 |
+| 6 | Medicines taken, daily medicines, allergies, private matter, alcohol, tobacco, second-hand smoke (button-only) | Consultation; safer prescribing; RB01 to RB03 |
 | 7 | Read-back and close | n/a |
 
-**Never asked by TuWulira:** weight and temperature (column 6), diagnosis (column 9), treatment (column 10), referral out (column 12).
+**Never asked by TuWulira:** weight and temperature (column 6), height or length and MUAC, diagnosis (column 9), treatment (column 10), referral out (column 12), malaria test and result, visit outcome, report type (National / Refugee / Foreigner, clerk-entered), gender-based violence, attempted self-harm.
+
+**Who enters what:** P = patient question, N = nurse screen, C = clinician screen, K = clerk, S = system. See [HMIS105_ALIGNMENT.md](../HMIS105_ALIGNMENT.md).
 
 Full field-by-field mapping: Figma, *Reference: Data requirements*, and [register-field-map.md](register-field-map.md).
 
@@ -196,6 +261,11 @@ Full field-by-field mapping: Figma, *Reference: Data requirements*, and [registe
 - Danger signs are rules, not AI.
 - Fixed output lists for the understanding model.
 - Consent before any question.
+- Intake flags describe only what the patient reported ("fever reported", "TB symptoms reported: clinician to assess"). Only the clinician records a diagnosis or classification; the nurse confirms any malnutrition category.
+- Gender-based violence rows (CD05, MH02, IN03, MC01) and attempted self-harm (NE21) are never asked by the tool; only the clinician records them. We say this in the video as a Responsible AI choice.
+- Alcohol and tobacco questions are button-only, with "Prefer not to say".
+- Report type is clerk-entered, so the patient screen never asks about origin or status.
+- Estimated ages are marked, never presented as exact.
 - Bias: models are tested on Luganda speech; known gaps (older voices, accents, code-switching, noise) are documented and reported with results.
 - Privacy: on-device encryption, staff PIN, voice clips deleted at visit close, aggregate-only export. If the phone is lost: PIN protection now; remote wipe in the full design.
 
@@ -217,12 +287,12 @@ Definitions and safety metrics (danger-sign sensitivity, ask-a-person coverage):
 
 | ID | Feature | Requirements | Components | Code |
 |---|---|---|---|---|
-| F1 | Patient voice intake and patient-reported card | PR3, PR4, PR10, PR15, PR16 | 1, 2, 4, 5, 6 | [app/intake/](../../app/intake/), [config/](../../config/) |
+| F1 | Patient voice intake and patient-reported card | PR3, PR4, PR10, PR15, PR16, PR20, PR21, PR22 | 1, 2, 4, 5, 6 | [app/intake/](../../app/intake/), [config/](../../config/) |
 | F2 | Clinician dictation (scribe) | PR5, PR6, PR7, PR19 | 11 | [app/scribe/](../../app/scribe/) |
 | F3 | Safety layer: danger signs, thresholds, "ask a person" | PR8, PR9 | 3 | [app/safety/](../../app/safety/), [rules/](../../rules/) |
 | F4 | Store-and-forward and DHIS2 export | PR1, PR11, PR13 | 10 | [app/sync/](../../app/sync/) |
 | F5 | Follow-up SMS (date and clinic name only) | PR12 | Path A | [app/sync/](../../app/sync/) |
-| F6 | Staff screen, register and tally | PR7, PR18 | 7, 8 | TODO |
+| F6 | Staff screen, register and tally | PR7, PR18, PR20, PR22 | 7, 8 | TODO |
 | F7 | Safe storage | PR17 | 9 | TODO |
 
 ## 14. Design decisions
@@ -247,8 +317,29 @@ Record decisions as D# here, one line each, with the PR# they serve. Use the doc
 | D14 | No native Luganda speaker is available, so the demo uses real Luganda speech from Mozilla Common Voice test clips as the spoken input, and says so openly in the video and README. Luganda prompt text and audio stay empty (no machine translation) and the app falls back to English prompts. | PR3 | 2026-10-04 |
 | D15 | The diagnosis pick-list and tally follow the official HMIS 105 form (print version September 2019): section 1.3 codes and labels as printed, the form's five age bands by sex, and the OA and OR codes for attendance and referrals. | PR7, PR18 | 2026-10-04 |
 
+Decisions D16 to D28 come from the HMIS 105 alignment update ([HMIS105_ALIGNMENT.md](../HMIS105_ALIGNMENT.md), decisions 1 to 13 in that order).
+
+| ID | Decision | Serves | Date |
+|---|---|---|---|
+| D16 | Age capture: ask date of birth; for babies under 2 months, ask days old. The system calculates every reporting band. | PR20 | 2026-10-04 |
+| D17 | Report type (National / Refugee / Foreigner) is entered by the clerk per patient on the staff screen, never asked by the patient screen. | PR22 | 2026-10-04 |
+| D18 | Referrals to the unit: the patient is asked "Did a health worker send you here?"; the clerk records the referral note number. | PR18 | 2026-10-04 |
+| D19 | Malaria detail: a fever answer pre-flags "fever reported"; the clinician records test type, result and a "treated" tick. | PR7, PR21 | 2026-10-04 |
+| D20 | Multiple diagnoses: multi-select from the HMIS 105 list; each diagnosis becomes its own register line. | PR7, PR18 | 2026-10-04 |
+| D21 | TB symptom screen: four button questions; any YES flags "TB symptoms reported: clinician to assess". | PR21 | 2026-10-04 |
+| D22 | Nutrition: the nurse adds height or length and MUAC for children under 5; the patient screen asks "breastfeeding?" alongside pregnancy. | PR7 | 2026-10-04 |
+| D23 | Alcohol and tobacco: private, button-only questions with "Prefer not to say". | PR15 | 2026-10-04 |
+| D24 | Visit outcome: the clinician picks went home / referred out / admitted / died. | PR7 | 2026-10-04 |
+| D25 | Arrival by ambulance is not captured in this build. | n/a | 2026-10-04 |
+| D26 | Gender-based violence and attempted self-harm rows are never asked by the tool; only the clinician records them. Stated in the video as a Responsible AI choice. | PR22 | 2026-10-04 |
+| D27 | DHIS2 export: every total labelled with its HMIS 105 code, by age band and sex. | PR13 | 2026-10-04 |
+| D28 | Form versions: use the 2010 HMIS 031 register as is, map it to the 2019 HMIS 105, and state the version gap in the submission (text in [HMIS105_ALIGNMENT.md](../HMIS105_ALIGNMENT.md) section 7). | PR18 | 2026-10-04 |
+
 ## 15. Open questions
 
 1. Which device will the demo run on (model and RAM), and how is it charged at the clinic? (RQ2.2, RQ6.3)
 2. Final model choices and licenses (D13). (RQ3.1, RQ6.1)
-3. Native Luganda prompts: still needed for a real clinic, even though the demo uses Common Voice clips (D14). Do not machine-translate.
+3. Native Luganda prompts: still needed for a real clinic, even though the demo uses Common Voice clips (D14). Do not machine-translate. This now includes text and audio for every new HMIS 105 question.
+4. TB question wording and cough duration: check against Uganda's national TB screening guidance. Do not settle it from memory. (D21)
+5. Are each clinic's devices shared by MUAC-trained staff? (D22)
+6. Notifiable diagnoses: the alignment update says to mark notifiable diagnoses with ★, but the official HMIS 105 form, as transcribed in [config/hmis105-diagnoses.json](../../config/hmis105-diagnoses.json), marks none. Until the team checks the form again, the pick-list marks none.

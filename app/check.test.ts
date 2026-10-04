@@ -3,6 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { assessTurn, ASK_A_PERSON, TELL_THE_NURSE } from './safety/index.ts';
+import { ALL_DANGER_SIGNS, DANGER_SIGNS } from './safety/danger-signs.ts';
 import { extract, canSave } from './scribe/extract.ts';
 import { buildIntakeCard } from './intake/intake-card.ts';
 import { isAllowed } from './shared/field-schemas.ts';
@@ -18,6 +19,14 @@ test('danger signs win even at low confidence (PR9, D3)', () => {
   const r = assessTurn({ transcript: 'she had convulsions', confidence: 0.2 });
   assert.equal(r.kind, 'danger');
   assert.equal(r.kind === 'danger' && r.message, TELL_THE_NURSE);
+});
+
+test('every danger sign cites a source; disabled signs never load (RQ4.1)', () => {
+  assert.ok(ALL_DANGER_SIGNS.every((d) => d.source.trim().length > 0));
+  assert.ok(DANGER_SIGNS.every((d) => d.status !== 'disabled'));
+  assert.ok(DANGER_SIGNS.every((d) => d.verified === (d.status === 'cited')));
+  assert.equal(assessTurn({ transcript: 'She has fainted today', confidence: 0.95 }).kind, 'ok'); // adult candidates are disabled
+  assert.equal(assessTurn({ transcript: 'there is bleeding from the vagina', confidence: 0.4 }).kind, 'danger');
 });
 
 test('extractor only outputs schema values that were said', () => {

@@ -9,9 +9,9 @@ Each item: **ID**, the item, then *owner*, *evidence* (file, result or URL), *so
 | | |
 |---|---|
 | Deadline | **4 October 2026, 9:00 AM ET** (confirm on Hack-Nation's site; the brief says "end of the weekend") |
-| Overall | **5 of 71 done (7%)** |
-| Responsible AI gate | **At risk.** 0 of 10 done. Design is written in [docs/product/responsible-ai.md](docs/product/responsible-ai.md); nothing is verified yet. |
-| Next three open items | 1. A.4 make the repo public. 2. B.1 problem statement (needs RQ1.1). 3. D.3 verify the danger-sign list against its sources (RQ4.1). |
+| Overall | **7 of 71 done (10%)** |
+| Responsible AI gate | **At risk.** 0 of 10 done. Design is written in [docs/product/responsible-ai.md](docs/product/responsible-ai.md). Danger signs now sourced: 4 cited and verified, 11 awaiting a page check, adult set disabled ([danger-signs.md](docs/product/danger-signs.md)). |
+| Next three open items | 1. A.3 record the video (no video, no shortlist). 2. A.7 one measured Luganda example in evaluation/results/. 3. D.3 confirm page numbers for the 11 verify_page danger signs. |
 
 Last updated: 2026-10-04.
 
@@ -29,7 +29,7 @@ Last updated: 2026-10-04.
 
 Plan: [docs/hackathon/video-plan.md](docs/hackathon/video-plan.md).
 
-- [ ] **B.1** Problem statement in the exact template: "Because of this tool, [user] will [action] by [when] that they would otherwise [not do / do late / do worse]; we know because [evidence]". *Owner:* Beth. *Evidence:* TODO. *Source:* brief 08; RQ1.1.
+- [ ] **B.1** Problem statement in the exact template: "Because of this tool, [user] will [action] by [when] that they would otherwise [not do / do late / do worse]; we know because [evidence]". *Owner:* Beth. *Evidence:* sentence and sources ready in [docs/product/problem-statement.md](docs/product/problem-statement.md); TODO: say it in the video. *Source:* brief 08; RQ1.1.
 - [ ] **B.2** AI capabilities, and why SMS, a spreadsheet or a search would not do the same job. *Owner:* TBD. *Evidence:* TODO. *Source:* brief 08.
 - [ ] **B.3** Guardrails named on screen. *Owner:* TBD. *Evidence:* TODO. *Source:* brief 08.
 - [ ] **B.4** Tool demo showing the end-to-end user journey. *Owner:* TBD. *Evidence:* TODO; script in [docs/demo/demo-script.md](docs/demo/demo-script.md). *Source:* brief 08.
@@ -44,7 +44,7 @@ Plan: [docs/hackathon/video-plan.md](docs/hackathon/video-plan.md).
 - [ ] **C.2** Core feature works with airplane mode on. *Owner:* TBD. *Evidence:* TODO recording or results file. *Source:* brief 06.
 - [ ] **C.3** Model file sizes measured and listed. *Owner:* TBD. *Evidence:* TODO [models/README.md](models/README.md). *Source:* brief 06; RQ6.1.
 - [ ] **C.4** At least one interaction in Luganda. *Owner:* TBD. *Evidence:* TODO. Plan (D14): transcribe real Luganda speech from Common Voice test clips in the demo, and say so on screen. *Source:* brief 06.
-- [ ] **C.5** Lusoga answer prepared: measured result or a reasoned estimate. *Owner:* TBD. *Evidence:* TODO. *Source:* brief 06; RQ3.3.
+- [x] **C.5** Lusoga answer prepared: measured result or a reasoned estimate. *Owner:* TBD. *Evidence:* reasoned estimate in [docs/product/less-supported-language.md](docs/product/less-supported-language.md) (not measured). *Source:* brief 06; RQ3.3.
 
 ## D. Responsible AI gate (pass/fail, brief 09)
 
@@ -52,7 +52,7 @@ Failing any one of these fails the entry. Details: [docs/product/responsible-ai.
 
 - [ ] **D.1** Human makes every final call; no action taken on the user's behalf. *Owner:* TBD. *Evidence:* TODO. *Source:* brief 06, 09.
 - [ ] **D.2** "Ask a person" path covers low confidence and total failure. *Owner:* TBD. *Evidence:* logic in [app/safety/index.ts](app/safety/index.ts); TODO edge-case clip results. *Source:* brief 09; RQ4.4.
-- [ ] **D.3** Danger-sign list sourced from WHO / Uganda guidelines, with citation. *Owner:* TBD. *Evidence:* draft in [app/safety/danger-signs.ts](app/safety/danger-signs.ts); TODO verify each entry. *Source:* RQ4.1.
+- [ ] **D.3** Danger-sign list sourced from WHO / Uganda guidelines, with citation. *Owner:* TBD. *Evidence:* [rules/danger-signs.json](rules/danger-signs.json) and [docs/product/danger-signs.md](docs/product/danger-signs.md): 4 child signs cited and verified (IMCI 2014, UCG 2023); 11 newborn and pregnancy signs need page numbers confirmed; adult set disabled until a clinician confirms a source. Test in [app/check.test.ts](app/check.test.ts). *Source:* RQ4.1.
 - [ ] **D.4** Danger-sign sensitivity reported separately from overall accuracy. *Owner:* TBD. *Evidence:* TODO [evaluation/results/](evaluation/results/). *Source:* RQ4.2.
 - [ ] **D.5** Register field map done: AI fill, AI draft plus confirm, clinician only. *Owner:* Beth. *Evidence:* draft in [docs/product/register-field-map.md](docs/product/register-field-map.md); TODO check against HMIS. *Source:* RQ4.3.
 - [ ] **D.6** No diagnosis or prescription in any output. *Owner:* TBD. *Evidence:* TODO results file; logic check in [app/check.test.ts](app/check.test.ts). *Source:* team rule.
@@ -63,10 +63,10 @@ Failing any one of these fails the entry. Details: [docs/product/responsible-ai.
 
 ## E. Data grounding (scored, brief 07)
 
-- [ ] **E.1** Every dataset has a card with source, license, size and "What this does not cover". *Owner:* TBD. *Evidence:* [resources/datasets/cards/](resources/datasets/cards/) (6 of the datasets we use so far). *Source:* brief 7.2.
+- [ ] **E.1** Every dataset has a card with source, license, size and "What this does not cover". *Owner:* TBD. *Evidence:* [resources/datasets/cards/](resources/datasets/cards/) (9 cards: Common Voice, FLEURS, SALT, MMS, Makerere radio corpus, Dialogs of Delivery, SDI, DHIS2; Sunflower and the candidate CTC model still need cards). *Source:* brief 7.2.
 - [ ] **E.2** Every license verified; none left as "to verify". *Owner:* TBD. *Evidence:* TODO `scripts/check` pass. *Source:* brief 07.
 - [x] **E.3** All synthetic data labelled. *Owner:* Asia. *Evidence:* `scripts/check` "synthetic labels" passed on 2026-10-03; see [evaluation/test-sets/README.md](evaluation/test-sets/README.md). *Source:* brief 7.2; RQ5.3.
-- [ ] **E.4** Problem evidence cited with source, year and country. *Owner:* Beth. *Evidence:* TODO [research/findings.md](research/findings.md). *Source:* brief 7.2; RQ1.1, RQ1.2.
+- [x] **E.4** Problem evidence cited with source, year and country. *Owner:* Beth. *Evidence:* [docs/product/problem-statement.md](docs/product/problem-statement.md) (SDI Uganda 2013; MoH HMIS manual 2010; one supporting row still needs an RQ1.2 source). *Source:* brief 7.2; RQ1.1, RQ1.2.
 - [ ] **E.5** Problem evidence notes when the closest figures come from modelled or synthetic data. *Owner:* Beth. *Evidence:* TODO. *Source:* brief 7.2. **(Added from the brief.)**
 
 ## F. Product checks (team checks)

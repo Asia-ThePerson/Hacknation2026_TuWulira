@@ -10,9 +10,9 @@ TuWulira is a Luganda-first intake and record-keeping tool for rural primary car
 
 ## 2. Problem statement
 
-Draft, to finish once RQ1.1 is answered:
+> Because of TuWulira, health workers at rural Ugandan health centres will capture each patient's danger signs, main complaint in Luganda, and register details once, at registration, before the consultation, which would otherwise be gathered late in a rushed verbal history and re-written by hand into the OPD register and tally sheets; we know because more than half (52%) of public health providers were absent from their facility on an unannounced visit (World Bank Service Delivery Indicators, Uganda, 2013), and Uganda's outpatient process requires each visit to be written in the OPD register, then tallied by hand into monthly reports (Ministry of Health Uganda, HMIS Health Unit Procedure Manual, 2010).
 
-> Because of TuWulira, patients at rural Ugandan health centres will have their symptoms, danger signs and register details captured in Luganda before they see the clinician, which would otherwise happen late, in a rushed verbal history, or not at all; we know because [TODO: cite a Service Delivery Indicators, DHS or WHO GHO figure with year and country].
+Evidence table and what we do not claim: [problem-statement.md](problem-statement.md).
 
 What we know so far: the brief names "burdensome record-keeping" as a reason clinicians cannot give each patient enough attention (Annex A.1). Penda Health's largest gain was a 32% drop in history-taking errors (R2). Documentation time at Ugandan health centres is not yet measured in our evidence (RQ1.1 open).
 

@@ -29,8 +29,8 @@ By the end of the weekend we need:
 
 | Rule | How we meet it | Checklist |
 |---|---|---|
-| Runs on a device the user already has | One shared Android device at the clinic (hub); patients reach it in person or by voice/SMS on the phone they already have (spokes). Assumption to verify: RQ2.2. | C |
-| Core feature works offline | Speech model and extractor run on the device. Records queue until a signal appears. | C, F |
+| Runs on a device the user already has | Two entry-level Androids (D33): an intake phone that runs all the AI (floor itel A50 2 GB) and a clinic device that runs none (any Android 8+); one-device mode as fallback. Assumption stated: no source confirms a shared device pool inside HC II/III facilities; eCHIS Android phones exist at VHT level (RQ2.2). | C |
+| Core feature works offline | Speech model and labeler run on the intake phone; the card moves to the clinic device by QR code; records queue until a signal appears. | C, F |
 | Model files are small enough to side-load or send over a weak connection | Measured sizes go in [models/README.md](../../models/README.md) and [evaluation/results/](../../evaluation/results/). RQ6.1. | C |
 | At least one interaction is in a named local language | **Luganda** (intake and dictation). Expect to be asked about a less-supported one: **Lusoga** (RQ3.3). | C |
 

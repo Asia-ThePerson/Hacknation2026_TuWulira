@@ -1,13 +1,13 @@
 # Mozilla Common Voice
 
 - **Source:** Mozilla
-- **Link:** TODO
-- **License:** to verify
-- **Size:** TODO
+- **Link:** https://commonvoice.mozilla.org
+- **License:** CC0
+- **Size:** Luganda: ~560 h recorded, ~437 h validated, 672 speakers (Common Voice 26.0, per team research)
 - **Layer:** common (brief 7.3 A)
 - **Used for:** build: Luganda speech for testing speech recognition
 - **Synthetic:** no
-- **Status:** not reviewed
+- **Status:** reviewed
 
 ## What it is
 
@@ -24,4 +24,4 @@ Candidate source of Luganda clips for WER testing (RQ3.1) and code-switching exa
 
 ## Checked by
 
-TODO: name and date.
+Team research, 4 Oct 2026 (see [resources/datasets/README.md](../README.md)). Re-check the source page before release.

@@ -6,7 +6,7 @@
 
 Hack-Nation x World Bank Youth Summit, Global AI Hackathon 2026, Challenge 04: Small AI for Development, Health track (Annex A).
 
-TuWulira asks a patient a short, fixed set of questions in Luganda while they wait. It listens to one spoken answer about their main problem, flags danger signs immediately, and hands the clinician a one-screen card labelled **"Patient reported"**. The same answers pre-fill the clinic's OPD register (HMIS 031) and tally sheet, so staff write less and see patients sooner.
+*TuWulira* is Luganda for "we hear you". At registration, a clerk or nurse holds the intake phone while the patient answers a short, fixed set of questions in Luganda. It listens to one spoken answer about their main problem, flags danger signs immediately, and hands the clinician a one-screen card labelled **"Patient reported"**. The same answers pre-fill the clinic's OPD register (HMIS 031) and tally sheet, so staff write less and see patients sooner.
 
 > **Design hub (Figma):** [TuWulira Project hub](https://www.figma.com/design/46MiynCpDjTcAiYoqmiaEr/TuWulira---Project-hub?node-id=0-1).
 > All design assets, system diagrams and presentations live here. Start with the **System Diagram** page, then *Final system diagram*.
@@ -39,11 +39,11 @@ Noor's local health centre is overcrowded. Clinicians have only a few minutes pe
 
 Plain SMS tools have already delivered big wins in the region (Project Mwana, Uganda's mTrac; [finding R1](research/findings.md)), so our AI must do what SMS cannot: listen to the patient in their own words, in Luganda, offline.
 
-**Problem statement (draft):**
+**Problem statement:**
 
-> Because of TuWulira, patients at rural Ugandan health centres will have their symptoms, danger signs and register details captured in Luganda before they see the clinician, which would otherwise happen late, in a rushed verbal history, or not at all; we know because [TODO: cite a Service Delivery Indicators, DHS or WHO GHO figure with year and country].
+> Because of TuWulira, health workers at rural Ugandan health centres will capture each patient's danger signs, main complaint in Luganda, and register details once, at registration, before the consultation, which would otherwise be gathered late in a rushed verbal history and re-written by hand into the OPD register and tally sheets; we know because more than half (52%) of public health providers were absent from their facility on an unannounced visit (World Bank Service Delivery Indicators, Uganda, 2013), and Uganda's outpatient process requires each visit to be written in the OPD register, then tallied by hand into monthly reports (Ministry of Health Uganda, HMIS Health Unit Procedure Manual, 2010).
 
-TODO (RQ1.1, RQ1.2): add documentation-burden evidence with source, year and country. See [research/questions.md](research/questions.md).
+Full evidence table, and what we do not claim (no rural minutes-per-patient figure; SDI data is from 2013): [docs/product/problem-statement.md](docs/product/problem-statement.md).
 
 ## How it works
 
@@ -111,14 +111,14 @@ The danger-sign checker, question routing and register pre-fill are rule-based, 
 - **Luganda:** the spoken main-problem answer is transcribed from Luganda. WER: TODO on a held-out Luganda set (Common Voice or FLEURS), compared with a published benchmark (RQ3.1).
 - **Demo, stated openly:** we have no native Luganda speaker on the team, so the demo uses real Luganda speech from Mozilla Common Voice test clips as the spoken input (decision D14). Luganda prompt text and audio are left empty for a native speaker; we did not machine-translate them, and the demo plays English prompts.
 - **English:** every question has English text; the card shows English items with the original Luganda underneath.
-- **Lusoga (less-supported):** TODO: measured result or reasoned estimate (RQ3.3).
+- **Lusoga (less-supported):** reasoned estimate, not measured. Speech accuracy would drop because there is much less Lusoga data and no small on-device Lusoga model. Danger signs and most questions are buttons, so the safety parts still work, and unclear speech always goes to a person. Adding Lusoga is a new question file and recordings, not new code; until a small Lusoga model exists the tool runs buttons-only. Details: [docs/product/less-supported-language.md](docs/product/less-supported-language.md).
 - Code-switching between Luganda and English is tested separately (RQ3.2).
 
 ## Guardrails and responsible AI
 
 - **Human in the loop:** TuWulira never diagnoses or prescribes. The clinician reviews the card and makes every clinical decision.
 - **"Not sure. Please ask a person.":** every question accepts *Not sure* or *Ask clinician*; low-confidence AI output is marked, never guessed. This covers total failure too (silence, crying child, unintelligible audio).
-- **Danger signs are rules, not AI:** they come only from WHO IMCI general danger signs, Uganda Clinical Guidelines and WHO maternal danger signs. We never invent them.
+- **Danger signs are rules, not AI:** they come only from WHO IMCI (2014), WHO PCPNC maternal danger signs and Uganda Clinical Guidelines 2023, and every rule cites its source. The transcript can only add a flag, never remove one. Sources and status per sign: [docs/product/danger-signs.md](docs/product/danger-signs.md). We never invent them.
 - **Fixed answer lists:** the understanding model can only output labels from an allowed list. Nothing appears that nobody said.
 - **PATIENT REPORTED label:** reduces clinician over-reliance on the card.
 - **Consent first:** a recorded spoken yes before any question. Remote danger alerts are shared with the clinic only if the patient says yes.

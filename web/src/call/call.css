@@ -1,0 +1,226 @@
+/* Patient's basic phone (#/call). Greyscale low-fi, like the Figma patient screens: state is shown with
+   borders, fills and words, never colour. */
+.call-page {
+  --bp-ink: #111111;
+  --bp-muted: #5f5f5f;
+  --bp-wire: #bdbdbd;
+  --bp-fill: #f4f4f4;
+  --bp-stage: #f1f1f1;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s4) var(--s4) var(--s5);
+  background: var(--bp-stage);
+  color: var(--bp-ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.basic-phone {
+  width: 300px;
+  max-width: 100%;
+  background: #fff;
+  border: 2px solid var(--bp-ink);
+  border-radius: 34px;
+  padding: 14px 16px 18px;
+  display: flex;
+  flex-direction: column;
+}
+.bp-status {
+  display: flex;
+  justify-content: space-between;
+  color: var(--bp-muted);
+  padding: 2px 8px 10px;
+  font-variant-numeric: tabular-nums;
+}
+.bp-screen {
+  height: 340px;
+  overflow-y: auto;
+  border: 2px solid var(--bp-ink);
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bp-who {
+  display: flex;
+  justify-content: space-between;
+  margin: -8px -8px 0;
+  padding: 8px 10px;
+  background: var(--bp-ink);
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.call-page .tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bp-muted);
+}
+.call-page .hear {
+  border-left: 3px solid var(--bp-ink);
+  background: var(--bp-fill);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.call-page .hear-text {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.call-page .hear-text:focus {
+  outline: none;
+}
+.call-page .opts {
+  font-weight: 700;
+  border: 1.5px dashed var(--bp-ink);
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: var(--bp-fill);
+}
+.call-page .note {
+  color: var(--bp-muted);
+}
+.call-page .box {
+  border: 1.5px dashed var(--bp-ink);
+  border-radius: 8px;
+  padding: 6px 8px;
+}
+.call-page .rec {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.call-page .rec i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bp-ink);
+  animation: bp-blink 1s steps(2) infinite;
+}
+@keyframes bp-blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+.call-page .entry {
+  border: 2px solid var(--bp-ink);
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  min-height: 46px;
+}
+.call-page .bigcode {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-align: center;
+  border: 2px solid var(--bp-ink);
+  border-radius: 8px;
+  padding: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.call-page .dial {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+.call-page .dial b {
+  font-size: 20px;
+}
+.call-page .hint {
+  color: var(--bp-muted);
+}
+.bp-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  margin-top: 14px;
+}
+.bp-keypad button {
+  height: 48px;
+  border: 1.5px solid var(--bp-wire);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--bp-ink);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.1;
+  transition: transform 160ms ease;
+}
+.bp-keypad button small {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--bp-muted);
+}
+.bp-keypad button.hot {
+  border: 2px solid var(--bp-ink);
+  background: var(--bp-ink);
+  color: #fff;
+}
+.bp-keypad button.hot small {
+  color: #d6d6d6;
+}
+.bp-keypad button.pressed,
+.bp-keypad button:active {
+  transform: scale(0.96);
+}
+.bp-keypad button:focus-visible {
+  outline: 2px solid var(--bp-ink);
+  outline-offset: 2px;
+}
+.call-controls {
+  width: 300px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--bp-muted);
+}
+.call-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-weight: 600;
+  color: var(--bp-ink);
+}
+.call-controls select {
+  min-height: 48px;
+  padding: 8px;
+  border: 1.5px solid var(--bp-ink);
+  border-radius: 8px;
+  background: #fff;
+}
+.call-controls select:disabled {
+  border-style: dashed;
+  color: var(--bp-muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .call-page .rec i {
+    animation: none;
+  }
+  .bp-keypad button {
+    transition: none;
+  }
+}
+[data-embed] body,
+[data-embed] .call-page {
+  background: transparent;
+}

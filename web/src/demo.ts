@@ -142,6 +142,7 @@ export function demoCards(): Record<string, Draft> {
 // Clean slate. With patients: the four demo cards. Without: an empty queue.
 export function resetDemo(withPatients: boolean) {
   write(DRAFT_KEY, null);
+  write('tuwulira.call.draft', null); // basic-phone call in progress (src/call/)
   write(STAFF_KEY, null);
   write(DRAFTS_KEY, null);
   write(CARDS_KEY, withPatients ? demoCards() : null);

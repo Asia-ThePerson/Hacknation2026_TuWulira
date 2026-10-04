@@ -14,12 +14,12 @@ export function Home() {
     <div className="page">
       <AppBar eyebrow="Prototype" title="TuWulira" />
       <main className="page-body">
-        <p className="t-body-lg">Choose which device this screen is acting as. Open each in its own tab to see the card move from patient to clinic.</p>
+        <p className="t-body-lg">Choose which device this screen is acting as. Open each in its own tab to see the card move from the patient's phone to the clinic.</p>
         <div className="mode-grid">
-          <button type="button" className="mode" onClick={() => navigate('/intake')}>
-            <span className="section-label">Intake phone</span>
-            <span className="t-title">Patient intake</span>
-            <span className="t-muted">Questions before the visit. Staff can help the patient answer.</span>
+          <button type="button" className="mode" onClick={() => navigate('/call')}>
+            <span className="section-label">Patient’s own basic phone</span>
+            <span className="t-title">Patient intake by phone call</span>
+            <span className="t-muted">Missed call, the clinic calls back, voice questions, keypad answers. Nothing to install.</span>
             <span className="mode-cta">
               Start <Icon name="chevron" />
             </span>
@@ -33,6 +33,9 @@ export function Home() {
             </span>
           </button>
         </div>
+        <Button variant="outline" onClick={() => navigate('/intake')}>
+          Walk-in: staff-assisted intake on the intake phone
+        </Button>
         {canFrame() && (
           <Button variant="outline" icon="chevron" onClick={() => navigate('/both')}>
             Show both devices side by side

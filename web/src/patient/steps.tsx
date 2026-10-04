@@ -177,8 +177,8 @@ export function DangerPendingStep({ step, draft }: StepProps) {
 
 // ---------- spoken answers (synthetic speech-to-text in the prototype) ----------
 
-type Outcome = 'clear' | 'unclear' | 'silence' | 'danger';
-const OUTCOMES: { value: Outcome; label: string; childOnly?: boolean }[] = [
+export type Outcome = 'clear' | 'unclear' | 'silence' | 'danger';
+export const OUTCOMES: { value: Outcome; label: string; childOnly?: boolean }[] = [
   { value: 'clear', label: 'Clear speech' },
   { value: 'unclear', label: 'Unclear (low confidence)' },
   { value: 'silence', label: 'Silence or noise' },
@@ -194,11 +194,10 @@ const SAMPLE: Record<string, { self: string; child: string }> = {
 };
 const DANGER_SAMPLE = 'The child has had convulsions since morning.';
 
-function transcribe(stepId: string, outcome: Outcome, isChild: boolean) {
+export function transcribe(stepId: string, outcome: Outcome, isChild: boolean, male = read<Draft | null>(DRAFT_KEY, null)?.answers.s3_sex === 'male') {
   if (outcome === 'silence') return { transcript: '', confidence: 0 };
   if (outcome === 'unclear') return { transcript: '…', confidence: 0.42 };
   if (outcome === 'danger') return { transcript: DANGER_SAMPLE, confidence: 0.9 };
-  const male = read<Draft | null>(DRAFT_KEY, null)?.answers.s3_sex === 'male';
   if (stepId === 's3_name' && !isChild && male) return { transcript: 'Okello B.', confidence: 0.92 };
   return { transcript: SAMPLE[stepId]?.[isChild ? 'child' : 'self'] ?? '', confidence: 0.92 };
 }
@@ -315,7 +314,7 @@ export function SpokenStep({ step, draft }: StepProps) {
   );
 }
 
-const signLabels = (ids: string[]) => ids.map((id) => DANGER_SIGNS.find((s) => s.id === id)?.label ?? id).join(', ');
+export const signLabels = (ids: string[]) => ids.map((id) => DANGER_SIGNS.find((s) => s.id === id)?.label ?? id).join(', ');
 
 // Main problem: the one free answer. One retry, then "Not sure. A person will ask." (retryOnLowConfidence: 1)
 export function MainStep({ step, draft }: StepProps) {

@@ -76,6 +76,13 @@
 .device-tablet .device-shell {
   border-radius: 24px;
 }
+.device-bare {
+  line-height: 0;
+}
+.device-bare iframe {
+  border-radius: 0 !important;
+  background: transparent !important;
+}
 .device iframe {
   display: block;
   border: 0;
